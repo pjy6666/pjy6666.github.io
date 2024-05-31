@@ -1,0 +1,2912 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>linux基本命令 | 忆往日</title>
+
+  <link rel="icon" type="image/jpeg" href="/medias/Photo1.jpg">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '3';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script async src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    <link href="https://unpkg.com/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" rel="stylesheet">
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script defer src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+    
+    <!-- 依赖于jquery和vue -->
+    <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+  
+  <!-- 预加载动画 -->
+  
+  
+  <div class="preloader_6" id="loader">
+  <div class="loader"></div>
+</div>
+  <script>
+    var endLoading = function () {
+      document.body.style.overflow = 'auto';
+      document.getElementById('loader').classList.add("loaded");
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+  </script>
+
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script defer>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/Photo1.jpg" class="lazyload placeholder" data-srcset="/medias/Photo1.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">忆往日</h3>
+      <h5 class="drawer-box-head_desc"></h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://gitee.com/peng-junyan">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/Photo1.jpg" class="lazyload placeholder" data-srcset="/medias/Photo1.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">忆往日</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://gitee.com/peng-junyan" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+</header>
+        <!-- 内容区域 -->
+        
+<!-- prismjs 代码高亮 -->
+
+
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/img/13.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        linux基本命令
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-01-20 |
+        </span>
+      
+
+      
+
+      
+    
+  </div>
+  
+  
+    <script defer src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="linux命令"><a href="#linux命令" class="headerlink" title="linux命令"></a>linux命令</h1><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><hr/>
+
+<h3 id="快捷操作"><a href="#快捷操作" class="headerlink" title="快捷操作"></a>快捷操作</h3><p>tab &#x3D;&#x3D;&#x3D; 补齐功能</p>
+<p>history [n] &#x3D;&#x3D;&#x3D; 查看历史命令，<code>history n</code> 可执行第n个命令</p>
+<p>上下键 &#x3D;&#x3D;&#x3D; 切换上下命令</p>
+<p>home 和 end &#x3D;&#x3D;&#x3D; 光标移动至行首或行尾</p>
+<p>clear 和 Ctrl + L &#x3D;&#x3D;&#x3D; 清屏</p>
+<p>alias 别名 &#x3D;  ‘ 命令或参数 ‘ &#x3D;&#x3D;&#x3D; 定义快捷命令</p>
+<p>unalias 别名</p>
+<p>id (用户) &#x3D;&#x3D;&#x3D; id信息</p>
+<hr/>
+
+<h3 id="电源命令"><a href="#电源命令" class="headerlink" title="电源命令"></a>电源命令</h3><p>shutdown &#x3D;&#x3D;&#x3D; 关闭计算机，仅 root 用户可用</p>
+<p> <code>-h</code> 关机后关电源</p>
+<p> <code>r</code> 关机后打开电源（重启）</p>
+<p> <code>-t</code> 在改变到其他运行级别之前，告诉 init 程序多久以后关机</p>
+<p><code>-k</code> 并不是真正的关机，发送关机信号给每位登录用户</p>
+<p><code>-F</code> 重启计算机后强制fsck（文件系统检测）</p>
+<p> <code>- time</code> 设定关机前的时间</p>
+<p>halt &#x3D;&#x3D;&#x3D; 关闭系统</p>
+<p> <code>-n</code> 保存数据后重启</p>
+<p><code>-f</code> 强制关闭</p>
+<p><code>-i</code> 关机前会关掉所有网络接口</p>
+<p><code>d</code> 关闭系统，不留下日志记录</p>
+<p>reboot &#x3D;&#x3D;&#x3D; 重启</p>
+<p><code>-i</code> 重启前关闭网络设置</p>
+<hr/>
+
+<p>passwd  [用户名] &#x3D;&#x3D;&#x3D; 修改密码</p>
+<p>su username &#x3D;&#x3D;&#x3D; 切换用户</p>
+<p>sh &#x3D;&#x3D;&#x3D; 切换shell操作</p>
+<p>ip addr &#x3D;&#x3D;&#x3D; 查看ip</p>
+<p>chmod &#x3D;&#x3D;&#x3D; 增加文件的可执行权限</p>
+<p>last &#x3D;&#x3D;&#x3D; 登录记录 <code>-n</code> 显示最近n条记录</p>
+<hr/>
+
+<h3 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h3><p>pwd &#x3D;&#x3D;&#x3D; 显示当前工作目录</p>
+<p> <code>-L</code>  目录连接链接时输出连接路径 </p>
+<p> <code>-P</code> 输出物理路径</p>
+<p>cd &#x3D;&#x3D;&#x3D; 返回主目录</p>
+<p> <code>/url</code> 进入 url 目录</p>
+<p> <code>..</code> 返回上一级</p>
+<p> <code>.</code> 进入当前目录</p>
+<p> <code>-</code> 进入前一个目录</p>
+<p> <code>~</code> 进入主目录</p>
+<p>ls &#x3D;&#x3D;&#x3D; 列出当前目录下所有文件和目录</p>
+<p> <code>-a</code> 显示所有文件和目录</p>
+<p> <code>-l</code> 列出详细</p>
+<p> <code>-t</code> 按文件建立时间先后次序列排序</p>
+<p> <code>-R</code> 子目录也列出</p>
+<p>mkdir &#x3D;&#x3D;&#x3D; 创建目录</p>
+<p>cp &#x3D;&#x3D;&#x3D; 复制文件或目录</p>
+<p> <code>-a</code> 保留链接、文件属性</p>
+<p> <code>-p</code> 复制修改时间和访问权限</p>
+<p> <code>-r</code> 复制改目录下的所有子目录和文件</p>
+<p> <code>-l</code> 不复制文件只生成链接文件</p>
+<p>mv &#x3D;&#x3D;&#x3D; 移动文件或目录</p>
+<p> <code>-b</code> 覆盖文件前先备份</p>
+<p> <code>-f</code> 强制移动，如果目标文件已存在，直接覆盖</p>
+<p> <code>-i</code> 若目标文件已存在，则询问是否覆盖</p>
+<p> <code>-u</code> 若目标文件已存在，且 source 比较新，才会更新</p>
+<p>rm &#x3D;&#x3D;&#x3D; 删除文件</p>
+<p> <code>-f</code> 忽略不存在的文件，强制删除</p>
+<p> <code>-i</code> 进行互交式删除</p>
+<p> <code>-r</code> 递归删除</p>
+<p> <code>-v</code> 详细显示进行步骤</p>
+<p>cat &#x3D;&#x3D;&#x3D; 读取文件全部内容，cat &gt;(&gt;&gt;) filename &#x3D;&#x3D;&#x3D; 编辑文件，cat file1 file2 &gt; file3 &#x3D;&#x3D;&#x3D; 将文件合并为file3</p>
+<p> <code>-A</code> 显示不可打印的字符</p>
+<p> <code>-b</code> 对非空输出行编号</p>
+<p> <code>-E</code> 在每行结束处显示$</p>
+<p> <code>-s</code> 当有多个空行在一起时只输出一个空行</p>
+<p> <code>-n</code> 由1开始对输出的所有行编号 </p>
+<hr/>
+
+<h3 id="分页和查找"><a href="#分页和查找" class="headerlink" title="分页和查找"></a>分页和查找</h3><p>head &#x3D;&#x3D;&#x3D; 显示文件开头10行内容，<code>-n</code> 显示前n行</p>
+<p> <code>-q</code> 隐藏文件名</p>
+<p> <code>-v</code> 显示文件名</p>
+<p> <code>-c</code> 显示字节数</p>
+<p>tail &#x3D;&#x3D;&#x3D; 读取文件尾部</p>
+<p> <code>-f</code> 循环读取</p>
+<p> <code>-q</code> 不显示处理信息</p>
+<p> <code>-v</code> 显示详细的处理信息</p>
+<p> <code>-c</code> &lt;数目&gt;显示的字节数</p>
+<p> <code>-n</code> &lt;行数&gt;显示行数</p>
+<p>more &#x3D;&#x3D;&#x3D; 逐页阅读文件</p>
+<p> <code>+n</code> 从第 n 行开始显示</p>
+<p> <code>-n</code> 定义屏幕大小为 n 行</p>
+<p> <code>+/pattern</code> 搜索改字串（pattern），然后从该字串前两行开始显示</p>
+<p> <code>-c</code> 全屏再显示</p>
+<p>快捷键：</p>
+<p> <code>Enter</code> 向下 n 行，需自己定义</p>
+<p> <code>Ctrl+F</code> or <code>空格键</code> 向下滚动一页</p>
+<p> <code>Ctrl+B</code> 返回上一页</p>
+<p> <code>=</code> 输出当前行的行号</p>
+<p> <code>V</code> 调用 vi 编辑器</p>
+<p> <code>!命令</code> 调用 shell 并执行命令</p>
+<p> <code>q</code> 退出 </p>
+<p>less &#x3D;&#x3D;&#x3D; 读取内容，在查看之前不会加载整个文件</p>
+<p> <code>/字符串</code> 向下搜索</p>
+<p> <code>?字符串</code> 向上搜索</p>
+<p> <code>q</code> 退出</p>
+<p> <code>空格键</code> 滚动一页</p>
+<p> <code>Enter</code> 滚动一行</p>
+<p>find &#x3D;&#x3D;&#x3D; 在指定目录下查找文件</p>
+<p> <code>-name</code> 按照文件名查找</p>
+<p> <code>perm</code> 按照文件权限查找</p>
+<p> <code>-user</code> 按照文件属主查找</p>
+<p> <code>-type</code> d - 目录 f - 一般文件 l - 软链接</p>
+<p> <code>-mtime -n +n</code> 按照文件更改时间查找</p>
+<p>which &#x3D;&#x3D;&#x3D; 在 PATH 所指定的目录中查找可执行文件</p>
+<p>cut &#x3D;&#x3D;&#x3D; 提取列或字段</p>
+<p> <code>-b</code> 仅显示行中指定直接范围的内容</p>
+<p> <code>-c[范围]</code> 仅显示行中指定范围的字符</p>
+<p> <code>-d</code> 指定字段的分隔符，默认字段分隔符为 TAB</p>
+<p> <code>-f[范围]</code> 显示指定第 num 个字段内容，可以用逗号隔开显示多个字段</p>
+<hr/>
+
+<h3 id="压缩和打包"><a href="#压缩和打包" class="headerlink" title="压缩和打包"></a>压缩和打包</h3><p>gzip &#x3D;&#x3D;&#x3D; 进行压缩或解压文件</p>
+<p> <code>-d</code> or <code>--decompress</code> or <code>---uncompress</code> 解开压缩文件</p>
+<p> <code>-f</code> or <code>-force</code> 强行压缩文件</p>
+<p> <code>-l</code> or <code>--list</code> 列出压缩文件相关信息</p>
+<p> <code>-r</code> or <code>--recursive</code> 递归处理，将指定目录下及子目录一并处理</p>
+<p> <code>-v</code> or <code>--verbose</code> 显示执行过程</p>
+<p>tar &#x3D;&#x3D;&#x3D; 打包文件或目录</p>
+<p> <code>-c</code> 建立新的压缩文件</p>
+<p> <code>-x</code> 从压缩文件中提取文件</p>
+<p> <code>-t</code> 显示压缩文件内容</p>
+<p> <code>-z</code> 支持 gzip 解压文件</p>
+<p> <code>-j</code> 支持 bzip2 解压文件</p>
+<p> <code>-v</code> 显示操作过程</p>
+<p> <code>-C</code> 指定解压的路径</p>
+<p>ln &#x3D;&#x3D;&#x3D; 创建链接文件（默认硬链接）</p>
+<p> <code>-b</code> 删除，覆盖以前建立的链接</p>
+<p> <code>-d</code> 允许超级用户制作目录的硬链接</p>
+<p> <code>-f</code> 强制执行</p>
+<p> <code>-i</code> 交互模式，文件存在则提示用户是否覆盖</p>
+<p> <code>-n</code> 把符号链接视为一般目录</p>
+<p> <code>-s</code> 软连接（符号链接）</p>
+<hr/>
+
+<h2 id="用户命令"><a href="#用户命令" class="headerlink" title="用户命令"></a>用户命令</h2><p>useradd &#x3D;&#x3D;&#x3D; 创建用户账号，并保存到 &#x2F;etc&#x2F;passwd 文件中</p>
+<h2 id="RPM-DNF"><a href="#RPM-DNF" class="headerlink" title="RPM &amp; DNF"></a>RPM &amp; DNF</h2><p>rpm &#x3D;&#x3D;&#x3D; 用于安装、删除、升级、刷新和查询软件</p>
+<p> <code>-i</code> 指定安装的软件包</p>
+<p> <code>-h</code> 使用 ‘#（hash）’ 符显示 rpm 详细的安装过程及进度</p>
+<p> <code>-v</code> 显示安装的详细过程</p>
+<p> <code>-U</code> 升级指定的软件包</p>
+<p> <code>-q</code> 查询系统是否已安装指定的软件包或查询指定 rpm 包内容信息</p>
+<p> <code>-a</code> 查看系统已安装的所有软件包</p>
+<p> <code>-V</code> 查询已安装的软件包的版本信息</p>
+<p> <code>-c</code> 显示所有配置文件</p>
+<p> <code>-p</code> 查询&#x2F;校验一个软件包文件</p>
+<p>DNF &#x3D;&#x3D;&#x3D; 软件源服务，软件源是 Linux 系统免费的应用程序安装仓库</p>
+<p>安装 DNF 包管理器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 必须先安装并启用 epel-release 依赖</span></span><br><span class="line">yum install epel-release (-y)</span><br><span class="line"><span class="comment"># 使用 epel-release 依赖中的 yum 命令来安装 DNF 包</span></span><br><span class="line">yum install dnf</span><br></pre></td></tr></table></figure>
+
+<p>DNF配置文件（&#x2F;etc&#x2F;dnf&#x2F;dnf.conf）</p>
+<p>配置远程软件源仓库</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name=repository_name</span><br><span class="line">baseurl=repository_url</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置本地软件源仓库</span></span><br><span class="line">dnf install createrepo</span><br><span class="line"><span class="comment"># 将需要的软件包放置在目录下</span></span><br><span class="line">createrepo --database /目录</span><br></pre></td></tr></table></figure>
+
+<h2 id="源代码软件安装"><a href="#源代码软件安装" class="headerlink" title="源代码软件安装"></a>源代码软件安装</h2><ol>
+<li><p>下载源码包并解压（校验包完整性）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget /https://*/*.tgz</span><br><span class="line">tar -zxvf *.tgz</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看README和INSTALL文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> README</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建Makefile文件 - 通过执行 <code>./configure</code> 脚本命令生成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/usr/local/name</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译 - 在包目录下通过 make 命令将源码自动编译成二进制文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装软件 - 通过 make install 安装命令来将上步编译出来的二进制文件安装到对应的目录中区，默认的安装路径为 <code>/usr/local/</code>，相应的配置文件位置为 <code>/usr/local/etc</code></p>
+</li>
+</ol>
+<h2 id="systemd管理服务"><a href="#systemd管理服务" class="headerlink" title="systemd管理服务"></a>systemd管理服务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前正在运行的服务</span></span><br><span class="line">systemctl list -units --<span class="built_in">type</span> service</span><br><span class="line"><span class="comment"># 运行服务</span></span><br><span class="line">systemctl start name.service</span><br><span class="line"><span class="comment"># 关闭服务</span></span><br><span class="line">systemctl stop name.service</span><br><span class="line"><span class="comment"># 重启服务</span></span><br><span class="line">systemctl restart name.service</span><br><span class="line"><span class="comment"># 启用服务</span></span><br><span class="line">systemctl <span class="built_in">enable</span> name.service</span><br><span class="line"><span class="comment"># 禁用服务</span></span><br><span class="line">systemctl <span class="built_in">disable</span> name.service</span><br></pre></td></tr></table></figure>
+
+<h2 id="磁盘信息"><a href="#磁盘信息" class="headerlink" title="磁盘信息"></a>磁盘信息</h2><p>df -h &#x3D;&#x3D;&#x3D; 查看系统挂载、磁盘空间大小和利用率</p>
+<p>fdisk &#x3D;&#x3D;&#x3D; 查看系统所有磁盘信息（DOS、BSD、SUN方案）</p>
+<p>必要参数：</p>
+<p> <code>-l</code> 列出所有分区表</p>
+<p> <code>-u -l</code> 显示分区数目，会用分区数目取代柱面数目，来表示每个分区的起始地址</p>
+<p> <code>-b&lt;分区大小&gt;</code> 指定没饿过分区的大小</p>
+<p>选择参数：</p>
+<p> <code>-s&lt;分区编号&gt;</code> 如（&#x2F;dev&#x2F;sda1）将指定的分区大小输出到标准输出上，单位为区块</p>
+<p> <code>-v</code> 显示版本信息</p>
+<p>菜单操作说明</p>
+<p> <code>m</code> 显示菜单和帮助信息</p>
+<p> <code>a</code> 活动分区标记 &#x2F; 引导分区</p>
+<p> <code>d</code> 删除分区</p>
+<p> <code>l</code> 显示分区类型</p>
+<p> <code>n</code> 新建分区</p>
+<p> <code>p</code> 显示分区信息</p>
+<p> <code>q</code> 退出不保存</p>
+<p> <code>t</code> 设置分区号</p>
+<p> <code>v</code> 分区检查</p>
+<p> <code>w</code> 保存修改</p>
+<p> <code>x</code> 拓展应用，高级功能</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示当前分区情况</span></span><br><span class="line">fdisk -l</span><br><span class="line"><span class="comment"># 显示硬盘的每个分区情况</span></span><br><span class="line">fdisk -lu</span><br><span class="line"><span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+<p>parted &#x3D;&#x3D;&#x3D; 分区软件（GPT方案）</p>
+<p> <code>-l</code> 列出分区</p>
+<p> <code>-h</code> 显示帮助信息</p>
+<p> <code>-i</code> 互交模式</p>
+<p> <code>-s</code> 脚本模式</p>
+<p> <code>-v</code> 显示 parted 的版本信息</p>
+<p> <code>/dev/sda</code> 打开存储设备</p>
+<p> <code>command</code> parted 指令，如果没有设置指令，则 parted 将会进入交互模式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出分区</span></span><br><span class="line">parted -l</span><br><span class="line"><span class="comment"># 选择操作磁盘</span></span><br><span class="line">parted /dev/sda</span><br><span class="line"><span class="comment"># 设置分区表为 GPT 并输入 yes 开始执行</span></span><br><span class="line">(parted) [mklabel | mktable] gpt <span class="comment"># =&gt; mklabel &amp; mktable 不会创建分区，而是创建分区表</span></span><br><span class="line">Yes/No? ==&gt; Yes</span><br><span class="line"><span class="comment"># 查看存储设备信息</span></span><br><span class="line">(parted) <span class="built_in">print</span></span><br><span class="line"><span class="comment"># 获取帮助</span></span><br><span class="line">(parted) <span class="built_in">help</span> mkpart</span><br><span class="line"><span class="comment"># 创建分区(分区0有1396MB)</span></span><br><span class="line">(parted) mkpart primary 0 1396MB</span><br><span class="line"><span class="comment"># 保存退出</span></span><br><span class="line">(parted) quit</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="磁盘格式化"><a href="#磁盘格式化" class="headerlink" title="磁盘格式化"></a>磁盘格式化</h3><p>mkfs &#x3D;&#x3D;&#x3D; 双击<code>tab</code> 可查看支持的文件类型</p>
+<p>mkfs.ext4 &#x2F;dev&#x2F;sdb2 &#x3D;&#x3D;&#x3D; 格式化 sdb2 分区类型为 ext4</p>
+<p><code>device</code> 预备检查的硬盘分区</p>
+<p> <code>-V</code> 详细显示模式</p>
+<p> <code>-t</code> 给定档案系统的形式，Linux 的预设值为 ext2 <code>mkfs -t ext2 /dev/sda</code></p>
+<p> <code>-c</code> 在制作档案系统前，检查该 partition 是否有坏轨</p>
+<p> <code>-l bad_block_file</code> 将有坏轨的 block 资料加到 bad_blocks_file 里面</p>
+<p> <code>block</code> 给定 block 的大小</p>
+<h3 id="磁盘挂载"><a href="#磁盘挂载" class="headerlink" title="磁盘挂载"></a>磁盘挂载</h3><p>磁盘格式化完成后还不能使用，必须挂载才能使用</p>
+<p>ll &#x2F;dev&#x2F;sdb2 &#x3D;&#x3D;&#x3D; 查看磁盘信息</p>
+<p>挂载点目录 &#x3D;&#x3D;&#x3D; 在更目录自己创建一个目录作为挂载点目录</p>
+<p>临时挂载 &#x3D;&#x3D;&#x3D; mount &#x2F;dev&#x2F;sda5 &#x2F;test 意思是 sda5 挂载到 test，重启后失效</p>
+<p>永久挂载 &#x3D;&#x3D;&#x3D; 使用 vim 编辑 &#x2F;etc&#x2F;fstab</p>
+<h3 id="逻辑卷管理"><a href="#逻辑卷管理" class="headerlink" title="逻辑卷管理"></a>逻辑卷管理</h3>
+
+<p>pvcreate &#x3D;&#x3D;&#x3D; 创建物理卷，可以使用物理磁盘或者磁盘分区创建</p>
+<p> <code>-f</code> 强制创建物理卷，不需要用户确认</p>
+<p> <code>-u</code> 指定设备的UUID</p>
+<p> <code>-y</code> 所有问题都回答 yes</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建物理卷</span></span><br><span class="line">pvcreate /dev/sda</span><br></pre></td></tr></table></figure>
+
+<p>vgcreate &#x3D;&#x3D;&#x3D; 创建 LVM 卷组，将多个物理卷组织成一个整体</p>
+<p> <code>-l</code> 卷组上允许创建的最大逻辑卷数</p>
+<p> <code>-p</code> 卷组中允许添加的最大物理卷数</p>
+<p> <code>-s</code> 卷组上的物理卷的 PE 大小</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建卷组 vg1000 并将sdb1和sdb2添加到卷组中</span></span><br><span class="line">vgcreate vg1000 /dev/sdb1 /dev/sdb2</span><br><span class="line"><span class="comment"># 删除 LVM 卷组</span></span><br><span class="line">vgremove vg1000</span><br><span class="line"><span class="comment"># 查看卷组信息</span></span><br><span class="line">vgdisplay vg1000</span><br></pre></td></tr></table></figure>
+
+<p>vgextend vg1000 &#x2F;dev&#x2F;sda1 &#x3D;&#x3D;&#x3D; 将 sda1 扩容到卷组 vg1000</p>
+<p>lvcreate &#x3D;&#x3D;&#x3D; 创建 LVM 的逻辑卷</p>
+<p> <code>-L</code> 指定逻辑卷的大小，单位为 “kKmMgGtT” 字节</p>
+<p> <code>-l</code> 指定逻辑卷的大小（LE数）</p>
+<blockquote>
+<p>逻辑卷创建完成后同样需要格式化且挂载后才能使用（<code>mkfs</code> 格式化 <code>mount</code> 临时挂载）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在卷组 vg1000 上创建一个200MB的逻辑卷</span></span><br><span class="line">lvcreate -L 200M vg1000</span><br><span class="line"><span class="comment"># 使用 lvdisplay、lvscan 查看卷组信息</span></span><br><span class="line">lvscan <span class="comment"># 扫描所有逻辑卷</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="逻辑卷扩容"><a href="#逻辑卷扩容" class="headerlink" title="逻辑卷扩容"></a>逻辑卷扩容</h3><ol>
+<li><p>扩容前先检查是否有足够 vg 空间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vgs</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用命令扩容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lvextend -L +SIZE lv_device(name)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调整文件系统的大小</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resize2fs device lv_device(name)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="逻辑卷缩容"><a href="#逻辑卷缩容" class="headerlink" title="逻辑卷缩容"></a>逻辑卷缩容</h3><ol>
+<li>确定缩减后的目标大小，并确定其有足够空间容纳所有原有数据</li>
+<li>卸载文件系统 （<code>umount</code>） 并执行强制检测（<code>e2fsck -f</code>）</li>
+<li>缩减文件系统（<code>resize2fs DEVICE</code>)</li>
+<li>缩减逻辑卷（<code>lvreduce</code>）</li>
+<li>重新挂载使用</li>
+</ol>
+<p>逻辑卷容量变更</p>
+<p>lvresize &#x3D;&#x3D;&#x3D; lvextend + lvreduce</p>
+<p> <code>-L</code> 指定逻辑卷的大小，单位为 “kKmMgGtT” 字节</p>
+<p> <code>-l</code> 指定逻辑卷的大小（LE数）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 lvresize 指令增容</span></span><br><span class="line">lvresize -L +200M /dev/vg1000/lvol0 <span class="comment"># 将逻辑卷空间增加200M</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><h2 id="tmux教程"><a href="#tmux教程" class="headerlink" title="tmux教程"></a>tmux教程</h2><h3 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h3><ul>
+<li>分屏</li>
+<li>允许断开 Terminal 连接后，继续运行进程</li>
+</ul>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p>​	一个 tmux 可以包含多个 session，一个 session 可以包含多个 window，一个 window 可以包含多个 pane</p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tmux:</span><br><span class="line">	session 0:</span><br><span class="line">		window 0:</span><br><span class="line">			pane 0</span><br><span class="line">			pane 1</span><br><span class="line">			pane 2</span><br><span class="line">			...</span><br><span class="line">		window 1</span><br><span class="line">		window 2</span><br><span class="line">		...</span><br><span class="line">	session 1</span><br><span class="line">	session 2</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<h4 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h4><ol>
+<li>tmux：新建一个session，其中包含一个 window，window 中包含一个 pane，pane里打开了一个shell对话框。<code>tmux new -s name</code></li>
+<li>按下 Ctrl + b 后手指松开，然后按%：将当前 pane 左右平分成两个pane。</li>
+<li>按下 Ctrl + b 后手指松开，然后按”：将当前pane上下平分成两个 pane。</li>
+<li>Ctrl + d：关闭当前 pane；如果当前 window 的所有 pane 均已关闭，则自动关闭 window；如果当前session 的所有 window 均已关闭，则自动关闭 session。</li>
+<li>鼠标点击可以选 pane。</li>
+<li>按下 ctrl + b 后手指松开，然后按方向键：选择相邻的pane。</li>
+<li>鼠标拖动pane之间的分割线，可以调整分割线的位置。</li>
+<li>按住ctrl + b的同时按方向键，可以调整pane之间分割线的位置。</li>
+<li>按下ctrl + b后手指松开，然后按z：将当前pane全屏&#x2F;取消全屏。</li>
+<li>按下ctrl + b后手指松开，然后按d：挂起当前session。</li>
+<li>tmux a：打开之前挂起的session。</li>
+<li>按下ctrl + a后手指松开，然后按s：选择其它session。<br>    方向键 —— 上：选择上一项 session&#x2F;window&#x2F;pane<br>    方向键 —— 下：选择下一项 session&#x2F;window&#x2F;pane<br>    方向键 —— 右：展开当前项 session&#x2F;window<br>    方向键 —— 左：闭合当前项 session&#x2F;window</li>
+<li>按下Ctrl + a后手指松开，然后按c：在当前session中创建一个新的window。</li>
+<li>按下Ctrl + a后手指松开，然后按w：选择其他window，操作方法与(12)完全相同。</li>
+<li>按下Ctrl + a后手指松开，然后按PageUp：翻阅当前pane内的内容。</li>
+<li>鼠标滚轮：翻阅当前pane内的内容。</li>
+<li>在tmux中选中文本时，需要按住shift键。（仅支持Windows和Linux，不支持Mac，不过该操作并不是必须的，因此影响不大）</li>
+<li>tmux中复制&#x2F;粘贴文本的通用方式：</li>
+</ol>
+<ul>
+<li>按下Ctrl + b后松开手指，然后按[</li>
+<li>用鼠标选中文本，被选中的文本会被自动复制到tmux的剪贴板</li>
+<li>按下Ctrl + b后松开手指，然后按]，会将剪贴板中的内容粘贴到光标处</li>
+</ul>
+<h2 id="vim教程"><a href="#vim教程" class="headerlink" title="vim教程"></a>vim教程</h2><h3 id="功能-1"><a href="#功能-1" class="headerlink" title="功能"></a>功能</h3><ul>
+<li>命令行模式下的文本编辑器。</li>
+<li>根据文件扩展名自动判别编程语言。支持代码缩进、代码高亮等功能。</li>
+<li>使用方式：vim filename<br>如果已有该文件，则打开它。<br>如果没有该文件，则打开个一个新的文件，并命名为filename</li>
+</ul>
+<h3 id="模式"><a href="#模式" class="headerlink" title="模式"></a>模式</h3><ul>
+<li><p>一般命令模式<br>默认模式。命令输入方式 <code>：</code> 类似于打游戏放技能，按不同字符，即可进行不同操作。可以复制、粘贴、删除文本等。sudo </p>
+</li>
+<li><p>编辑模式<br>在一般命令模式里按下 <code>i</code>，会进入编辑模式。</p>
+<p>按下 <code>ESC</code> 会退出编辑模式，返回到一般命令模式。</p>
+</li>
+<li><p>命令行模式</p>
+<p>在一般命令模式里按下 <code>:/?</code> 三个字母中的任意一个，会进入命令行模式。命令行在最下面。<br>可以查找、替换、保存、退出、配置编辑器等。</p>
+</li>
+</ul>
+<h3 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h3><p>​	(1) <code>i</code>：进入编辑模式<br>​    (2)  <code>ESC</code> ：进入一般命令模式<br>​    (3)  <code>h</code>  或 左箭头键：光标向左移动一个字符<br>​    (4)  <code>j</code>  或 向下箭头：光标向下移动一个字符<br>​    (5)  <code>k</code>  或 向上箭头：光标向上移动一个字符<br>​    (6)  <code>l</code>  或 向右箭头：光标向右移动一个字符<br>​    (7)  <code>n&lt;Space&gt;</code> ：n表示数字，按下数字后再按空格，光标会向右移动这一行的n个字符<br>​    (8)  <code>0</code>  或 功能键 <code>[Home] </code>：光标移动到本行开头<br>​    (9)  <code>$</code>  或 功能键 <code>[End]</code> ：光标移动到本行末尾<br>​    (10) <code>G</code>：光标移动到最后一行<br>​    (11) <code>:n</code> 或 <code>nG：n</code>为数字，光标移动到第n行<br>​    (12) gg：光标移动到第一行，相当于1G<br>​    (13) n<Enter>：n为数字，光标向下移动n行<br>​    (14) &#x2F;word：向光标之下寻找第一个值为word的字符串。<br>​    (15) ?word：向光标之上寻找第一个值为word的字符串。<br>​    (16) n：重复前一个查找操作<br>​    (17) N：反向重复前一个查找操作<br>​    (18) :n1,n2s&#x2F;word1&#x2F;word2&#x2F;g：n1与n2为数字，在第n1行与n2行之间寻找word1这个字符串，并将该字符串替换为word2<br>​    (19) :1,$s&#x2F;word1&#x2F;word2&#x2F;g：将全文的word1替换为word2<br>​    (20) :1,$s&#x2F;word1&#x2F;word2&#x2F;gc：将全文的word1替换为word2，且在替换前要求用户确认。<br>​    (21) v：选中文本<br>​    (22) d：删除选中的文本<br>​    (23) dd: 删除当前行<br>​    (24) y：复制选中的文本<br>​    (25) yy: 复制当前行<br>​    (26) p: 将复制的数据在光标的下一行&#x2F;下一个位置粘贴<br>​    (27) u：撤销<br>​    (28) Ctrl + r：取消撤销<br>​    (29) 大于号 &gt;：将选中的文本整体向右缩进一次<br>​	(30) 小于号 &lt;：将选中的文本整体向左缩进一次<br>​    (31) :w 保存<br>​    (32) :w! 强制保存<br>​    (33) :q 退出<br>​    (34) :q! 强制退出<br>​    (35) :wq 保存并退出<br>​    (36) :set paste 设置成粘贴模式，取消代码自动缩进<br>​    (37) :set nopaste 取消粘贴模式，开启代码自动缩进<br>​    (38) :set nu 显示行号<br>​    (39) :set nonu 隐藏行号<br>​    (40) gg&#x3D;G：将全文代码格式化<br>​    (41) :noh 关闭查找关键词高亮<br>​    (42) Ctrl + q：当vim卡死时，可以取消当前正在执行的命令</p>
+<h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><p>每次用vim编辑文件时，会自动创建一个.filename.swp的临时文件。<br>如果打开某个文件时，该文件的swp文件已存在，则会报错。此时解决办法有两种：</p>
+<ul>
+<li>找到正在打开该文件的程序，并退出</li>
+<li>直接删掉该swp文件即可</li>
+</ul>
+<h2 id="shell语法-脚本"><a href="#shell语法-脚本" class="headerlink" title="shell语法(脚本)"></a>shell语法(脚本)</h2><h3 id="概论"><a href="#概论" class="headerlink" title="概论"></a>概论</h3><p>shell是我们通过命令行与操作系统沟通的语言。</p>
+<p>shell脚本可以直接在命令行中执行，也可以将一套逻辑组织成一个文件，方便复用。<br>AC Terminal中的命令行可以看成是一个“shell脚本在逐行执行”。</p>
+<p>Linux中常见的shell脚本有很多种，常见的有：</p>
+<p>Bourne Shell(&#x2F;usr&#x2F;bin&#x2F;sh或&#x2F;bin&#x2F;sh)<br>Bourne Again Shell(&#x2F;bin&#x2F;bash)<br>C Shell(&#x2F;usr&#x2F;bin&#x2F;csh)<br>K Shell(&#x2F;usr&#x2F;bin&#x2F;ksh)<br>zsh<br>…<br>Linux系统中一般默认使用 <code>bash</code>，所以接下来讲解 <code>bash</code> 中的语法。<br>文件开头需要写 <code>#!/bin/bash</code>，指明 <code>bash</code> 为脚本解释器。</p>
+<h3 id="运行方式"><a href="#运行方式" class="headerlink" title="运行方式"></a>运行方式</h3><p>新建一个 test.sh 文件，内容如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">! /bin/bash</span></span><br><span class="line">echo &quot;Hello World!&quot;</span><br></pre></td></tr></table></figure>
+
+<p>作为可执行文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">chmod +x test.sh  # 使脚本具有可执行权限</span><br><span class="line">./test.sh  # 当前路径下执行</span><br><span class="line">Hello World!  # 脚本输出</span><br><span class="line">/home/acs/test.sh  # 绝对路径下执行</span><br><span class="line">Hello World!  # 脚本输出</span><br><span class="line">~/test.sh  # 家目录路径下执行</span><br><span class="line">Hello World!  # 脚本输出</span><br></pre></td></tr></table></figure>
+
+<p>解释器执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash">bash test.sh</span></span><br><span class="line">Hello World!  # 脚本输出</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><h4 id="单行注释"><a href="#单行注释" class="headerlink" title="单行注释"></a>单行注释</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">这是一行注释</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="多行注释"><a href="#多行注释" class="headerlink" title="多行注释"></a>多行注释</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">:&lt;&lt;EOF		#(不加冒号也可注释，EOF是自定义的)</span><br><span class="line">第一行注释</span><br><span class="line">第二行注释</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><h4 id="定义变量"><a href="#定义变量" class="headerlink" title="定义变量"></a>定义变量</h4><p>定义变量，不需要加 <code>$</code> 符号，例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name1=&#x27;yxc&#x27;  # 单引号定义字符串</span><br><span class="line">name2=&quot;yxc&quot;  # 双引号定义字符串</span><br><span class="line">name3=yxc    # 也可以不加引号，同样表示字符串</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用变量"><a href="#使用变量" class="headerlink" title="使用变量"></a>使用变量</h4><p>使用变量，需要加上 <code>$</code> 符号，或者 <code>$&#123;&#125;</code> 符号。花括号是<strong>可选的</strong>，主要为了帮助解释器识别变量边界。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">name=yxc</span><br><span class="line">echo $name  # 输出yxc</span><br><span class="line">echo $&#123;name&#125;  # 输出yxc</span><br><span class="line">echo $&#123;name&#125;acwing  # 输出yxcacwing</span><br></pre></td></tr></table></figure>
+
+<h4 id="只读变量"><a href="#只读变量" class="headerlink" title="只读变量"></a>只读变量</h4><p>使用 <code>readonly</code> 或者 <code>declare</code> 可以将变量变为只读。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name=yxc</span><br><span class="line">readonly name</span><br><span class="line">declare -r name  # 两种写法均可</span><br><span class="line"></span><br><span class="line">name=abc  # 会报错，因为此时name只读</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除变量"><a href="#删除变量" class="headerlink" title="删除变量"></a>删除变量</h4><p><code>unset</code> 可以删除变量。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name=yxc</span><br><span class="line">unset name</span><br><span class="line">echo $name  # 输出空行</span><br></pre></td></tr></table></figure>
+
+<h4 id="变量类型"><a href="#变量类型" class="headerlink" title="变量类型"></a>变量类型</h4><ul>
+<li>自定义变量（局部变量），子进程不能访问的变量</li>
+<li>环境变量（全局变量），子进程可以访问的变量</li>
+</ul>
+<p>自定义变量改成环境变量：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash">name=yxc  <span class="comment"># 定义变量</span></span></span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">export</span> name  <span class="comment"># 第一种方法</span></span></span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">declare</span> -x name  <span class="comment"># 第二种方法</span></span></span><br></pre></td></tr></table></figure>
+
+<p>环境变量改为自定义变量：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">export</span> name=yxc  <span class="comment"># 定义环境变量</span></span></span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">declare</span> +x name  <span class="comment"># 改为自定义变量</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><p>字符串可以用单引号，也可以用双引号，也可以不用引号。</p>
+<p><strong>单</strong>引号与<strong>双</strong>引号的区别：</p>
+<ul>
+<li>单引号中的内容会原样输出，不会执行、不会取变量；</li>
+<li>双引号中的内容可以执行、可以取变量；</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name=yxc  # 不用引号</span><br><span class="line">echo &#x27;hello, $name \&quot;hh\&quot;&#x27;  # 单引号字符串，输出 hello, $name \&quot;hh\&quot;</span><br><span class="line">echo &quot;hello, $name \&quot;hh\&quot;&quot;  # 双引号字符串，输出 hello, yxc &quot;hh&quot;</span><br></pre></td></tr></table></figure>
+
+<p>获取字符串长度</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name=&quot;yxc&quot;</span><br><span class="line">echo $&#123;#name&#125;  # 输出3</span><br></pre></td></tr></table></figure>
+
+<p>提取子串</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name=&quot;hello, yxc&quot;</span><br><span class="line">echo $&#123;name:0:5&#125;  # 提取从0开始的5个字符</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="默认变量"><a href="#默认变量" class="headerlink" title="默认变量"></a>默认变量</h3><h4 id="文件参数变量"><a href="#文件参数变量" class="headerlink" title="文件参数变量"></a>文件参数变量</h4><p>在执行shell脚本时，可以向脚本传递参数。<code>$1</code> 是第一个参数，<code>$2</code> 是第二个参数，以此类推。特殊的，<code>$0</code> 是文件名（包含路径）。例如：</p>
+<p>创建文件 <code>test.sh</code>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">! /bin/bash</span></span><br><span class="line"></span><br><span class="line">echo &quot;文件名：&quot;$0</span><br><span class="line">echo &quot;第一个参数：&quot;$1</span><br><span class="line">echo &quot;第二个参数：&quot;$2</span><br><span class="line">echo &quot;第三个参数：&quot;$3</span><br><span class="line">echo &quot;第四个参数：&quot;$4</span><br></pre></td></tr></table></figure>
+
+<p>执行该脚本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">chmod</span> +x test.sh</span> </span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash">./test.sh 1 2 3 4</span></span><br><span class="line">文件名：./test.sh</span><br><span class="line">第一个参数：1</span><br><span class="line">第二个参数：2</span><br><span class="line">第三个参数：3</span><br><span class="line">第四个参数：4</span><br></pre></td></tr></table></figure>
+
+<h4 id="其它参数相关变量"><a href="#其它参数相关变量" class="headerlink" title="其它参数相关变量"></a>其它参数相关变量</h4><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">$#</td>
+<td align="center">代表文件传入的参数个数，如上例中值为4</td>
+</tr>
+<tr>
+<td align="left">$*</td>
+<td align="center">由所有参数构成的用空格隔开的字符串，如上例中值为”$1 $2 $3 $4”</td>
+</tr>
+<tr>
+<td align="left">$@</td>
+<td align="center">每个参数分别用双引号括起来的字符串，如上例中值为”$1” “$2” “$3” “$4”</td>
+</tr>
+<tr>
+<td align="left">$$</td>
+<td align="center">脚本当前运行的进程ID</td>
+</tr>
+<tr>
+<td align="left">$?</td>
+<td align="center">上一条命令的退出状态（注意不是stdout，而是exit code）。0表示正常退出，其他值表示错误</td>
+</tr>
+<tr>
+<td align="left">$(command)</td>
+<td align="center">返回command这条命令的stdout（可嵌套）</td>
+</tr>
+<tr>
+<td align="left"><code>command</code> (前后加&#96;)</td>
+<td align="center">返回command这条命令的stdout（不可嵌套）</td>
+</tr>
+</tbody></table>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>数组中可以存放多个不同类型的值，只支持一维数组，初始化时不需要指明数组大小。数组下标从0开始。</p>
+<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>数组用小括号表示，元素之间用空格隔开。例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array=(1 abc &quot;def&quot; yxc)</span><br></pre></td></tr></table></figure>
+
+<p>也可以直接定义数组中某个元素的值：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">array[0]=1</span><br><span class="line">array[1]=abc</span><br><span class="line">array[2]=&quot;def&quot;</span><br><span class="line">array[3]=yxc</span><br></pre></td></tr></table></figure>
+
+<h4 id="读取数组中某个元素的值"><a href="#读取数组中某个元素的值" class="headerlink" title="读取数组中某个元素的值"></a>读取数组中某个元素的值</h4><p>格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">&#123;array[index]&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">array=(1 abc &quot;def&quot; yxc)</span><br><span class="line">echo $&#123;array[0]&#125;</span><br><span class="line">echo $&#123;array[1]&#125;</span><br><span class="line">echo $&#123;array[2]&#125;</span><br><span class="line">echo $&#123;array[3]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>读取整个数组</p>
+<p>格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">&#123;array[@]&#125;  <span class="comment"># 第一种写法</span></span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">&#123;array[*]&#125;  <span class="comment"># 第二种写法</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="数组长度"><a href="#数组长度" class="headerlink" title="数组长度"></a>数组长度</h4><p>类似于字符串</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">&#123;<span class="comment">#array[@]&#125;  # 第一种写法</span></span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">&#123;<span class="comment">#array[*]&#125;  # 第二种写法</span></span></span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">array=(1 abc &quot;def&quot; yxc)</span><br><span class="line"></span><br><span class="line">echo $&#123;#array[@]&#125;  # 第一种写法</span><br><span class="line">echo $&#123;#array[*]&#125;  # 第二种写法</span><br></pre></td></tr></table></figure>
+
+<h3 id="expr命令"><a href="#expr命令" class="headerlink" title="expr命令"></a>expr命令</h3><p>expr命令用于求表达式的值，格式为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expr 表达式</span><br></pre></td></tr></table></figure>
+
+<h4 id="表达式说明"><a href="#表达式说明" class="headerlink" title="表达式说明"></a>表达式说明</h4><ul>
+<li>用空格隔开每一项</li>
+<li>用反斜杠放在shell特定的字符前面（发现表达式运行错误时，可以试试转义）</li>
+<li>对包含空格和其他特殊字符的字符串要用引号括起来</li>
+<li>expr会在stdout中输出结果。如果为逻辑关系表达式，则结果为真时，stdout输出1，否则输出0。</li>
+<li>expr的exit code：如果为逻辑关系表达式，则结果为真时，exit code为0，否则为1。</li>
+</ul>
+<h4 id="字符串表达式"><a href="#字符串表达式" class="headerlink" title="字符串表达式"></a>字符串表达式</h4><ul>
+<li><p><code>length STRING</code> 返回STRING的长度</p>
+</li>
+<li><p><code>index STRING CHARSET</code> CHARSET中任意单个字符在 STRING 中最前面的字符位置，下标从1开始。如果在 STRING 中完全不存在 CHARSET 中的字符，则返回0。</p>
+</li>
+<li><p><code>substr STRING POSITION LENGTH</code> 返回 STRING 字符串中从 POSITION 开始，长度最大为 LENGTH 的子串。如果 POSITION 或 LENGTH 为负数，0或非数值，则返回空字符串。</p>
+</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">str=&quot;Hello World!&quot;</span><br><span class="line"></span><br><span class="line">echo `expr length &quot;$str&quot;`  # ``不是单引号，表示执行该命令，输出12</span><br><span class="line">echo `expr index &quot;$str&quot; aWd`  # 输出7，下标从1开始</span><br><span class="line">echo `expr substr &quot;$str&quot; 2 3`  # 输出 ell</span><br></pre></td></tr></table></figure>
+
+<h4 id="整数表达式"><a href="#整数表达式" class="headerlink" title="整数表达式"></a>整数表达式</h4><p><code>expr</code> 支持普通的算术操作，算术表达式优先级低于字符串表达式，高于逻辑关系表达式。 </p>
+<ul>
+<li><p><code>+ -</code> 加减运算。两端参数会转换为整数，如果转换失败则报错。</p>
+</li>
+<li><p><code>*</code> <code>/</code> <code>%</code> 乘，除，取模运算。两端参数会转换为整数，如果转换失败则报错。</p>
+</li>
+<li><p><code>()</code> 可以改变优先级，但需要用反斜杠转义</p>
+</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a=3</span><br><span class="line">b=4</span><br><span class="line"></span><br><span class="line">echo `expr $a + $b`  # 输出7</span><br><span class="line">echo `expr $a - $b`  # 输出-1</span><br><span class="line">echo `expr $a \* $b`  # 输出12，*需要转义</span><br><span class="line">echo `expr $a / $b`  # 输出0，整除</span><br><span class="line">echo `expr $a % $b` # 输出3</span><br><span class="line">echo `expr \( $a + 1 \) \* \( $b + 1 \)`  # 输出20，值为(a + 1) * (b + 1)</span><br></pre></td></tr></table></figure>
+
+<h4 id="逻辑关系表达式"><a href="#逻辑关系表达式" class="headerlink" title="逻辑关系表达式"></a>逻辑关系表达式</h4><ul>
+<li><code>|</code> 如果第一个参数非空且非0，则返回第一个参数的值，否则返回第二个参数的值，但要求第二个参数的值也是非空或非0，否则返回0。如果第一个参数是非空或非0时，不会计算第二个参数。</li>
+<li><code>&amp;</code> 如果两个参数都非空且非0，则返回第一个参数，否则返回0。如果第一个参为0或为空，则不会计算第二个参数。</li>
+<li><code>&lt; &lt;= = == != &gt;= &gt;</code> 比较两端的参数，如果为true，则返回1，否则返回0。”&#x3D;&#x3D;”是”&#x3D;”的同义词。”expr”首先尝试将两端参数转换为整数，并做算术比较，如果转换失败，则按字符集排序规则做字符比较。</li>
+<li><code>()</code> 可以改变优先级，但需要用反斜杠转义</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">a=3</span><br><span class="line">b=4</span><br><span class="line"></span><br><span class="line">echo `expr $a \&gt; $b`  # 输出0，&gt;需要转义</span><br><span class="line">echo `expr $a &#x27;&lt;&#x27; $b`  # 输出1，也可以将特殊字符用引号引起来</span><br><span class="line">echo `expr $a &#x27;&gt;=&#x27; $b`  # 输出0</span><br><span class="line">echo `expr $a \&lt;\= $b`  # 输出1</span><br><span class="line"></span><br><span class="line">c=0</span><br><span class="line">d=5</span><br><span class="line"></span><br><span class="line">echo `expr $c \&amp; $d`  # 输出0</span><br><span class="line">echo `expr $a \&amp; $b`  # 输出3</span><br><span class="line">echo `expr $c \| $d`  # 输出5</span><br><span class="line">echo `expr $a \| $b`  # 输出3</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="read命令"><a href="#read命令" class="headerlink" title="read命令"></a>read命令</h3><p><code>read</code> 命令用于从标准输入中读取单行数据。当读到文件结束符时，exit code为1，否则为0。</p>
+<p>参数说明</p>
+<ul>
+<li><code>-p</code> ：后面可以接提示信息</li>
+<li><code>-t</code> ：后面跟秒数，定义输入字符的等待时间，超过等待时间后会自动忽略此命令</li>
+</ul>
+<p>实例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">read</span> name  <span class="comment"># 读入name的值</span></span></span><br><span class="line">acwing yxc  # 标准输入</span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="variable">$name</span>  <span class="comment"># 输出name的值</span></span></span><br><span class="line">acwing yxc  #标准输出</span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">read</span> -p <span class="string">&quot;Please input your name: &quot;</span> -t 30 name  <span class="comment"># 读入name的值，等待时间30秒</span></span></span><br><span class="line">Please input your name: acwing yxc  # 标准输入</span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="variable">$name</span>  <span class="comment"># 输出name的值</span></span></span><br><span class="line">acwing yxc  # 标准输出</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="echo命令"><a href="#echo命令" class="headerlink" title="echo命令"></a>echo命令</h3><p><code>echo</code> 用于输出字符串。命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo STRING</span><br></pre></td></tr></table></figure>
+
+<h4 id="显示普通字符串"><a href="#显示普通字符串" class="headerlink" title="显示普通字符串"></a>显示普通字符串</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;Hello AC Terminal&quot;</span><br><span class="line">echo Hello AC Terminal  # 引号可以省略</span><br></pre></td></tr></table></figure>
+
+<h4 id="显示转义字符"><a href="#显示转义字符" class="headerlink" title="显示转义字符"></a>显示转义字符</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;Hello AC Terminal&quot;</span><br><span class="line">echo Hello AC Terminal  # 引号可以省略</span><br></pre></td></tr></table></figure>
+
+<h4 id="显示转义字符-1"><a href="#显示转义字符-1" class="headerlink" title="显示转义字符"></a>显示转义字符</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;\&quot;Hello AC Terminal\&quot;&quot;  # 注意只能使用双引号，如果使用单引号，则不转义</span><br><span class="line">echo \&quot;Hello AC Terminal\&quot;  # 也可以省略双引号</span><br></pre></td></tr></table></figure>
+
+<h4 id="显示变量"><a href="#显示变量" class="headerlink" title="显示变量"></a>显示变量</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name=yxc</span><br><span class="line">echo &quot;My name is $name&quot;  # 输出 My name is yxc</span><br></pre></td></tr></table></figure>
+
+<h4 id="显示换行"><a href="#显示换行" class="headerlink" title="显示换行"></a>显示换行</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo -e &quot;Hi\n&quot;  # -e 开启转义</span><br><span class="line">echo &quot;acwing&quot;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Hi</span><br><span class="line"></span><br><span class="line">acwing</span><br></pre></td></tr></table></figure>
+
+<h4 id="显示不换行"><a href="#显示不换行" class="headerlink" title="显示不换行"></a>显示不换行</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo -e &quot;Hi \c&quot; # -e 开启转义 \c 不换行</span><br><span class="line">echo &quot;acwing&quot;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hi acwing</span><br></pre></td></tr></table></figure>
+
+<h4 id="显示结果定向至文件"><a href="#显示结果定向至文件" class="headerlink" title="显示结果定向至文件"></a>显示结果定向至文件</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;Hello World&quot; &gt; output.txt  # 将内容以覆盖的方式输出到output.txt中</span><br></pre></td></tr></table></figure>
+
+<h4 id="原样输出字符串，不进行转义或取变量-用单引号"><a href="#原样输出字符串，不进行转义或取变量-用单引号" class="headerlink" title="原样输出字符串，不进行转义或取变量(用单引号)"></a>原样输出字符串，不进行转义或取变量(用单引号)</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name=acwing</span><br><span class="line">echo &#x27;$name\&quot;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">name\&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="显示命令的执行结果"><a href="#显示命令的执行结果" class="headerlink" title="显示命令的执行结果"></a>显示命令的执行结果</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo `date`</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Wed Sep 1 11:45:33 CST 2021</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="printf命令"><a href="#printf命令" class="headerlink" title="printf命令"></a>printf命令</h3><p><code>printf</code> 命令用于格式化输出，类似于C&#x2F;C++中的printf函数。</p>
+<p>默认不会在字符串末尾添加换行符。</p>
+<p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf format-string [arguments...]</span><br></pre></td></tr></table></figure>
+
+<h4 id="用法示例"><a href="#用法示例" class="headerlink" title="用法示例"></a>用法示例</h4><p>脚本内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">printf &quot;%10d.\n&quot; 123  # 占10位，右对齐</span><br><span class="line">printf &quot;%-10.2f.\n&quot; 123.123321  # 占10位，保留2位小数，左对齐</span><br><span class="line">printf &quot;My name is %s\n&quot; &quot;yxc&quot;  # 格式化输出字符串</span><br><span class="line">printf &quot;%d * %d = %d\n&quot;  2 3 `expr 2 \* 3` # 表达式的值作为参数</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">       123.</span><br><span class="line">123.12    .</span><br><span class="line">My name is yxc</span><br><span class="line">2 * 3 = 6</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="test命令与判断符号"><a href="#test命令与判断符号" class="headerlink" title="test命令与判断符号[]"></a>test命令与判断符号[]</h3><h4 id="逻辑运算符-和"><a href="#逻辑运算符-和" class="headerlink" title="逻辑运算符&amp;&amp;和||"></a>逻辑运算符&amp;&amp;和||</h4><ul>
+<li>&amp;&amp; 表示与，|| 表示或</li>
+<li>二者具有短路原则：</li>
+</ul>
+<p>​		expr1 &amp;&amp; expr2：当expr1为假时，直接忽略expr2<br>​		expr1 || expr2：当expr1为真时，直接忽略expr2</p>
+<ul>
+<li>表达式的exit code为0，表示真；为非零，表示假。（与C&#x2F;C++中的定义相反）</li>
+</ul>
+<h4 id="test命令"><a href="#test命令" class="headerlink" title="test命令"></a>test命令</h4><p>在命令行中输入man test，可以查看test命令的用法。</p>
+<p>test命令用于判断文件类型，以及对变量做比较。</p>
+<p>test命令用exit code返回结果，而不是使用stdout。0表示真，非0表示假。</p>
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test 2 -lt 3  # 为真，返回值为0</span><br><span class="line">echo $?  # 输出上个命令的返回值，输出0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">ls</span>  <span class="comment"># 列出当前目录下的所有文件</span></span></span><br><span class="line">homework  output.txt  test.sh  tmp</span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">test</span> -e test.sh &amp;&amp; <span class="built_in">echo</span> <span class="string">&quot;exist&quot;</span> || <span class="built_in">echo</span> <span class="string">&quot;Not exist&quot;</span></span></span><br><span class="line">exist  # test.sh 文件存在</span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">test</span> -e test2.sh &amp;&amp; <span class="built_in">echo</span> <span class="string">&quot;exist&quot;</span> || <span class="built_in">echo</span> <span class="string">&quot;Not exist&quot;</span></span></span><br><span class="line">Not exist  # testh2.sh 文件不存在</span><br></pre></td></tr></table></figure>
+
+<h4 id="文件类型判断"><a href="#文件类型判断" class="headerlink" title="文件类型判断"></a>文件类型判断</h4><p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">test -e filename  # 判断文件是否存在</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">测试参数</th>
+<th align="center">代表意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-e</td>
+<td align="center">文件是否存在</td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">是否为文件</td>
+</tr>
+<tr>
+<td align="center">-d</td>
+<td align="center">是否为目录</td>
+</tr>
+</tbody></table>
+<h4 id="文件权限判断"><a href="#文件权限判断" class="headerlink" title="文件权限判断"></a>文件权限判断</h4><p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">test -r filename  # 判断文件是否可读</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">测试参数</th>
+<th align="center">代表意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-eq</td>
+<td align="center">a是否等于b</td>
+</tr>
+<tr>
+<td align="center">-ne</td>
+<td align="center">a是否不等于b</td>
+</tr>
+<tr>
+<td align="center">-gt</td>
+<td align="center">a是否大于b</td>
+</tr>
+<tr>
+<td align="center">-lt</td>
+<td align="center">a是否小于b</td>
+</tr>
+<tr>
+<td align="center">-ge</td>
+<td align="center">a是否大于等于b</td>
+</tr>
+<tr>
+<td align="center">-le</td>
+<td align="center">a是否小于等于b</td>
+</tr>
+</tbody></table>
+<h4 id="字符串比较"><a href="#字符串比较" class="headerlink" title="字符串比较"></a>字符串比较</h4><table>
+<thead>
+<tr>
+<th align="center">测试参数</th>
+<th align="center">代表意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">test -z STRING</td>
+<td align="center">判断STRING是否为空，如果为空，则返回true</td>
+</tr>
+<tr>
+<td align="center">test -n STRING</td>
+<td align="center">判断STRING是否非空，如果非空，则返回true（-n可以省略）</td>
+</tr>
+<tr>
+<td align="center">test str1 &#x3D;&#x3D; str2</td>
+<td align="center">判断str1是否等于str2</td>
+</tr>
+<tr>
+<td align="center">test str1 !&#x3D; str2</td>
+<td align="center">判断str1是否不等于str2</td>
+</tr>
+</tbody></table>
+<h4 id="多重条件判定"><a href="#多重条件判定" class="headerlink" title="多重条件判定"></a>多重条件判定</h4><p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">test -r filename -a -x filename</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">测试参数</th>
+<th align="center">代表意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-a</td>
+<td align="center">两条件是否同时成立</td>
+</tr>
+<tr>
+<td align="center">-o</td>
+<td align="center">两条件是否至少一个成立</td>
+</tr>
+<tr>
+<td align="center">!</td>
+<td align="center">取反。如 test ! -x file，当file不可执行时，返回true</td>
+</tr>
+</tbody></table>
+<h4 id="判断符号"><a href="#判断符号" class="headerlink" title="判断符号[]"></a>判断符号[]</h4><p>[]与test用法几乎一模一样，更常用于if语句中。另外[[]]是[]的加强版，支持的特性更多。</p>
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ 2 -lt 3 ]  # 为真，返回值为0</span><br><span class="line">echo $?  # 输出上个命令的返回值，输出0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">ls</span>  <span class="comment"># 列出当前目录下的所有文件</span></span></span><br><span class="line">homework  output.txt  test.sh  tmp</span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash">[ -e test.sh ] &amp;&amp; <span class="built_in">echo</span> <span class="string">&quot;exist&quot;</span> || <span class="built_in">echo</span> <span class="string">&quot;Not exist&quot;</span></span></span><br><span class="line">exist  # test.sh 文件存在</span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash">[ -e test2.sh ] &amp;&amp; <span class="built_in">echo</span> <span class="string">&quot;exist&quot;</span> || <span class="built_in">echo</span> <span class="string">&quot;Not exist&quot;</span></span></span><br><span class="line">Not exist  # testh2.sh 文件不存在</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<ul>
+<li>[]内的每一项都要用空格隔开</li>
+<li>中括号内的变量，最好用双引号括起来</li>
+<li>中括号内的常数，最好用单或双引号括起来</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name=&quot;acwing yxc&quot;</span><br><span class="line">[ $name == &quot;acwing yxc&quot; ]  # 错误，等价于 [ acwing yxc == &quot;acwing yxc&quot; ]，参数太多</span><br><span class="line">[ &quot;$name&quot; == &quot;acwing yxc&quot; ]  # 正确</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="判断语句"><a href="#判断语句" class="headerlink" title="判断语句"></a>判断语句</h3><h4 id="if…then形式"><a href="#if…then形式" class="headerlink" title="if…then形式"></a>if…then形式</h4><p>类似于C&#x2F;C++中的if-else语句。</p>
+<h4 id="单层if"><a href="#单层if" class="headerlink" title="单层if"></a>单层if</h4><p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if condition</span><br><span class="line">then</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">    ...</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a=3</span><br><span class="line">b=4</span><br><span class="line"></span><br><span class="line">if [ &quot;$a&quot; -lt &quot;$b&quot; ] &amp;&amp; [ &quot;$a&quot; -gt 2 ]</span><br><span class="line">then</span><br><span class="line">    echo $&#123;a&#125;在范围内</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3在范围内</span><br></pre></td></tr></table></figure>
+
+<h4 id="单层if-else"><a href="#单层if-else" class="headerlink" title="单层if-else"></a>单层if-else</h4><p>命令格式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">if condition</span><br><span class="line">then</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">    ...</span><br><span class="line">else</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">    ...</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a=3</span><br><span class="line">b=4</span><br><span class="line"></span><br><span class="line">if ! [ &quot;$a&quot; -lt &quot;$b&quot; ]</span><br><span class="line">then</span><br><span class="line">    echo $&#123;a&#125;不小于$&#123;b&#125;</span><br><span class="line">else</span><br><span class="line">    echo $&#123;a&#125;小于$&#123;b&#125;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3小于4</span><br></pre></td></tr></table></figure>
+
+<h4 id="多层if-elif-elif-else"><a href="#多层if-elif-elif-else" class="headerlink" title="多层if-elif-elif-else"></a>多层if-elif-elif-else</h4><p>命令格式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">if condition</span><br><span class="line">then</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">    ...</span><br><span class="line">elif condition</span><br><span class="line">then</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">    ...</span><br><span class="line">elif condition</span><br><span class="line">then</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">else</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">    ...</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">a=4</span><br><span class="line"></span><br><span class="line">if [ $a -eq 1 ]</span><br><span class="line">then</span><br><span class="line">    echo $&#123;a&#125;等于1</span><br><span class="line">elif [ $a -eq 2 ]</span><br><span class="line">then</span><br><span class="line">    echo $&#123;a&#125;等于2</span><br><span class="line">elif [ $a -eq 3 ]</span><br><span class="line">then</span><br><span class="line">    echo $&#123;a&#125;等于3</span><br><span class="line">else</span><br><span class="line">    echo 其他</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">其他</span><br></pre></td></tr></table></figure>
+
+<h4 id="case…esac形式"><a href="#case…esac形式" class="headerlink" title="case…esac形式"></a>case…esac形式</h4><p>类似于C&#x2F;C++中的switch语句。</p>
+<p>命令格式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">case $变量名称 in</span><br><span class="line">    值1)</span><br><span class="line">        语句1</span><br><span class="line">        语句2</span><br><span class="line">        ...</span><br><span class="line">        ;;  # 类似于C/C++中的break</span><br><span class="line">    值2)</span><br><span class="line">        语句1</span><br><span class="line">        语句2</span><br><span class="line">        ...</span><br><span class="line">        ;;</span><br><span class="line">    *)  # 类似于C/C++中的default</span><br><span class="line">        语句1</span><br><span class="line">        语句2</span><br><span class="line">        ...</span><br><span class="line">        ;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">a=4</span><br><span class="line"></span><br><span class="line">case $a in</span><br><span class="line">    1)</span><br><span class="line">        echo $&#123;a&#125;等于1</span><br><span class="line">        ;;  </span><br><span class="line">    2)</span><br><span class="line">        echo $&#123;a&#125;等于2</span><br><span class="line">        ;;  </span><br><span class="line">    3)                                                </span><br><span class="line">        echo $&#123;a&#125;等于3</span><br><span class="line">        ;;  </span><br><span class="line">    *)</span><br><span class="line">        echo 其他</span><br><span class="line">        ;;  </span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">其他</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h3><h4 id="for…in…do…done"><a href="#for…in…do…done" class="headerlink" title="for…in…do…done"></a>for…in…do…done</h4><p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for var in val1 val2 val3</span><br><span class="line">do</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">    ...</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>示例1，输出a 2 cc，每个元素一行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for i in a 2 cc</span><br><span class="line">do</span><br><span class="line">    echo $i</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>示例2，输出当前路径下的所有文件名，每个文件名一行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for file in `ls`</span><br><span class="line">do</span><br><span class="line">    echo $file</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>示例3，输出1-10</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for i in $(seq 1 10)</span><br><span class="line">do</span><br><span class="line">    echo $i</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>示例4，使用{1..10} 或者 {a..z}</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;a..z&#125;</span><br><span class="line">do</span><br><span class="line">    echo $i</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h4 id="for-…-…-…-do…done"><a href="#for-…-…-…-do…done" class="headerlink" title="for ((…;…;…)) do…done"></a>for ((…;…;…)) do…done</h4><p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for ((expression; condition; expression))</span><br><span class="line">do</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>示例，输出1-10，每个数占一行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for ((i=1; i&lt;=10; i++))</span><br><span class="line">do</span><br><span class="line">    echo $i</span><br><span class="line">done0</span><br></pre></td></tr></table></figure>
+
+<h4 id="while…do…done循环"><a href="#while…do…done循环" class="headerlink" title="while…do…done循环"></a>while…do…done循环</h4><p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">while condition</span><br><span class="line">do</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">    ...</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>示例，文件结束符为Ctrl+d，输入文件结束符后read指令返回false。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">while read name</span><br><span class="line">do</span><br><span class="line">    echo $name</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h4 id="until…do…done循环"><a href="#until…do…done循环" class="headerlink" title="until…do…done循环"></a>until…do…done循环</h4><p>当条件为真时结束。</p>
+<p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">until condition</span><br><span class="line">do</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">    ...</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>示例，当用户输入yes或者YES时结束，否则一直等待读入。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">until [ &quot;$&#123;word&#125;&quot; == &quot;yes&quot; ] || [ &quot;$&#123;word&#125;&quot; == &quot;YES&quot; ]</span><br><span class="line">do</span><br><span class="line">    read -p &quot;Please input yes/YES to stop this program: &quot; word</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h4 id="break命令"><a href="#break命令" class="headerlink" title="break命令"></a>break命令</h4><p>跳出当前一层循环，注意与C&#x2F;C++不同的是：break不能跳出case语句。</p>
+<p>示例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">while read name</span><br><span class="line">do</span><br><span class="line">    for ((i=1;i&lt;=10;i++))</span><br><span class="line">    do</span><br><span class="line">        case $i in</span><br><span class="line">            8)</span><br><span class="line">                break</span><br><span class="line">                ;;</span><br><span class="line">            *)</span><br><span class="line">                echo $i</span><br><span class="line">                ;;</span><br><span class="line">        esac</span><br><span class="line">    done</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>该示例每读入非EOF的字符串，会输出一遍1-7。<br>该程序可以输入Ctrl+d文件结束符来结束，也可以直接用Ctrl+c杀掉该进程。</p>
+<h4 id="continue命令"><a href="#continue命令" class="headerlink" title="continue命令"></a>continue命令</h4><p>跳出当前循环。</p>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for ((i=1;i&lt;=10;i++))</span><br><span class="line">do</span><br><span class="line">    if [ `expr $i % 2` -eq 0 ]</span><br><span class="line">    then</span><br><span class="line">        continue</span><br><span class="line">    fi</span><br><span class="line">    echo $i</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>该程序输出1-10中的所有奇数。</p>
+<h4 id="死循环的处理方式"><a href="#死循环的处理方式" class="headerlink" title="死循环的处理方式"></a>死循环的处理方式</h4><p>如果AC Terminal可以打开该程序，则输入Ctrl+c即可。</p>
+<p>否则可以直接关闭进程：</p>
+<ol>
+<li>使用top命令找到进程的PID</li>
+<li>输入kill -9 PID即可关掉此进程</li>
+</ol>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>bash中的函数类似于C&#x2F;C++中的函数，但return的返回值与C&#x2F;C++不同，返回的是exit code，取值为0-255，0表示正常结束。</p>
+<p>如果想获取函数的输出结果，可以通过echo输出到stdout中，然后通过$(function_name)来获取stdout中的结果。</p>
+<p>函数的return值可以通过$?来获取。</p>
+<p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[function] func_name() &#123;  # function关键字可以省略</span><br><span class="line">    语句1</span><br><span class="line">    语句2</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="不获取-return值和stdout值"><a href="#不获取-return值和stdout值" class="headerlink" title="不获取 return值和stdout值"></a>不获取 return值和stdout值</h4><p>示例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func() &#123;</span><br><span class="line">    name=yxc</span><br><span class="line">    echo &quot;Hello $name&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello yxc</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取-return值和stdout值"><a href="#获取-return值和stdout值" class="headerlink" title="获取 return值和stdout值"></a>获取 return值和stdout值</h4><p>不写return时，默认return 0。</p>
+<p>示例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func() &#123;</span><br><span class="line">    name=yxc</span><br><span class="line">    echo &quot;Hello $name&quot;</span><br><span class="line"></span><br><span class="line">    return 123</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output=$(func)</span><br><span class="line">ret=$?</span><br><span class="line"></span><br><span class="line">echo &quot;output = $output&quot;</span><br><span class="line">echo &quot;return = $ret&quot;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output = Hello yxc</span><br><span class="line">return = 123</span><br></pre></td></tr></table></figure>
+
+<h4 id="函数的输入参数"><a href="#函数的输入参数" class="headerlink" title="函数的输入参数"></a>函数的输入参数</h4><p>在函数内，$1表示第一个输入参数，$2表示第二个输入参数，依此类推。</p>
+<p>注意：函数内的$0仍然是文件名，而不是函数名。</p>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">func() &#123;  # 递归计算 $1 + ($1 - 1) + ($1 - 2) + ... + 0</span><br><span class="line">    word=&quot;&quot;</span><br><span class="line">    while [ &quot;$&#123;word&#125;&quot; != &#x27;y&#x27; ] &amp;&amp; [ &quot;$&#123;word&#125;&quot; != &#x27;n&#x27; ]</span><br><span class="line">    do</span><br><span class="line">        read -p &quot;要进入func($1)函数吗？请输入y/n：&quot; word</span><br><span class="line">    done</span><br><span class="line"></span><br><span class="line">    if [ &quot;$word&quot; == &#x27;n&#x27; ]</span><br><span class="line">    then</span><br><span class="line">        echo 0</span><br><span class="line">        return 0</span><br><span class="line">    fi  </span><br><span class="line"></span><br><span class="line">    if [ $1 -le 0 ] </span><br><span class="line">    then</span><br><span class="line">        echo 0</span><br><span class="line">        return 0</span><br><span class="line">    fi  </span><br><span class="line"></span><br><span class="line">    sum=$(func $(expr $1 - 1))</span><br><span class="line">    echo $(expr $sum + $1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo $(func 10)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">55</span><br></pre></td></tr></table></figure>
+
+<h4 id="函数内的局部变量"><a href="#函数内的局部变量" class="headerlink" title="函数内的局部变量"></a>函数内的局部变量</h4><p>可以在函数内定义局部变量，作用范围仅在当前函数内。</p>
+<p>可以在递归函数中定义局部变量。</p>
+<p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">local 变量名=变量值</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">! /bin/bash</span></span><br><span class="line"></span><br><span class="line">func() &#123;</span><br><span class="line">    local name=yxc</span><br><span class="line">    echo $name</span><br><span class="line">&#125;</span><br><span class="line">func</span><br><span class="line"></span><br><span class="line">echo $name</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yxc</span><br></pre></td></tr></table></figure>
+
+<p>第一行为函数内的name变量，第二行为函数外调用name变量，会发现此时该变量不存在。</p>
+<h3 id="exit命令"><a href="#exit命令" class="headerlink" title="exit命令"></a>exit命令</h3><p>exit命令用来退出当前shell进程，并返回一个退出状态；使用$?可以接收这个退出状态。</p>
+<p>exit命令可以接受一个整数值作为参数，代表退出状态。如果不指定，默认状态值是 0。</p>
+<p>exit退出状态只能是一个介于 0~255 之间的整数，其中只有 0 表示成功，其它值都表示失败。</p>
+<p>示例：</p>
+<p>创建脚本test.sh，内容如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">! /bin/bash</span></span><br><span class="line"></span><br><span class="line">if [ $# -ne 1 ]  # 如果传入参数个数等于1，则正常退出；否则非正常退出。</span><br><span class="line">then</span><br><span class="line">    echo &quot;arguments not valid&quot;</span><br><span class="line">    exit 1</span><br><span class="line">else</span><br><span class="line">    echo &quot;arguments valid&quot;</span><br><span class="line">    exit 0</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<p>执行该脚本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">chmod</span> +x test.sh</span> </span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash">./test.sh acwing</span></span><br><span class="line">arguments valid</span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">echo</span> $?  <span class="comment"># 传入一个参数，则正常退出，exit code为0</span></span></span><br><span class="line">0</span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash">./test.sh</span> </span><br><span class="line">arguments not valid</span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">echo</span> $?  <span class="comment"># 传入参数个数不是1，则非正常退出，exit code为1</span></span></span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="文件重定向"><a href="#文件重定向" class="headerlink" title="文件重定向"></a>文件重定向</h3><p>每个进程默认打开3个文件描述符：</p>
+<ul>
+<li><code>stdin</code> 标准输入，从命令行读取数据，文件描述符为0</li>
+<li><code>stdout</code> 标准输出，向命令行输出数据，文件描述符为1</li>
+<li><code>stderr</code> 标准错误输出，向命令行输出数据，文件描述符为2</li>
+</ul>
+<p>可以用文件重定向将这三个文件重定向到其他文件中。</p>
+<h4 id="重定向命令列表"><a href="#重定向命令列表" class="headerlink" title="重定向命令列表"></a>重定向命令列表</h4><table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">command &gt; file</td>
+<td align="center">将stdout重定向到file中</td>
+</tr>
+<tr>
+<td align="center">command &lt; file</td>
+<td align="center">将stdin重定向到file中</td>
+</tr>
+<tr>
+<td align="center">command &gt;&gt; file</td>
+<td align="center">将stdout以追加方式重定向到file中</td>
+</tr>
+<tr>
+<td align="center">command n&gt; file</td>
+<td align="center">将文件描述符n重定向到file中</td>
+</tr>
+<tr>
+<td align="center">command n&gt;&gt; file</td>
+<td align="center">将文件描述符n以追加方式重定向到file中</td>
+</tr>
+</tbody></table>
+<h4 id="输入和输出重定向"><a href="#输入和输出重定向" class="headerlink" title="输入和输出重定向"></a>输入和输出重定向</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">echo -e &quot;Hello \c&quot; &gt; output.txt  # 将stdout重定向到output.txt中</span><br><span class="line">echo &quot;World&quot; &gt;&gt; output.txt  # 将字符串追加到output.txt中</span><br><span class="line"></span><br><span class="line">read str &lt; output.txt  # 从output.txt中读取字符串</span><br><span class="line"></span><br><span class="line">echo $str  # 输出结果：Hello World</span><br></pre></td></tr></table></figure>
+
+<h4 id="同时重定向stdin和stdout"><a href="#同时重定向stdin和stdout" class="headerlink" title="同时重定向stdin和stdout"></a>同时重定向stdin和stdout</h4><p>创建bash脚本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">! /bin/bash</span></span><br><span class="line"></span><br><span class="line">read a</span><br><span class="line">read b</span><br><span class="line"></span><br><span class="line">echo $(expr &quot;$a&quot; + &quot;$b&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>创建input.txt，里面的内容为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+
+<p>执行命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">chmod</span> +x test.sh  <span class="comment"># 添加可执行权限</span></span></span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash">./test.sh &lt; input.txt &gt; output.txt  <span class="comment"># 从input.txt中读取内容，将输出写入output.txt中</span></span></span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">cat</span> output.txt  <span class="comment"># 查看output.txt中的内容</span></span></span><br><span class="line">7</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="引入外部脚本"><a href="#引入外部脚本" class="headerlink" title="引入外部脚本"></a>引入外部脚本</h3><p>类似于C&#x2F;C++中的include操作，bash也可以引入其他文件中的代码。</p>
+<p>语法格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">. filename  # 注意点和文件名之间有一个空格</span><br><span class="line"></span><br><span class="line">或</span><br><span class="line"></span><br><span class="line">source filename</span><br></pre></td></tr></table></figure>
+
+<p>示例</p>
+<p>创建test1.sh，内容为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">! /bin/bash</span></span><br><span class="line"></span><br><span class="line">name=yxc  # 定义变量name</span><br></pre></td></tr></table></figure>
+
+<p>然后创建test2.sh，内容为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">! /bin/bash</span></span><br><span class="line"></span><br><span class="line">source test1.sh # 或 . test1.sh</span><br><span class="line"></span><br><span class="line">echo My name is: $name  # 可以使用test1.sh中的变量</span><br></pre></td></tr></table></figure>
+
+<p>执行命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash"><span class="built_in">chmod</span> +x test2.sh</span> </span><br><span class="line"><span class="meta prompt_">~$ </span><span class="language-bash">./test2.sh</span> </span><br><span class="line">My name is: yxc</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h2><h3 id="ssh登录"><a href="#ssh登录" class="headerlink" title="ssh登录"></a>ssh登录</h3><p>安装ssh：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install ssh</span><br></pre></td></tr></table></figure>
+
+<p>启动 ssh：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service sshd start</span><br></pre></td></tr></table></figure>
+
+<p>查看ssh服务状态：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service sshd status</span><br></pre></td></tr></table></figure>
+
+<p>安装ssh服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install sshd</span><br></pre></td></tr></table></figure>
+
+<p>开启ssh服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service sshd </span><br></pre></td></tr></table></figure>
+
+<p>检验服务是否启动成功：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh localhost</span><br></pre></td></tr></table></figure>
+
+<p>远程登录服务器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh user@hostname</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>user</code> ：用户名</li>
+<li><code>hostname</code> ：IP地址或域名</li>
+</ul>
+<p>第一次登录时会提示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">The authenticity of host &#x27;123.57.47.211 (123.57.47.211)&#x27; can&#x27;t be established.</span><br><span class="line">ECDSA key fingerprint is SHA256:iy237yysfCe013/l+kpDGfEG9xxHxm0dnxnAbJTPpG8.</span><br><span class="line">Are you sure you want to continue connecting (yes/no/[fingerprint])?</span><br></pre></td></tr></table></figure>
+
+<p>输入yes，然后回车即可。</p>
+<p>这样会将该服务器的信息记录在 ~&#x2F;.ssh&#x2F;known_hosts 文件中。</p>
+<p>然后输入密码即可登录到远程服务器中。</p>
+<hr>
+<p>默认登录端口号为22。如果想登录某一特定端口：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh user@hostname -p 22</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p>创建文件 ~&#x2F;.ssh&#x2F;config</p>
+<p>然后在文件中输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Host myserver1</span><br><span class="line">    HostName IP地址或域名</span><br><span class="line">    User 用户名</span><br><span class="line"></span><br><span class="line">Host myserver2</span><br><span class="line">    HostName IP地址或域名</span><br><span class="line">    User 用户名</span><br></pre></td></tr></table></figure>
+
+<p>之后再使用服务器时，可以直接使用别名myserver1、myserver2。</p>
+<h4 id="密钥登录"><a href="#密钥登录" class="headerlink" title="密钥登录"></a>密钥登录</h4><p>创建密钥：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure>
+
+<p>然后一直回车即可。</p>
+<p>执行结束后，~&#x2F;.ssh&#x2F;目录下会多两个文件：</p>
+<ul>
+<li><code>id_rsa</code> ：私钥</li>
+<li><code>id_rsa.pub</code> ：公钥</li>
+</ul>
+<p>之后想免密码登录哪个服务器，就将公钥传给哪个服务器即可。</p>
+<p>例如，想免密登录myserver服务器。则将公钥中的内容，复制到myserver中的~&#x2F;.ssh&#x2F;authorized_keys文件里即可。</p>
+<p>也可以使用如下命令一键添加公钥：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id myserver</span><br></pre></td></tr></table></figure>
+
+<h4 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h4><p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh user@hostname command</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh user@hostname ls -a</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">单引号中的<span class="variable">$i</span>可以求值</span></span><br><span class="line">ssh myserver &#x27;for ((i = 0; i &lt; 10; i ++ )) do echo $i; done&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">双引号中的<span class="variable">$i</span>不可以求值</span></span><br><span class="line">ssh myserver &quot;for ((i = 0; i &lt; 10; i ++ )) do echo $i; done&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="scp传文件"><a href="#scp传文件" class="headerlink" title="scp传文件"></a>scp传文件</h3><p>基本用法</p>
+<p>命令格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp source destination</span><br></pre></td></tr></table></figure>
+
+<p>将source路径下的文件复制到destination中</p>
+<p>一次复制多个文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp source1 source2 destination</span><br></pre></td></tr></table></figure>
+
+<p>复制文件夹：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r ~/tmp myserver:/home/acs/</span><br></pre></td></tr></table></figure>
+
+<p>将本地家目录中的tmp文件夹复制到myserver服务器中的&#x2F;home&#x2F;acs&#x2F;目录下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r ~/tmp myserver:homework/</span><br></pre></td></tr></table></figure>
+
+<p>将本地家目录中的tmp文件夹复制到myserver服务器中的~&#x2F;homework&#x2F;目录下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r myserver:homework .</span><br></pre></td></tr></table></figure>
+
+<p>将myserver服务器中的~&#x2F;homework&#x2F;文件夹复制到本地的当前路径下。</p>
+<hr>
+<p>指定服务器的端口号：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -P 22 source1 source2 destination</span><br></pre></td></tr></table></figure>
+
+<p>注意： scp的-r -P等参数尽量加在source和destination之前。</p>
+<h4 id="使用scp配置其他服务器的vim和tmux"><a href="#使用scp配置其他服务器的vim和tmux" class="headerlink" title="使用scp配置其他服务器的vim和tmux"></a>使用scp配置其他服务器的vim和tmux</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp ~/.vimrc ~/.tmux.conf myserver:</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="thrift"><a href="#thrift" class="headerlink" title="thrift"></a>thrift</h2><h2 id="管道、环境变量与常用命令"><a href="#管道、环境变量与常用命令" class="headerlink" title="管道、环境变量与常用命令"></a>管道、环境变量与常用命令</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>管道类似于文件重定向，可以将前一个命令的stdout重定向到下一个命令的stdin。</p>
+<h3 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h3><ul>
+<li>管道命令仅处理stdout，会忽略stderr。</li>
+<li>管道右边的命令必须能接受stdin。</li>
+<li>多个管道命令可以串联。</li>
+</ul>
+<h3 id="与文件重定向的区别"><a href="#与文件重定向的区别" class="headerlink" title="与文件重定向的区别"></a>与文件重定向的区别</h3><ul>
+<li>文件重定向左边为命令，右边为文件。</li>
+<li>管道左右两边均为命令，左边有stdout，右边有stdin。</li>
+</ul>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>统计当前目录下所有python文件的总行数，其中find、xargs、wc等命令可以参考常用命令这一节内容。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -name &#x27;*.py&#x27; | xargs cat | wc -l</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="租云服务器及配环境"><a href="#租云服务器及配环境" class="headerlink" title="租云服务器及配环境"></a>租云服务器及配环境</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><h4 id="云平台的作用"><a href="#云平台的作用" class="headerlink" title="云平台的作用:"></a>云平台的作用:</h4><ul>
+<li>存放我们的docker容器，让计算跑在云端。</li>
+<li>获得公网IP地址，让每个人可以访问到我们的服务。</li>
+</ul>
+<h4 id="任选一个云平台即可，推荐配置："><a href="#任选一个云平台即可，推荐配置：" class="headerlink" title="任选一个云平台即可，推荐配置："></a>任选一个云平台即可，推荐配置：</h4><ul>
+<li>1核 2GB（后期可以动态扩容，前期配置低一些没关系）</li>
+<li>网络带宽采用按量付费，最大带宽拉满即可（费用取决于用量，与最大带宽无关）</li>
+<li>系统版本：ubuntu 20.04 LTS（推荐用统一版本，避免后期出现配置不兼容的问题）</li>
+</ul>
+<h3 id="租云服务器及安装docker"><a href="#租云服务器及安装docker" class="headerlink" title="租云服务器及安装docker"></a>租云服务器及安装docker</h3><h4 id="阿里腾讯华为云"><a href="#阿里腾讯华为云" class="headerlink" title="阿里腾讯华为云"></a>阿里腾讯华为云</h4><h5 id="创建工作用户acs并赋予sudo权限"><a href="#创建工作用户acs并赋予sudo权限" class="headerlink" title="创建工作用户acs并赋予sudo权限"></a>创建工作用户acs并赋予sudo权限</h5><p>登录到新服务器。打开AC Terminal，然后：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@xxx.xxx.xxx.xxx  # xxx.xxx.xxx.xxx替换成新服务器的公网IP</span><br></pre></td></tr></table></figure>
+
+<p>创建acs用户：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adduser acs  # 创建用户acs</span><br><span class="line">usermod -aG sudo acs  # 给用户acs分配sudo权限（sudo）</span><br></pre></td></tr></table></figure>
+
+<h5 id="配置免密登录方式"><a href="#配置免密登录方式" class="headerlink" title="配置免密登录方式"></a>配置免密登录方式</h5><p>退回AC Terminal，然后配置acs用户的别名和免密登录。</p>
+<h5 id="配置新服务器的工作环境"><a href="#配置新服务器的工作环境" class="headerlink" title="配置新服务器的工作环境"></a>配置新服务器的工作环境</h5><p>将AC Terminal的配置传到新服务器上：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp .bashrc .vimrc .tmux.conf server_name:  # server_name需要换成自己配置的别名</span><br></pre></td></tr></table></figure>
+
+<h5 id="安装tmux和docker"><a href="#安装tmux和docker" class="headerlink" title="安装tmux和docker"></a>安装tmux和docker</h5><p>登录自己的服务器，然后安装tmux：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install tmux</span><br></pre></td></tr></table></figure>
+
+<p>打开tmux。（养成好习惯，所有工作都在tmux里进行，防止意外关闭终端后，工作进度丢失）</p>
+<p>然后在tmux中根据docker安装教程安装docker即可。</p>
+<h3 id="docker教程"><a href="#docker教程" class="headerlink" title="docker教程"></a>docker教程</h3><h4 id="将当前用户添加到docker用户组"><a href="#将当前用户添加到docker用户组" class="headerlink" title="将当前用户添加到docker用户组"></a>将当前用户添加到docker用户组</h4><p>为了避免每次使用docker命令都需要加上sudo权限，可以将当前用户加入安装中自动创建的docker用户组(可以参考官方文档)：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
+
+<p>执行完此操作后，需要退出服务器，再重新登录回来，才可以省去sudo权限。</p>
+<h4 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br><span class="line">docker run hello-world # test success or not (hello from Docker!)</span><br><span class="line">docker version</span><br><span class="line">docker info</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="镜像（images）"><a href="#镜像（images）" class="headerlink" title="镜像（images）"></a>镜像（images）</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br><span class="line">docker search [image]</span><br><span class="line">docker pull [image](:[tag])</span><br><span class="line">docker rmi -f [image_name | image_id]</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="镜像（images）-1"><a href="#镜像（images）-1" class="headerlink" title="镜像（images）"></a>镜像（images）</h4><ol>
+<li>docker [container] commit CONTAINER IMAGE_NAME:TAG：创建某个container的镜像</li>
+<li>docker save -o ubuntu_20_04.tar ubuntu:20.04：将镜像ubuntu:20.04导出到本地文件ubuntu_20_04.tar中</li>
+<li>docker load -i ubuntu_20_04.tar：将镜像ubuntu:20.04从本地文件ubuntu_20_04.tar中加载出来</li>
+</ol>
+<h4 id="容器-container"><a href="#容器-container" class="headerlink" title="容器(container)"></a>容器(container)</h4><p>注意：有了镜像才能创建容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">docker run [可选参数] [image] [src(/bin/bash)]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">参数说明</span> </span><br><span class="line">--name=&quot;&quot;</span><br><span class="line">-d			后台运行</span><br><span class="line">-it			使用交互方式运行，进入容器查看内容</span><br><span class="line">-P			指定容器端口 -p 主机端口:容器端口</span><br><span class="line">-p			随机指定端口</span><br><span class="line">exit # 直接退出容器</span><br><span class="line">ctrl + p + q # 容器后台运行</span><br><span class="line">docker rm [容器id] # 删除指定容器</span><br><span class="line">docker rm -f $(docker ps -aq) # 删除所有容器</span><br><span class="line">docker ps -a -q|xargs docker rm # 删除所有容器</span><br><span class="line">docker start [容器id] # 启动容器</span><br><span class="line">docker restart</span><br><span class="line">docker stop</span><br><span class="line">docker kill</span><br><span class="line">docker logs -f -t --tail [num] [容器id]</span><br><span class="line">-tf # 显示日志</span><br><span class="line">--tail # 要显示的日志条数</span><br><span class="line">docker inspect [容器id] # 查看容器元数据</span><br><span class="line">docker exec -it [容器id] [src] # 进入容器(开启新终端)</span><br><span class="line">docker attach [容器id] [src] # 进入容器(进入正在执行的终端)</span><br><span class="line">docker cp [容器id]:[容器路径] [目标]</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h4><blockquote>
+<p>方式一：直接使用命令来挂载 -v</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -v 主机目录:容器目录</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="实战：安装MySQL"><a href="#实战：安装MySQL" class="headerlink" title="实战：安装MySQL"></a>实战：安装MySQL</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:5.7 # 获取镜像</span><br><span class="line">docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.7</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">运行容器</span></span><br><span class="line">-v 卷挂载</span><br><span class="line">-e 环境配置</span><br><span class="line">--name 容器名字</span><br><span class="line">docker run -d -p 3310:3306 -v /home/mysql/conf:/etc/mysql/conf.d -v /home/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql01 mysql:5.7</span><br></pre></td></tr></table></figure>
+
+
+
+<ol>
+<li>docker [container] create -it ubuntu:20.04：利用镜像ubuntu:20.04创建一个容器。</li>
+<li>docker ps -a：查看本地的所有容器</li>
+<li>docker [container] start CONTAINER：启动容器</li>
+<li>docker [container] stop CONTAINER：停止容器</li>
+<li>docker [container] restart CONTAINER：重启容器</li>
+<li>docker [contaienr] run -itd ubuntu:20.04：创建并启动一个容器</li>
+<li>docker [container] attach CONTAINER：进入容器<ul>
+<li>先按Ctrl-p，再按Ctrl-q可以挂起容器</li>
+</ul>
+</li>
+<li>docker [container] exec CONTAINER COMMAND：在容器中执行命令</li>
+<li>docker [container] rm CONTAINER：删除容器</li>
+<li>docker container prune：删除所有已停止的容器</li>
+<li>docker export -o xxx.tar CONTAINER：将容器CONTAINER导出到本地文件xxx.tar中</li>
+<li>docker import xxx.tar image_name:tag：将本地文件xxx.tar导入成镜像，并将镜像命名为image_name:tag</li>
+<li>docker export&#x2F;import与docker save&#x2F;load的区别：<ul>
+<li>export&#x2F;import会丢弃历史记录和元数据信息，仅保存容器当时的快照状态</li>
+<li>save&#x2F;load会保存完整记录，体积更大</li>
+</ul>
+</li>
+<li>docker top CONTAINER：查看某个容器内的所有进程</li>
+<li>docker stats：查看所有容器的统计信息，包括CPU、内存、存储、网络等信息</li>
+<li>docker cp xxx CONTAINER:xxx 或 docker cp CONTAINER:xxx xxx：在本地和容器间复制文件</li>
+<li>docker rename CONTAINER1 CONTAINER2：重命名容器</li>
+<li>docker update CONTAINER –memory 500MB：修改容器限制</li>
+</ol>
+<h4 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h4><p>进入AC Terminal，然后：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scp /var/lib/acwing/docker/images/docker_lesson_1_0.tar server_name:  # 将镜像上传到自己租的云端服务器</span><br><span class="line">ssh server_name  # 登录自己的云端服务器</span><br><span class="line"></span><br><span class="line">docker load -i docker_lesson_1_0.tar  # 将镜像加载到本地</span><br><span class="line">docker run -p 20000:22 --name my_docker_server -itd docker_lesson:1.0  # 创建并运行docker_lesson:1.0镜像</span><br><span class="line"></span><br><span class="line">docker attach my_docker_server  # 进入创建的docker容器</span><br><span class="line">passwd  # 设置root密码</span><br></pre></td></tr></table></figure>
+
+<p>去云平台控制台中修改安全组配置，放行端口20000。</p>
+<p>返回AC Terminal，即可通过ssh登录自己的docker容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@xxx.xxx.xxx.xxx -p 20000  # 将xxx.xxx.xxx.xxx替换成自己租的服务器的IP地址</span><br></pre></td></tr></table></figure>
+
+<p>创建工作账户acs。</p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/linux/" class="">
+              linux
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>小炎子</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2023/01/20/linux基本命令/" target="_blank" title="linux基本命令">http://example.com/2023/01/20/linux基本命令/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/img/3.jpg" class="lazyload placeholder" data-srcset="/medias/img/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/02/10/mybatis/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">熟悉mybatis</div>
+      </div>
+      
+      <!-- <div class="content">
+        框架概述（说明：ctrl+p是查看函数参数，ctrl+h查看接口实现类）
+mvc—web开发架构模型，m是数据，v是视图
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/img/16.jpg" class="lazyload placeholder" data-srcset="/medias/img/16.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/01/10/mysql%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">mysql基础命令</div>
+      </div>
+      <!-- <div class="content">
+        MySQL 基础以管理员身份打开命令
+12net start mysql80 // 启动服务net stop mysql
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script defer src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+
+<!-- 还需要在后面这个地址里设置script, comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <aside id='l_side'>
+  
+    
+      <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/Photo1.jpg'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>青墨书晚风</h2>
+        
+        
+          <p>小炎子</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">忆往日</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:me@xxx.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://gitee.com/peng-junyan"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=你的qq号码"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+    
+  
+  
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#linux%E5%91%BD%E4%BB%A4"><span class="toc-text">linux命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E6%93%8D%E4%BD%9C"><span class="toc-text">快捷操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E6%BA%90%E5%91%BD%E4%BB%A4"><span class="toc-text">电源命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">文件操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E5%92%8C%E6%9F%A5%E6%89%BE"><span class="toc-text">分页和查找</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E5%92%8C%E6%89%93%E5%8C%85"><span class="toc-text">压缩和打包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E5%91%BD%E4%BB%A4"><span class="toc-text">用户命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RPM-DNF"><span class="toc-text">RPM &amp; DNF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E4%BB%A3%E7%A0%81%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-text">源代码软件安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#systemd%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1"><span class="toc-text">systemd管理服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E4%BF%A1%E6%81%AF"><span class="toc-text">磁盘信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-text">磁盘格式化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD"><span class="toc-text">磁盘挂载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%8D%B7%E7%AE%A1%E7%90%86"><span class="toc-text">逻辑卷管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%8D%B7%E6%89%A9%E5%AE%B9"><span class="toc-text">逻辑卷扩容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%8D%B7%E7%BC%A9%E5%AE%B9"><span class="toc-text">逻辑卷缩容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="toc-text">进程管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tmux%E6%95%99%E7%A8%8B"><span class="toc-text">tmux教程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD"><span class="toc-text">功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-text">结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-text">实例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C"><span class="toc-text">操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vim%E6%95%99%E7%A8%8B"><span class="toc-text">vim教程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD-1"><span class="toc-text">功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F"><span class="toc-text">模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C-1"><span class="toc-text">操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">异常处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shell%E8%AF%AD%E6%B3%95-%E8%84%9A%E6%9C%AC"><span class="toc-text">shell语法(脚本)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%AE%BA"><span class="toc-text">概论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="toc-text">运行方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A"><span class="toc-text">注释</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E8%A1%8C%E6%B3%A8%E9%87%8A"><span class="toc-text">单行注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E8%A1%8C%E6%B3%A8%E9%87%8A"><span class="toc-text">多行注释</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F"><span class="toc-text">定义变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%98%E9%87%8F"><span class="toc-text">使用变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AA%E8%AF%BB%E5%8F%98%E9%87%8F"><span class="toc-text">只读变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%8F%98%E9%87%8F"><span class="toc-text">删除变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B"><span class="toc-text">变量类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">字符串</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%98%E9%87%8F"><span class="toc-text">默认变量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%8F%82%E6%95%B0%E5%8F%98%E9%87%8F"><span class="toc-text">文件参数变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E5%AE%83%E5%8F%82%E6%95%B0%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F"><span class="toc-text">其它参数相关变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84"><span class="toc-text">数组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%90%E4%B8%AA%E5%85%83%E7%B4%A0%E7%9A%84%E5%80%BC"><span class="toc-text">读取数组中某个元素的值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6"><span class="toc-text">数组长度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#expr%E5%91%BD%E4%BB%A4"><span class="toc-text">expr命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AF%B4%E6%98%8E"><span class="toc-text">表达式说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">字符串表达式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">整数表达式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%85%B3%E7%B3%BB%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">逻辑关系表达式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#read%E5%91%BD%E4%BB%A4"><span class="toc-text">read命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#echo%E5%91%BD%E4%BB%A4"><span class="toc-text">echo命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E6%99%AE%E9%80%9A%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">显示普通字符串</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6"><span class="toc-text">显示转义字符</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6-1"><span class="toc-text">显示转义字符</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E5%8F%98%E9%87%8F"><span class="toc-text">显示变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E6%8D%A2%E8%A1%8C"><span class="toc-text">显示换行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E4%B8%8D%E6%8D%A2%E8%A1%8C"><span class="toc-text">显示不换行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E7%BB%93%E6%9E%9C%E5%AE%9A%E5%90%91%E8%87%B3%E6%96%87%E4%BB%B6"><span class="toc-text">显示结果定向至文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E6%A0%B7%E8%BE%93%E5%87%BA%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E4%B8%8D%E8%BF%9B%E8%A1%8C%E8%BD%AC%E4%B9%89%E6%88%96%E5%8F%96%E5%8F%98%E9%87%8F-%E7%94%A8%E5%8D%95%E5%BC%95%E5%8F%B7"><span class="toc-text">原样输出字符串，不进行转义或取变量(用单引号)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E5%91%BD%E4%BB%A4%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-text">显示命令的执行结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#printf%E5%91%BD%E4%BB%A4"><span class="toc-text">printf命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B"><span class="toc-text">用法示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#test%E5%91%BD%E4%BB%A4%E4%B8%8E%E5%88%A4%E6%96%AD%E7%AC%A6%E5%8F%B7"><span class="toc-text">test命令与判断符号[]</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6-%E5%92%8C"><span class="toc-text">逻辑运算符&amp;&amp;和||</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#test%E5%91%BD%E4%BB%A4"><span class="toc-text">test命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD"><span class="toc-text">文件类型判断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E5%88%A4%E6%96%AD"><span class="toc-text">文件权限判断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83"><span class="toc-text">字符串比较</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E9%87%8D%E6%9D%A1%E4%BB%B6%E5%88%A4%E5%AE%9A"><span class="toc-text">多重条件判定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E7%AC%A6%E5%8F%B7"><span class="toc-text">判断符号[]</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5"><span class="toc-text">判断语句</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#if%E2%80%A6then%E5%BD%A2%E5%BC%8F"><span class="toc-text">if…then形式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E5%B1%82if"><span class="toc-text">单层if</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E5%B1%82if-else"><span class="toc-text">单层if-else</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%B1%82if-elif-elif-else"><span class="toc-text">多层if-elif-elif-else</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#case%E2%80%A6esac%E5%BD%A2%E5%BC%8F"><span class="toc-text">case…esac形式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5"><span class="toc-text">循环语句</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#for%E2%80%A6in%E2%80%A6do%E2%80%A6done"><span class="toc-text">for…in…do…done</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#for-%E2%80%A6-%E2%80%A6-%E2%80%A6-do%E2%80%A6done"><span class="toc-text">for ((…;…;…)) do…done</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#while%E2%80%A6do%E2%80%A6done%E5%BE%AA%E7%8E%AF"><span class="toc-text">while…do…done循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#until%E2%80%A6do%E2%80%A6done%E5%BE%AA%E7%8E%AF"><span class="toc-text">until…do…done循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#break%E5%91%BD%E4%BB%A4"><span class="toc-text">break命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#continue%E5%91%BD%E4%BB%A4"><span class="toc-text">continue命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%BB%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F"><span class="toc-text">死循环的处理方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-text">函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8D%E8%8E%B7%E5%8F%96-return%E5%80%BC%E5%92%8Cstdout%E5%80%BC"><span class="toc-text">不获取 return值和stdout值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96-return%E5%80%BC%E5%92%8Cstdout%E5%80%BC"><span class="toc-text">获取 return值和stdout值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E8%BE%93%E5%85%A5%E5%8F%82%E6%95%B0"><span class="toc-text">函数的输入参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%86%85%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="toc-text">函数内的局部变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exit%E5%91%BD%E4%BB%A4"><span class="toc-text">exit命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-text">文件重定向</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91%E5%91%BD%E4%BB%A4%E5%88%97%E8%A1%A8"><span class="toc-text">重定向命令列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E5%92%8C%E8%BE%93%E5%87%BA%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-text">输入和输出重定向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8C%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91stdin%E5%92%8Cstdout"><span class="toc-text">同时重定向stdin和stdout</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E5%A4%96%E9%83%A8%E8%84%9A%E6%9C%AC"><span class="toc-text">引入外部脚本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh"><span class="toc-text">ssh</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ssh%E7%99%BB%E5%BD%95"><span class="toc-text">ssh登录</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">配置文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%86%E9%92%A5%E7%99%BB%E5%BD%95"><span class="toc-text">密钥登录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="toc-text">执行命令</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scp%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="toc-text">scp传文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8scp%E9%85%8D%E7%BD%AE%E5%85%B6%E4%BB%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84vim%E5%92%8Ctmux"><span class="toc-text">使用scp配置其他服务器的vim和tmux</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#thrift"><span class="toc-text">thrift</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%A1%E9%81%93%E3%80%81%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">管道、环境变量与常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%81%E7%82%B9"><span class="toc-text">要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8E%E6%96%87%E4%BB%B6%E9%87%8D%E5%AE%9A%E5%90%91%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">与文件重定向的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B"><span class="toc-text">举例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A7%9F%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%8A%E9%85%8D%E7%8E%AF%E5%A2%83"><span class="toc-text">租云服务器及配环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%91%E5%B9%B3%E5%8F%B0%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">云平台的作用:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%BB%E9%80%89%E4%B8%80%E4%B8%AA%E4%BA%91%E5%B9%B3%E5%8F%B0%E5%8D%B3%E5%8F%AF%EF%BC%8C%E6%8E%A8%E8%8D%90%E9%85%8D%E7%BD%AE%EF%BC%9A"><span class="toc-text">任选一个云平台即可，推荐配置：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%9F%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%8A%E5%AE%89%E8%A3%85docker"><span class="toc-text">租云服务器及安装docker</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%BF%E9%87%8C%E8%85%BE%E8%AE%AF%E5%8D%8E%E4%B8%BA%E4%BA%91"><span class="toc-text">阿里腾讯华为云</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%B7%A5%E4%BD%9C%E7%94%A8%E6%88%B7acs%E5%B9%B6%E8%B5%8B%E4%BA%88sudo%E6%9D%83%E9%99%90"><span class="toc-text">创建工作用户acs并赋予sudo权限</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E6%96%B9%E5%BC%8F"><span class="toc-text">配置免密登录方式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83"><span class="toc-text">配置新服务器的工作环境</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%89%E8%A3%85tmux%E5%92%8Cdocker"><span class="toc-text">安装tmux和docker</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker%E6%95%99%E7%A8%8B"><span class="toc-text">docker教程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%86%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E6%B7%BB%E5%8A%A0%E5%88%B0docker%E7%94%A8%E6%88%B7%E7%BB%84"><span class="toc-text">将当前用户添加到docker用户组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="toc-text">基本命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%EF%BC%88images%EF%BC%89"><span class="toc-text">镜像（images）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%EF%BC%88images%EF%BC%89-1"><span class="toc-text">镜像（images）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-container"><span class="toc-text">容器(container)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="toc-text">数据卷</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%89%E8%A3%85MySQL"><span class="toc-text">实战：安装MySQL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-text">实战</span></a></li></ol></li></ol></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/02/10/mybatis/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/3.jpg" class="lazyload placeholder" data-srcset="/medias/img/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">02-10</span>
+                
+              </div>
+              <a class="post-title" href="/2023/02/10/mybatis/">熟悉mybatis</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/01/20/linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/13.jpg" class="lazyload placeholder" data-srcset="/medias/img/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-20</span>
+                
+              </div>
+              <a class="post-title" href="/2023/01/20/linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">linux基本命令</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/01/10/mysql%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/16.jpg" class="lazyload placeholder" data-srcset="/medias/img/16.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-10</span>
+                
+              </div>
+              <a class="post-title" href="/2023/01/10/mysql%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/">mysql基础命令</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script defer src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script defer>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(145, 145, 145, 0.71)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2023 - 2024</p>
+
+          </div>
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark" onclick="toggleDarkMode()">
+  <div class="dark-content">
+    <i class="fas" id="darkIcon" aria-hidden="true"></i>
+  </div>
+</div>
+
+<script defer>
+  $(function() {
+    // 初始化暗黑模式状态
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    updateDarkModeIcon(isDark);
+  });
+
+  function toggleDarkMode() {
+    const isDark = $(document.body).hasClass('darkModel');
+    $(document.body).toggleClass('darkModel');
+    localStorage.setItem('dark', !isDark);
+    updateDarkModeIcon(!isDark);
+  }
+
+  function updateDarkModeIcon(isDark) {
+    const iconElement = document.getElementById('darkIcon');
+    if (isDark) {
+      iconElement.classList.remove('fa-moon');
+      iconElement.classList.add('fa-lightbulb');
+    } else {
+      iconElement.classList.remove('fa-lightbulb');
+      iconElement.classList.add('fa-moon');
+    }
+  }
+</script>
+
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script defer src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="6944126213"
+  fixed='true'
+  autoplay='true'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="https://unpkg.com/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script async>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script async type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+
+    
+<script src="/js/search.js"></script>
+ 
+
+    <script type="text/javascript">
+        var search_path = "search.xml";
+        if (search_path.length == 0) {
+            search_path = "search.xml";
+        }
+        var path = "/" + search_path;
+        searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的图片标签(getPhotoOnline)里的内容 -->
+<script>
+  function loadPhotoOnlineJS() {
+    if ($(".post-detail").find(".getJsonPhoto-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getPhotoOnline/index.js');
+  };
+  $(function () {
+    loadPhotoOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getPhotoJson == "undefined") {
+      loadPhotoOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的talk标签(getTalkOnline)里的内容 -->
+<script>
+  function loadTalkOnlineJS() {
+    if ($(".post-detail").find(".getJsonTalk-api").length == 0) {
+      return;
+    } 
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/waterfall.js/1.0.2/waterfall.min.js'); // 瀑布流插件，https://raphamorim.io/waterfall.js/
+    loadScript('/js/getTalkOnline/index.js');
+  };
+  $(function () {
+    loadTalkOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getTalkJson == "undefined") {
+      loadTalkOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的site-card标签(getSiteOnline)里的内容 -->
+<script>
+  function loadSiteOnlineJS() {
+    if ($(".post-detail").find(".getJsonSite-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getSiteOnline/index.js');
+  };
+  $(function () {
+    loadSiteOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getSiteJson == "undefined") {
+      loadSiteOnlineJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+        <script type="text/javascript">
+  var utteranceComment = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceComment.Theme = 'github-dark';
+    } else {
+      utteranceComment.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceComment.Theme)
+      utterances.setAttribute('repo', '')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceComment.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+      
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+    <script async src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script async src="/js/cursor/explosion.min.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,2567 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>mysql基础命令 | 忆往日</title>
+
+  <link rel="icon" type="image/jpeg" href="/medias/Photo1.jpg">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '3';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script async src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    <link href="https://unpkg.com/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" rel="stylesheet">
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script defer src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+    
+    <!-- 依赖于jquery和vue -->
+    <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+  
+  <!-- 预加载动画 -->
+  
+  
+  <div class="preloader_6" id="loader">
+  <div class="loader"></div>
+</div>
+  <script>
+    var endLoading = function () {
+      document.body.style.overflow = 'auto';
+      document.getElementById('loader').classList.add("loaded");
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+  </script>
+
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script defer>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/Photo1.jpg" class="lazyload placeholder" data-srcset="/medias/Photo1.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">忆往日</h3>
+      <h5 class="drawer-box-head_desc"></h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://gitee.com/peng-junyan">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/Photo1.jpg" class="lazyload placeholder" data-srcset="/medias/Photo1.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">忆往日</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://gitee.com/peng-junyan" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+</header>
+        <!-- 内容区域 -->
+        
+<!-- prismjs 代码高亮 -->
+
+
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/img/16.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        mysql基础命令
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-01-10 |
+        </span>
+      
+
+      
+
+      
+    
+  </div>
+  
+  
+    <script defer src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="MySQL-基础"><a href="#MySQL-基础" class="headerlink" title="MySQL 基础"></a>MySQL 基础</h1><p>以管理员身份打开命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net start mysql80 // 启动服务</span><br><span class="line">net stop mysql80 // 停止服务</span><br></pre></td></tr></table></figure>
+
+<h2 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h2><blockquote>
+<p>方式一：MySQL提供的命令行工具</p>
+</blockquote>
+<p>例：MySQL 8.0 Command Line Client</p>
+<blockquote>
+<p>方式二：系统自带命令行工具</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql [-h 127.0.0.1] [-p 3306] -u root -p</span><br><span class="line">-h	# MySQL服务所在主机ip</span><br><span class="line">-p	# MySQL服务端口号，默认3306</span><br><span class="line">-u	# MySQL数据库用户名</span><br><span class="line">-P	# MySQL密码</span><br></pre></td></tr></table></figure>
+
+<p style="color: #F56C6C;">注意：使用此方式进行连接需配置PATH环境</p>
+
+<h2 id="SQL分类"><a href="#SQL分类" class="headerlink" title="SQL分类"></a>SQL分类</h2><p>SQL语句，根据其功能，主要分为四类：<code>DDL</code>、<code>DML</code>、<code>DQL</code>、<code>DCL</code>。</p>
+<table>
+<thead>
+<tr>
+<th align="center">分类</th>
+<th align="center">全称</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">DDL</td>
+<td align="center">Data Definition Language</td>
+<td align="center">数据定义语言，用来定义数据库对象(数据库，表， 字段)</td>
+</tr>
+<tr>
+<td align="center">DML</td>
+<td align="center">Data Manipulation Language</td>
+<td align="center">数据操作语言，用来对数据库表中的数据进行增删改</td>
+</tr>
+<tr>
+<td align="center">DQL</td>
+<td align="center">Data Query Language</td>
+<td align="center">数据查询语言，用来查询数据库中表的记录</td>
+</tr>
+<tr>
+<td align="center">DCL</td>
+<td align="center">Data Control Language</td>
+<td align="center">数据控制语言，用来创建数据库用户、控制数据库的 访问权限</td>
+</tr>
+</tbody></table>
+<h3 id="DDL-数据库操作"><a href="#DDL-数据库操作" class="headerlink" title="DDL-数据库操作"></a>DDL-数据库操作</h3><p>Data Definition Language，数据定义语言，用来定义数据库对象(数据库，表，字段) 。</p>
+<blockquote>
+<p><strong>查询</strong></p>
+</blockquote>
+<p>查询所有数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> DATABASES;</span><br></pre></td></tr></table></figure>
+
+<p>查询当前数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> DATABASE()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>创建</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DATABASE [IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>] 数据库名 [<span class="keyword">DEFAULT</span> CHARSET 字符集] [<span class="keyword">COLLATE</span> 排序规则];</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>删除</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> DATABASE [IF <span class="keyword">EXISTS</span>] 数据库名;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>切换</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">USE 数据库名;</span><br></pre></td></tr></table></figure>
+
+<h3 id="表操作"><a href="#表操作" class="headerlink" title="表操作"></a>表操作</h3><p>查询当前库所有表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> tables;</span><br></pre></td></tr></table></figure>
+
+<p>查看某表结构</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">desc</span> 表名;</span><br></pre></td></tr></table></figure>
+
+<p>查询某表的建表语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">table</span> 表名;</span><br></pre></td></tr></table></figure>
+
+<p>创建表结构</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> 表名(</span><br><span class="line">	字段<span class="number">1</span> 类型 [comment 字段<span class="number">1</span>注释],</span><br><span class="line">	字段<span class="number">2</span> 类型 [comment 字段<span class="number">2</span>注释]</span><br><span class="line">)[comment 表注释];</span><br></pre></td></tr></table></figure>
+
+<p>修改表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">add</span> 字段名 类型 [comment 注释] [约束];</span><br></pre></td></tr></table></figure>
+
+<p>修改数据类型</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 modify 字段名 新数据类型;</span><br></pre></td></tr></table></figure>
+
+<p>修改字段名和字段类型</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 change 旧字段名 新字段名 类型 [comment 注释] [约束];</span><br></pre></td></tr></table></figure>
+
+<p>删除字段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">drop</span> 字段名;</span><br></pre></td></tr></table></figure>
+
+<p>修改表名</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 rename <span class="keyword">to</span> 新表名;</span><br></pre></td></tr></table></figure>
+
+<p>删除表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> [if <span class="keyword">exists</span>] 表名;</span><br></pre></td></tr></table></figure>
+
+<p>重置表（删除重创）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> 表名;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>MySQL中的数据类型有很多，主要分为三类：数值类型、字符串类型、日期时间类型。</p>
+<h5 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h5><table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">大小</th>
+<th align="center">有符号范围</th>
+<th align="center">无符号范围</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">TINYINT</td>
+<td align="center">1byte</td>
+<td align="center">（-128，127）</td>
+<td align="center">（0，255）</td>
+<td align="center">小整数值</td>
+</tr>
+<tr>
+<td align="center">SMALLINT</td>
+<td align="center">2bytes</td>
+<td align="center">(-32768，32767)</td>
+<td align="center">(0，65535)</td>
+<td align="center">大整数值</td>
+</tr>
+<tr>
+<td align="center">MEDIUMINT</td>
+<td align="center">3bytes</td>
+<td align="center">(-8388608，8388607)</td>
+<td align="center">(0，16777215)</td>
+<td align="center">大整数值</td>
+</tr>
+<tr>
+<td align="center">INT&#x2F;INTEGER</td>
+<td align="center">4bytes</td>
+<td align="center">(-2147483648， 2147483647)</td>
+<td align="center">(0，4294967295)</td>
+<td align="center">大整数值</td>
+</tr>
+<tr>
+<td align="center">BIGINT</td>
+<td align="center">8bytes</td>
+<td align="center">(-2^63，2^63-1)</td>
+<td align="center">(0，2^64-1)</td>
+<td align="center">极大整数值</td>
+</tr>
+<tr>
+<td align="center">FLOAT</td>
+<td align="center">4bytes</td>
+<td align="center">(-3.402823466 E+38， 3.402823466351 E+38)</td>
+<td align="center">0 和 (1.175494351 E38，3.402823466 E+38)</td>
+<td align="center">单精度浮点数值</td>
+</tr>
+<tr>
+<td align="center">DOUBLE</td>
+<td align="center">8bytes</td>
+<td align="center">(-1.7976931348623157 E+308， 1.7976931348623157 E+308)</td>
+<td align="center">0 和 (2.2250738585072014 E-308， 1.7976931348623157 E+308)</td>
+<td align="center">双精度浮点数值</td>
+</tr>
+<tr>
+<td align="center">DECIMAL</td>
+<td align="center"></td>
+<td align="center">依赖于M(精度)和D(标度) 的值</td>
+<td align="center">依赖于M(精度)和D(标度)的 值</td>
+<td align="center">小数值(精确定点数)</td>
+</tr>
+</tbody></table>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">年龄字段 <span class="comment">-- 不会出现负数, 而且人的年龄不会太大</span></span><br><span class="line">age tinyint unsigned</span><br><span class="line">分数 <span class="comment">-- 总分100分, 最多出现一位小数</span></span><br><span class="line">score <span class="keyword">double</span>(<span class="number">4</span>,<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h5><table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">大小</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">CHAR</td>
+<td align="center">0-255 bytes</td>
+<td align="center">定长字符串(需要指定长度)</td>
+</tr>
+<tr>
+<td align="center">VARCHAR</td>
+<td align="center">0-65535 bytes</td>
+<td align="center">变长字符串(需要指定长度)</td>
+</tr>
+<tr>
+<td align="center">TINYBLOB</td>
+<td align="center">0-255 bytes</td>
+<td align="center">不超过255个字符的二进制数据</td>
+</tr>
+<tr>
+<td align="center">TINYTEXT</td>
+<td align="center">0-255 bytes</td>
+<td align="center">短文本字符串</td>
+</tr>
+<tr>
+<td align="center">BLOB</td>
+<td align="center">0-65 535 bytes</td>
+<td align="center">二进制形式的长文本数据</td>
+</tr>
+<tr>
+<td align="center">TEXT</td>
+<td align="center">0-65 535 bytes</td>
+<td align="center">长文本数据</td>
+</tr>
+<tr>
+<td align="center">MEDIUMBLOB</td>
+<td align="center">0-16 777 215 bytes</td>
+<td align="center">二进制形式的中等长度文本数据</td>
+</tr>
+<tr>
+<td align="center">MEDIUMTEXT</td>
+<td align="center">0-16 777 215 bytes</td>
+<td align="center">中等长度文本数据</td>
+</tr>
+<tr>
+<td align="center">LONGBLOB</td>
+<td align="center">0-4 294 967 295 bytes</td>
+<td align="center">二进制形式的极大文本数据</td>
+</tr>
+<tr>
+<td align="center">LONGTEXT</td>
+<td align="center">0-4 294 967 295 bytes</td>
+<td align="center">极大文本数据</td>
+</tr>
+</tbody></table>
+<h5 id="日期时间类型"><a href="#日期时间类型" class="headerlink" title="日期时间类型"></a>日期时间类型</h5><table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">大小</th>
+<th align="center">范围</th>
+<th align="center">格式</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">DATE</td>
+<td align="center">3</td>
+<td align="center">1000-01-01 至 9999-12-31</td>
+<td align="center">YYYY-MM-DD</td>
+<td align="center">日期值</td>
+</tr>
+<tr>
+<td align="center">TIME</td>
+<td align="center">3</td>
+<td align="center">-838:59:59 至 838:59:59</td>
+<td align="center">HH:MM:SS</td>
+<td align="center">时间值或持续时间</td>
+</tr>
+<tr>
+<td align="center">YEAR</td>
+<td align="center">1</td>
+<td align="center">1901 至 2155</td>
+<td align="center">YYYY</td>
+<td align="center">年份值</td>
+</tr>
+<tr>
+<td align="center">DATETIME</td>
+<td align="center">8</td>
+<td align="center">1000-01-01 00:00:00 至 9999-12-31 23:59:59</td>
+<td align="center">YYYY-MM-DD HH:MM:SS</td>
+<td align="center">混合日期和时间值</td>
+</tr>
+<tr>
+<td align="center">TIMESTAMP</td>
+<td align="center">4</td>
+<td align="center">1970-01-01 00:00:01 至 2038-01-19 03:14:07</td>
+<td align="center">YYYY-MM-DD HH:MM:SS</td>
+<td align="center">混合日期和时间值，时间戳</td>
+</tr>
+</tbody></table>
+<h3 id="DML-表内数据操作"><a href="#DML-表内数据操作" class="headerlink" title="DML-表内数据操作"></a>DML-表内数据操作</h3><p>DML英文全称是Data Manipulation Language(数据操作语言)，用来对数据库中表的数据记录进 行增、删、改操作。</p>
+<h4 id="添加数据（INSERT）"><a href="#添加数据（INSERT）" class="headerlink" title="添加数据（INSERT）"></a>添加数据（INSERT）</h4><p>给全部字段添加数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名 <span class="keyword">values</span>(值<span class="number">1</span>，值<span class="number">2</span>，...);</span><br></pre></td></tr></table></figure>
+
+<p>给某字段添加数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名(字段名<span class="number">1</span>，字段<span class="number">2</span>，...) <span class="keyword">value</span>(值<span class="number">1</span>，值<span class="number">2</span>，...);</span><br></pre></td></tr></table></figure>
+
+<p>批量添加数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名[()] <span class="keyword">value</span>(),(),();</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改数据（UPDATE）"><a href="#修改数据（UPDATE）" class="headerlink" title="修改数据（UPDATE）"></a>修改数据（UPDATE）</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> 表名 <span class="keyword">set</span> 字段<span class="number">1</span> <span class="operator">=</span> 值<span class="number">1</span>，字段<span class="number">2</span> <span class="operator">=</span> 值<span class="number">2</span>，...[<span class="keyword">where</span> 条件]; # 不加条件则指向所有数据</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除数据（DELETE）"><a href="#删除数据（DELETE）" class="headerlink" title="删除数据（DELETE）"></a>删除数据（DELETE）</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> 表名 [<span class="keyword">where</span> 条件]; # 不加条件则指向所有数据</span><br></pre></td></tr></table></figure>
+
+<h3 id="DQL-数据查询"><a href="#DQL-数据查询" class="headerlink" title="DQL-数据查询"></a>DQL-数据查询</h3><p>DQL英文全称是Data Query Language(数据查询语言)，数据查询语言，用来查询数据库中表的记录。</p>
+<blockquote>
+<p>基本语法</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	字段列表</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	表名列表</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	条件列表</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span></span><br><span class="line">	分组字段列表</span><br><span class="line"><span class="keyword">HAVING</span></span><br><span class="line">	分组后条件列表</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">	排序字段列表</span><br><span class="line">LIMIT</span><br><span class="line">	分页参数</span><br></pre></td></tr></table></figure>
+
+<p>完整语法进行拆分，分为以下几个部分：</p>
+<ul>
+<li>基本查询（不带任何条件）</li>
+<li>条件查询（WHERE）</li>
+<li>聚合函数（count、max、min、avg、sum）</li>
+<li>分组查询（group by）</li>
+<li>排序查询（order by）</li>
+<li>分页查询（limit）</li>
+</ul>
+<h4 id="基础查询"><a href="#基础查询" class="headerlink" title="基础查询"></a>基础查询</h4><p>查询多个字段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 字段<span class="number">1</span>，字段<span class="number">2</span>，... <span class="keyword">from</span> 表名;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> 表名;</span><br></pre></td></tr></table></figure>
+
+<p>字段设置别名</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 字段<span class="number">1</span> [<span class="keyword">as</span> 别名<span class="number">1</span>], 字段<span class="number">2</span> [<span class="keyword">as</span> 别名<span class="number">2</span>] ... <span class="keyword">from</span> 表名;</span><br><span class="line"><span class="keyword">select</span> 字段<span class="number">1</span> [别名<span class="number">1</span>], 字段<span class="number">2</span> [别名<span class="number">2</span>] ... <span class="keyword">from</span> 表名;</span><br></pre></td></tr></table></figure>
+
+<p>去除重复记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> 字段列表 <span class="keyword">from</span> 表名;</span><br></pre></td></tr></table></figure>
+
+<h4 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h4><p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 字段列表 <span class="keyword">from</span> 表名 <span class="keyword">where</span> 条件列表;</span><br></pre></td></tr></table></figure>
+
+<p>条件</p>
+<blockquote>
+<p>比较运算符</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">比较运算符</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>&gt;</code> <code>=</code> <code>&lt;</code></td>
+<td align="center"><code>大于</code> <code>等于</code> <code>小于</code></td>
+</tr>
+<tr>
+<td align="center"><code>&lt;&gt;</code></td>
+<td align="center"><code>!=</code></td>
+</tr>
+<tr>
+<td align="center">BETWEEN … AND …</td>
+<td align="center">在某个范围之内(含最小、最大值)</td>
+</tr>
+<tr>
+<td align="center">IN(…)</td>
+<td align="center">在in之后的列表中的值，多选一</td>
+</tr>
+<tr>
+<td align="center">LIKE 占位符</td>
+<td align="center">模糊匹配(<code>_</code>匹配单个字符, <code>%</code>匹配任意个字符)</td>
+</tr>
+<tr>
+<td align="center">is null</td>
+<td align="center">是NULL</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>逻辑运算符</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">逻辑运算符</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>and</code></td>
+<td align="center"><code>&amp;&amp;</code></td>
+</tr>
+<tr>
+<td align="center"><code>or</code></td>
+<td align="center"><code>||</code></td>
+</tr>
+<tr>
+<td align="center"><code>not</code></td>
+<td align="center"><code>!</code></td>
+</tr>
+</tbody></table>
+<h4 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h4><p>将一列数据作为一个整体，进行纵向计算 。</p>
+<p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 聚合函数（字段列表） <span class="keyword">from</span> 表名; # <span class="keyword">NULL</span>值是不参与所有聚合函数运算的</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">count</td>
+<td align="center">统计数量</td>
+</tr>
+<tr>
+<td align="center">max</td>
+<td align="center">最大值</td>
+</tr>
+<tr>
+<td align="center">min</td>
+<td align="center">最小值</td>
+</tr>
+<tr>
+<td align="center">avg</td>
+<td align="center">平均值</td>
+</tr>
+<tr>
+<td align="center">sum</td>
+<td align="center">求和</td>
+</tr>
+</tbody></table>
+<h4 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h4><p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 字段列表 <span class="keyword">from</span> 表名 [<span class="keyword">where</span> 条件] <span class="keyword">group</span> <span class="keyword">by</span> 分组字段名 [<span class="keyword">having</span> 分组后过滤条件];</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>where与having区别</p>
+</blockquote>
+<ul>
+<li>执行时机不同：where是分组之前进行过滤，不满足where条件，不参与分组；而having是分组 之后对结果进行过滤。</li>
+<li>判断条件不同：where不能对聚合函数进行判断，而having可以。</li>
+</ul>
+<p style="color: #E6A23C">注意：</p>
+
+<ul>
+<li>分组之后，查询的字段一般为聚合函数和分组字段，查询其他字段无任何意义</li>
+<li>执行顺序: where &gt; 聚合函数 &gt; having</li>
+<li>支持多字段分组, 具体语法为 : group by columnA,columnB</li>
+</ul>
+<h4 id="排序查询"><a href="#排序查询" class="headerlink" title="排序查询"></a>排序查询</h4><p> 语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 字段列表 <span class="keyword">from</span> 表名 <span class="keyword">order</span> <span class="keyword">by</span> 字段<span class="number">1</span> 排序方式<span class="number">1</span>，字段<span class="number">2</span> 排序方式<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>排序方式</p>
+<ul>
+<li>ASC：升序（默认值）</li>
+<li>DESC：降序</li>
+</ul>
+<p style="color: #E6A23C">注意：</p>
+
+<ul>
+<li>如果是升序, 可以不指定排序方式ASC </li>
+<li>如果是多字段排序，当字段1值相同时，才会根据字段2进行排序</li>
+</ul>
+<h4 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 字段列表 <span class="keyword">from</span> 表名 limit 起始索引，查询记录数; # 起始索引 <span class="operator">=</span>（页码 <span class="operator">-</span> <span class="number">1</span>）<span class="operator">*</span> 查询记录数</span><br></pre></td></tr></table></figure>
+
+<h4 id="执行顺序"><a href="#执行顺序" class="headerlink" title="执行顺序"></a>执行顺序</h4>
+
+<h3 id="DCL-数据权限控制"><a href="#DCL-数据权限控制" class="headerlink" title="DCL-数据权限控制"></a>DCL-数据权限控制</h3><p>DCL英文全称是Data Control Language(数据控制语言)，用来管理数据库用户、控制数据库的访问权限。</p>
+<h4 id="管理用户"><a href="#管理用户" class="headerlink" title="管理用户"></a>管理用户</h4><p>查询用户</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> mysql.user</span><br></pre></td></tr></table></figure>
+
+<p>查询结果</p>
+
+
+<p>其中 Host代表当前用户访问的主机, 如果为localhost, 仅代表只能够在当前本机访问，是不可以 远程访问的。 User代表的是访问该数据库的用户名。在MySQL中需要通过Host和User来唯一标识一 个用户</p>
+<p>创建用户</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="string">&#x27;用户名&#x27;</span>@<span class="string">&#x27;主机名&#x27;</span> identified <span class="keyword">by</span> <span class="string">&#x27;密码&#x27;</span>; # 主机名可以使用 <span class="operator">%</span> 通配</span><br></pre></td></tr></table></figure>
+
+<p>修改用户密码</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> <span class="string">&#x27;用户名&#x27;</span>@<span class="string">&#x27;主机名&#x27;</span> identified <span class="keyword">with</span> mysql_native_password <span class="keyword">by</span> <span class="string">&#x27;新密码&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>删除用户</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">user</span> <span class="string">&#x27;用户名&#x27;</span>@<span class="string">&#x27;主机名&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="权限控制"><a href="#权限控制" class="headerlink" title="权限控制"></a>权限控制</h4><table>
+<thead>
+<tr>
+<th align="center">权限</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ALL, ALL PRIVILEGES</td>
+<td align="center">所有权限</td>
+</tr>
+<tr>
+<td align="center">SELECT</td>
+<td align="center">查询数据</td>
+</tr>
+<tr>
+<td align="center">INSERT</td>
+<td align="center">插入数据</td>
+</tr>
+<tr>
+<td align="center">UPDATE</td>
+<td align="center">修改数据</td>
+</tr>
+<tr>
+<td align="center">DELETE</td>
+<td align="center">删除数据</td>
+</tr>
+<tr>
+<td align="center">ALTER</td>
+<td align="center">修改表</td>
+</tr>
+<tr>
+<td align="center">DROP</td>
+<td align="center">删除数据库&#x2F;表&#x2F;视图</td>
+</tr>
+<tr>
+<td align="center">CREATE</td>
+<td align="center">创建数据库&#x2F;表</td>
+</tr>
+</tbody></table>
+<p>上述只是简单罗列了常见的几种权限描述，其他权限描述及含义，可以直接参考<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html">官方文档</a>。</p>
+<h5 id="查询权限"><a href="#查询权限" class="headerlink" title="查询权限"></a>查询权限</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> grants <span class="keyword">for</span> <span class="string">&#x27;用户名&#x27;</span>@<span class="string">&#x27;主机名&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="授予权限"><a href="#授予权限" class="headerlink" title="授予权限"></a>授予权限</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> 权限列表 <span class="keyword">on</span> 数据库名.表名 <span class="keyword">to</span> <span class="string">&#x27;用户名&#x27;</span>@<span class="string">&#x27;主机名&#x27;</span>; # 多个权限之间，使用逗号分隔</span><br></pre></td></tr></table></figure>
+
+<h5 id="撤销权限"><a href="#撤销权限" class="headerlink" title="撤销权限"></a>撤销权限</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">remove 权限列表 <span class="keyword">on</span> 数据库名.表名 <span class="keyword">from</span> <span class="string">&#x27;用户名&#x27;</span>@<span class="string">&#x27;主机名&#x27;</span>; # 授权时， 数据库名和表名可以使用 <span class="operator">*</span> 进行通配，代表所有</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h3><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">CONCAT(S1,S2,…Sn)</td>
+<td align="center">字符串拼接，将S1，S2，… Sn拼接成一个字符串</td>
+</tr>
+<tr>
+<td align="center">LOWER(str)</td>
+<td align="center">将字符串str全部转为小写</td>
+</tr>
+<tr>
+<td align="center">UPPER(str)</td>
+<td align="center">将字符串str全部转为大写</td>
+</tr>
+<tr>
+<td align="center">LPAD(str,n,pad)</td>
+<td align="center">左填充，用字符串pad对str的左边进行填充，达到n个字符串长度</td>
+</tr>
+<tr>
+<td align="center">RPAD(str,n,pad)</td>
+<td align="center">右填充，用字符串pad对str的右边进行填充，达到n个字符串长度</td>
+</tr>
+<tr>
+<td align="center">TRIM(str)</td>
+<td align="center">去掉字符串头部和尾部的空格</td>
+</tr>
+<tr>
+<td align="center">SUBSTRING(str,start,len)</td>
+<td align="center">返回从字符串str从start位置起的len个长度的字符串</td>
+</tr>
+</tbody></table>
+<h3 id="数值函数"><a href="#数值函数" class="headerlink" title="数值函数"></a>数值函数</h3><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">CEIL(x)</td>
+<td align="center">向上取整</td>
+</tr>
+<tr>
+<td align="center">FLOOR(x)</td>
+<td align="center">向下取整</td>
+</tr>
+<tr>
+<td align="center">MOD(x,y)</td>
+<td align="center">返回x&#x2F;y的模</td>
+</tr>
+<tr>
+<td align="center">RAND()</td>
+<td align="center">返回0~1内的随机数</td>
+</tr>
+<tr>
+<td align="center">ROUND(x,y)</td>
+<td align="center">求参数x的四舍五入的值，保留y位小数</td>
+</tr>
+</tbody></table>
+<h3 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h3><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">CURDATE()</td>
+<td align="center">返回当前日期</td>
+</tr>
+<tr>
+<td align="center">CURTIME()</td>
+<td align="center">返回当前时间</td>
+</tr>
+<tr>
+<td align="center">NOW()</td>
+<td align="center">返回当前日期和时间</td>
+</tr>
+<tr>
+<td align="center">YEAR(date)</td>
+<td align="center">获取指定date的年份</td>
+</tr>
+<tr>
+<td align="center">MONTH(date)</td>
+<td align="center">获取指定date的月份</td>
+</tr>
+<tr>
+<td align="center">DAY(date)</td>
+<td align="center">获取指定date的日期</td>
+</tr>
+<tr>
+<td align="center">DATE_ADD(date, INTERVAL expr type)</td>
+<td align="center">返回一个日期&#x2F;时间值加上一个时间间隔expr后的时间值</td>
+</tr>
+<tr>
+<td align="center">DATEDIFF(date1,date2)</td>
+<td align="center">返回起始时间date1 和 结束时间date2之间的天数</td>
+</tr>
+</tbody></table>
+<h3 id="流程函数"><a href="#流程函数" class="headerlink" title="流程函数"></a>流程函数</h3><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">IF(value , t , f)</td>
+<td align="center">如果value为true，则返回t，否则返回f</td>
+</tr>
+<tr>
+<td align="center">IFNULL(value1 , value2)</td>
+<td align="center">如果value1不为空，返回value1，否则 返回value2</td>
+</tr>
+<tr>
+<td align="center">CASE WHEN [ val1 ] THEN [res1] … ELSE [ default ] END</td>
+<td align="center">如果val1为true，返回res1，… 否 则返回default默认值</td>
+</tr>
+<tr>
+<td align="center">CASE [ expr ] WHEN [ val1 ] THEN [res1] … ELSE [ default ] END</td>
+<td align="center">如果expr的值等于val1，返回 res1，… 否则返回default默认值</td>
+</tr>
+</tbody></table>
+<h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><p>概念：约束是作用于表中字段上的规则，用于限制存储在表中的数据。</p>
+<p>目的：保证数据库中数据的正确、有效性和完整性。</p>
+<table>
+<thead>
+<tr>
+<th align="center">约束</th>
+<th align="center">描述</th>
+<th align="center">关键字</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">非空约束</td>
+<td align="center">限制该字段的数据不能为null</td>
+<td align="center">NOT NULL</td>
+</tr>
+<tr>
+<td align="center">唯一约束</td>
+<td align="center">保证该字段的所有数据都是唯一、不重复的</td>
+<td align="center">UNIQUE</td>
+</tr>
+<tr>
+<td align="center">主键约束</td>
+<td align="center">主键是一行数据的唯一标识，要求非空且唯一</td>
+<td align="center">PRIMARY KEY</td>
+</tr>
+<tr>
+<td align="center">默认约束</td>
+<td align="center">保存数据时，如果未指定该字段的值，则采用默认值</td>
+<td align="center">DEFAULT</td>
+</tr>
+<tr>
+<td align="center">检查约束(8.0.16版本之后)</td>
+<td align="center">保证字段值满足某一个条件</td>
+<td align="center">CHECK</td>
+</tr>
+<tr>
+<td align="center">外键约束</td>
+<td align="center">用来让两张表的数据之间建立连接，保证数据的一致性和完整性</td>
+<td align="center">FOREIGN KEY</td>
+</tr>
+</tbody></table>
+<h3 id="外键约束"><a href="#外键约束" class="headerlink" title="外键约束"></a>外键约束</h3><p>外键：用来让两张表的数据之间建立连接，从而保证数据的一致性和完整性。</p>
+<h3 id="添加外键"><a href="#添加外键" class="headerlink" title="添加外键"></a>添加外键</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> 表名(</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">    ···</span><br><span class="line">    [<span class="keyword">constraint</span>] [外键名称] <span class="keyword">foreign</span> key (外键字段名) <span class="keyword">references</span>  主表(主表列名)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">add</span> <span class="keyword">constraint</span> 外键名称 <span class="keyword">foreign</span> key (外键字段名) <span class="keyword">references</span> 主表(主表列名);</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除外键"><a href="#删除外键" class="headerlink" title="删除外键"></a>删除外键</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">drop</span> <span class="keyword">foreign</span> key 外键名称;</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除-更新行为"><a href="#删除-更新行为" class="headerlink" title="删除&#x2F;更新行为"></a>删除&#x2F;更新行为</h4><p>添加了外键之后，再删除父表数据时产生的约束行为，我们就称为删除&#x2F;更新行为。具体的删除&#x2F;更新行</p>
+<table>
+<thead>
+<tr>
+<th align="center">行为</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">NO ACTION</td>
+<td align="center">当在父表中删除&#x2F;更新对应记录时，首先检查该记录是否有对应外键，如果有则不 允许删除&#x2F;更新。 (与 RESTRICT 一致) 默认行为</td>
+</tr>
+<tr>
+<td align="center">RESTRICT</td>
+<td align="center">当在父表中删除&#x2F;更新对应记录时，首先检查该记录是否有对应外键，如果有则不 允许删除&#x2F;更新。 (与 NO ACTION 一致) 默认行为</td>
+</tr>
+<tr>
+<td align="center">CASCADE</td>
+<td align="center">当在父表中删除&#x2F;更新对应记录时，首先检查该记录是否有对应外键，如果有，则 也删除&#x2F;更新外键在子表中的记录。</td>
+</tr>
+<tr>
+<td align="center">SET NULL</td>
+<td align="center">当在父表中删除对应记录时，首先检查该记录是否有对应外键，如果有则设置子表 中该外键值为null（这就要求该外键允许取null）。</td>
+</tr>
+<tr>
+<td align="center">SET DEFAULT</td>
+<td align="center">父表有变更时，子表将外键列设置成一个默认的值 (Innodb不支持)</td>
+</tr>
+</tbody></table>
+<p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">add</span> <span class="keyword">constraint</span> 外键名称 <span class="keyword">foreign</span> key (外键字段) <span class="keyword">references</span> 主表名(主表字段名) <span class="keyword">on</span> <span class="keyword">update</span> cascade <span class="keyword">on</span> <span class="keyword">delete</span> cascade;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h2><p>项目开发中，在进行数据库表结构设计时，会根据业务需求及业务模块之间的关系，分析并设计表结构，由于业务之间相互关联，所以各个表结构之间也存在着各种联系，基本上分为三种：</p>
+<ul>
+<li>一对多(多对一)</li>
+<li>多对多</li>
+<li>一对一</li>
+</ul>
+<h3 id="一对多"><a href="#一对多" class="headerlink" title="一对多"></a>一对多</h3><ul>
+<li>案例: 部门 与 员工的关系</li>
+<li>关系: 一个部门对应多个员工，一个员工对应一个部门</li>
+<li>实现: 在多的一方建立外键，指向一的一方的主键</li>
+</ul>
+
+
+<h3 id="多对多"><a href="#多对多" class="headerlink" title="多对多"></a>多对多</h3><ul>
+<li>案例: 学生 与 课程的关系</li>
+<li>关系: 一个学生可以选修多门课程，一门课程也可以供多个学生选择</li>
+<li>实现: 建立第三张中间表，中间表至少包含两个外键，分别关联两方主键</li>
+</ul>
+
+
+<h3 id="一对一"><a href="#一对一" class="headerlink" title="一对一"></a>一对一</h3><ul>
+<li>案例: 用户 与 用户详情的关系</li>
+<li>关系: 一对一关系，多用于单表拆分，将一张表的基础字段放在一张表中，其他详情字段放在另 一张表中，以提升操作效率</li>
+<li>实现: 在任意一方加入外键，关联另外一方的主键，并且设置外键为唯一的(UNIQUE)</li>
+</ul>
+
+
+
+
+<h2 id="多表查询-1"><a href="#多表查询-1" class="headerlink" title="多表查询"></a>多表查询</h2><ul>
+<li>连接查询<ul>
+<li>内连接：相当于查询A、B交集部分数据</li>
+<li>外连接：</li>
+<li>左外连接：查询左表所有数据，以及两张表交集部分数据</li>
+<li>右外连接：查询右表所有数据，以及两张表交集部分数据</li>
+<li>自连接：当前表与自身的连接查询，自连接必须使用表别名</li>
+</ul>
+</li>
+<li>子查询</li>
+</ul>
+<h3 id="内连接"><a href="#内连接" class="headerlink" title="内连接"></a>内连接</h3>
+
+<p>内连接查询的是两张表交集部分的数 据。(也就是绿色部分的数据)</p>
+<p>内连接的语法分为两种: 隐式内连接、显式内连接。先来学习一下具体的语法结构。</p>
+<p><strong>隐式内连接</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 字段列表 <span class="keyword">from</span> 表<span class="number">1</span>，表<span class="number">2</span> <span class="keyword">where</span> 条件 ···;</span><br></pre></td></tr></table></figure>
+
+<p><strong>显式内连接</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 字段列表 <span class="keyword">from</span> 表<span class="number">1</span> [<span class="keyword">inner</span>] <span class="keyword">join</span> 表<span class="number">2</span> <span class="keyword">on</span> 连接条件 ···;</span><br></pre></td></tr></table></figure>
+
+<h3 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h3><h3 id="自连接"><a href="#自连接" class="headerlink" title="自连接"></a>自连接</h3>
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/mysql/" class="">
+              mysql
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>小炎子</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2023/01/10/mysql基础命令/" target="_blank" title="mysql基础命令">http://example.com/2023/01/10/mysql基础命令/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/img/13.jpg" class="lazyload placeholder" data-srcset="/medias/img/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/01/20/linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">linux基本命令</div>
+      </div>
+      
+      <!-- <div class="content">
+        linux命令常用命令
+
+快捷操作tab &#x3D;&#x3D;&#x3D; 补齐功能
+history [n] &#x
+      </div> -->
+    </a>
+  </div>
+
+
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script defer src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+
+<!-- 还需要在后面这个地址里设置script, comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <aside id='l_side'>
+  
+    
+      <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/Photo1.jpg'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>青墨书晚风</h2>
+        
+        
+          <p>小炎子</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">忆往日</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:me@xxx.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://gitee.com/peng-junyan"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=你的qq号码"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+    
+  
+  
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL-%E5%9F%BA%E7%A1%80"><span class="toc-text">MySQL 基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5"><span class="toc-text">客户端连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E5%88%86%E7%B1%BB"><span class="toc-text">SQL分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DDL-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="toc-text">DDL-数据库操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E6%93%8D%E4%BD%9C"><span class="toc-text">表操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-text">数值类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B"><span class="toc-text">字符串类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4%E7%B1%BB%E5%9E%8B"><span class="toc-text">日期时间类型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DML-%E8%A1%A8%E5%86%85%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">DML-表内数据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%EF%BC%88INSERT%EF%BC%89"><span class="toc-text">添加数据（INSERT）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%EF%BC%88UPDATE%EF%BC%89"><span class="toc-text">修改数据（UPDATE）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%EF%BC%88DELETE%EF%BC%89"><span class="toc-text">删除数据（DELETE）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DQL-%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2"><span class="toc-text">DQL-数据查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%9F%A5%E8%AF%A2"><span class="toc-text">基础查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-text">条件查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="toc-text">聚合函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2"><span class="toc-text">分组查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E6%9F%A5%E8%AF%A2"><span class="toc-text">排序查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2"><span class="toc-text">分页查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="toc-text">执行顺序</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DCL-%E6%95%B0%E6%8D%AE%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="toc-text">DCL-数据权限控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E7%94%A8%E6%88%B7"><span class="toc-text">管理用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="toc-text">权限控制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%9D%83%E9%99%90"><span class="toc-text">查询权限</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%88%E4%BA%88%E6%9D%83%E9%99%90"><span class="toc-text">授予权限</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%92%A4%E9%94%80%E6%9D%83%E9%99%90"><span class="toc-text">撤销权限</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-text">函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0"><span class="toc-text">字符串函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E5%87%BD%E6%95%B0"><span class="toc-text">数值函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B0"><span class="toc-text">日期函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E5%87%BD%E6%95%B0"><span class="toc-text">流程函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%A6%E6%9D%9F"><span class="toc-text">约束</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="toc-text">外键约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%A4%96%E9%94%AE"><span class="toc-text">添加外键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%A4%96%E9%94%AE"><span class="toc-text">删除外键</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4-%E6%9B%B4%E6%96%B0%E8%A1%8C%E4%B8%BA"><span class="toc-text">删除&#x2F;更新行为</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="toc-text">多表查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E5%AF%B9%E5%A4%9A"><span class="toc-text">一对多</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E5%AF%B9%E5%A4%9A"><span class="toc-text">多对多</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E5%AF%B9%E4%B8%80"><span class="toc-text">一对一</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2-1"><span class="toc-text">多表查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E8%BF%9E%E6%8E%A5"><span class="toc-text">内连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="toc-text">外连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E8%BF%9E%E6%8E%A5"><span class="toc-text">自连接</span></a></li></ol></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/02/10/mybatis/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/3.jpg" class="lazyload placeholder" data-srcset="/medias/img/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">02-10</span>
+                
+              </div>
+              <a class="post-title" href="/2023/02/10/mybatis/">熟悉mybatis</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/01/20/linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/13.jpg" class="lazyload placeholder" data-srcset="/medias/img/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-20</span>
+                
+              </div>
+              <a class="post-title" href="/2023/01/20/linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">linux基本命令</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/01/10/mysql%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/16.jpg" class="lazyload placeholder" data-srcset="/medias/img/16.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-10</span>
+                
+              </div>
+              <a class="post-title" href="/2023/01/10/mysql%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/">mysql基础命令</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script defer src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script defer>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(145, 145, 145, 0.71)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2023 - 2024</p>
+
+          </div>
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark" onclick="toggleDarkMode()">
+  <div class="dark-content">
+    <i class="fas" id="darkIcon" aria-hidden="true"></i>
+  </div>
+</div>
+
+<script defer>
+  $(function() {
+    // 初始化暗黑模式状态
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    updateDarkModeIcon(isDark);
+  });
+
+  function toggleDarkMode() {
+    const isDark = $(document.body).hasClass('darkModel');
+    $(document.body).toggleClass('darkModel');
+    localStorage.setItem('dark', !isDark);
+    updateDarkModeIcon(!isDark);
+  }
+
+  function updateDarkModeIcon(isDark) {
+    const iconElement = document.getElementById('darkIcon');
+    if (isDark) {
+      iconElement.classList.remove('fa-moon');
+      iconElement.classList.add('fa-lightbulb');
+    } else {
+      iconElement.classList.remove('fa-lightbulb');
+      iconElement.classList.add('fa-moon');
+    }
+  }
+</script>
+
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script defer src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="6944126213"
+  fixed='true'
+  autoplay='true'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="https://unpkg.com/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script async>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script async type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+
+    
+<script src="/js/search.js"></script>
+ 
+
+    <script type="text/javascript">
+        var search_path = "search.xml";
+        if (search_path.length == 0) {
+            search_path = "search.xml";
+        }
+        var path = "/" + search_path;
+        searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的图片标签(getPhotoOnline)里的内容 -->
+<script>
+  function loadPhotoOnlineJS() {
+    if ($(".post-detail").find(".getJsonPhoto-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getPhotoOnline/index.js');
+  };
+  $(function () {
+    loadPhotoOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getPhotoJson == "undefined") {
+      loadPhotoOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的talk标签(getTalkOnline)里的内容 -->
+<script>
+  function loadTalkOnlineJS() {
+    if ($(".post-detail").find(".getJsonTalk-api").length == 0) {
+      return;
+    } 
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/waterfall.js/1.0.2/waterfall.min.js'); // 瀑布流插件，https://raphamorim.io/waterfall.js/
+    loadScript('/js/getTalkOnline/index.js');
+  };
+  $(function () {
+    loadTalkOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getTalkJson == "undefined") {
+      loadTalkOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的site-card标签(getSiteOnline)里的内容 -->
+<script>
+  function loadSiteOnlineJS() {
+    if ($(".post-detail").find(".getJsonSite-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getSiteOnline/index.js');
+  };
+  $(function () {
+    loadSiteOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getSiteJson == "undefined") {
+      loadSiteOnlineJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+        <script type="text/javascript">
+  var utteranceComment = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceComment.Theme = 'github-dark';
+    } else {
+      utteranceComment.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceComment.Theme)
+      utterances.setAttribute('repo', '')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceComment.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+      
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+    <script async src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script async src="/js/cursor/explosion.min.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>
