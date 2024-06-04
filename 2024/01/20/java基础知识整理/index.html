@@ -424,34 +424,33 @@
     <article class="post post-detail">
       <div class="post-content">
         <h2 id="基础-Java-概念"><a href="#基础-Java-概念" class="headerlink" title="基础 Java 概念"></a>基础 Java 概念</h2><ul>
-<li>类和对象：类是对象的模板，对象是类的实例。类包含属性和方法。</li>
-</ul>
-<p>  一、类和对象的定义<br>  类：类是一个模板，它描述一类对象的行为和状态。<br>  对象：对象是类的一个实例，是具有类类型的变量，有状态和行为。例如，一条狗是一个对象，它的状态有：颜色、名字；行为有：摇尾巴、叫等。</p>
-<p>  二、类和对象的区别和联系<br>  1、类是抽象的，概念的，代表一类事物，比如人类，猫类…<br>  2、对象是具体的，实际的，代表一个具体事物<br>  3、类对象的模板，对象是类的一个个体，实例</p>
-<p>  三、类和对象定义方法（写法）<br>  类的定义方法：</p>
-<p>  <img src="C:\Users\kirk\Desktop\Java基础知识整理\20210714164115933.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\Java基础知识整理\20210714164115933.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="类的定义"></p>
-<p>  对象的定义方法：<br>  1、创建一个对象；<br>  2、实例化一个对象；<br>  3、对类 实例化…<br>  对象就是实例，实例就是对象。Java最大的特点就是面向对象。</p>
-<p>  四、类的相关变量<br>  1.成员变量<br>  成员变量是类的一个组成部分，一般是基本数据类型，也可是引用类型。比如我们前面定义 狗类的 int age； 就是成员变量。</p>
-<p>  2.成员方法<br>  成员方法也叫成员函数<br>  public 返回数据类型 方法名(参数列表)<br>  {<br>  语句;&#x2F;&#x2F;方法(函数)主体<br>  }<br>  1、参数列表：表示成员函数输入<br>  2、数据类型(返回类型)：表示成员函数输出<br>  3、函数主体：表示为了实现某一功能代码块<br>  以，之前定义的狗类为例，写一个类的成员方法say()：</p>
-<p>  &#x2F;&#x2F;定义狗类，有名字，颜色，年龄</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> &#123;</span><br><span class="line">	<span class="comment">// 成员变量</span></span><br><span class="line">	String name;</span><br><span class="line">	String color;</span><br><span class="line">	<span class="type">int</span> age;</span><br><span class="line">	<span class="comment">// 成员方法</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">say</span><span class="params">()</span> &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;汪汪...&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">3.</span>类变量和类方法</span><br><span class="line">类变量是该类的所有对象共享的变量，任何一个该类的对象去访问它时，取到的都是相同的 值，同样任何一个该类的对象去修改它时，修改的也是同一个变量。</span><br><span class="line">如何定义类变量？</span><br><span class="line">定义语法： 访问修饰符 <span class="keyword">static</span> 数据类型 变量名;</span><br><span class="line">如何访问类变量？</span><br><span class="line">类名.类变量名 或者 对象名.类变量名</span><br></pre></td></tr></table></figure>
+<li><p>类和对象：类是对象的模板，对象是类的实例。类包含属性和方法。</p>
+<p>一、类和对象的定义<br>类：类是一个模板，它描述一类对象的行为和状态。<br>对象：对象是类的一个实例，是具有类类型的变量，有状态和行为。例如，一条狗是一个对象，它的状态有：颜色、名字；行为有：摇尾巴、叫等。</p>
+<p>二、类和对象的区别和联系<br>1、类是抽象的，概念的，代表一类事物，比如人类，猫类…<br>2、对象是具体的，实际的，代表一个具体事物<br>3、类对象的模板，对象是类的一个个体，实例</p>
+<p>三、类和对象定义方法（写法）<br>类的定义方法：</p>
+<p><img src="C:\Users\kirk\Desktop\Java基础知识整理\20210714164115933.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\Java基础知识整理\20210714164115933.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="类的定义"></p>
+<p>对象的定义方法：<br>1、创建一个对象；<br>2、实例化一个对象；<br>3、对类 实例化…<br>对象就是实例，实例就是对象。Java最大的特点就是面向对象。</p>
+<p>四、类的相关变量<br>1.成员变量<br>成员变量是类的一个组成部分，一般是基本数据类型，也可是引用类型。比如我们前面定义 狗类的 int age； 就是成员变量。</p>
+<p>2.成员方法<br>成员方法也叫成员函数<br>public 返回数据类型 方法名(参数列表)<br>{<br>语句;&#x2F;&#x2F;方法(函数)主体<br>}<br>1、参数列表：表示成员函数输入<br>2、数据类型(返回类型)：表示成员函数输出<br>3、函数主体：表示为了实现某一功能代码块<br>以，之前定义的狗类为例，写一个类的成员方法say()：</p>
+<p>&#x2F;&#x2F;定义狗类，有名字，颜色，年龄</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> &#123;</span><br><span class="line">	<span class="comment">// 成员变量</span></span><br><span class="line">	String name;</span><br><span class="line">	String color;</span><br><span class="line">	<span class="type">int</span> age;</span><br><span class="line">	<span class="comment">// 成员方法</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">say</span><span class="params">()</span> &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;汪汪...&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">3.</span>类变量和类方法</span><br><span class="line">类变量是该类的所有对象共享的变量，任何一个该类的对象去访问它时，取到的都是相同的 值，同样任何一个该类的对象去修改它时，修改的也是同一个变量。</span><br><span class="line">如何定义类变量？</span><br><span class="line">定义语法： 访问修饰符 <span class="keyword">static</span> 数据类型 变量名;</span><br><span class="line">如何访问类变量？</span><br><span class="line">类名.类变量名 或者 对象名.类变量名</span><br></pre></td></tr></table></figure>
 
-<p>  什么是类方法，为什么有类方法？<br>  类方法是属于所有对象实例的，其形式如下：<br>  访问修饰符 static 数据返回类型 方法名(){}<br>  注意：类方法中不能访问非静态变量(类变量)。<br>  使用：类名.类方法名 或者 对象名.类方法名 。<br>  *****重点:static 静态的方法可以访问 static 静态变量，不能访问非静态变量(类变量) 非静态方法可以访问非静态变量(类变量)同时也可以访问 static 静态变量。</p>
-<p>  类变量与实例变量区别：<br>  加上 static 称为类变量或静态变量，否则称为实例变量<br>  类变量是与类相关的，公共的属性<br>  实例变量属于每个对象个体的属性<br>  类变量可以通过 [类名.类变量名] 直接访问</p>
-<p>  何为局部变量？<br>  局部变量就是方法里定义的变量。</p>
-<p>  局部变量仅作用在局部区域中，从定义开始到大括号或者return结束，生命周期短。</p>
-<p>  局部变量存储：基本数据类型变量放在栈中，引用数据类型放在堆中</p>
-<p>  局部变量可以先定义再初始化，也可以定义的同时初始化，局部变量没有默认初始值。</p>
-<p>  何为成员变量？<br>  成员变量就是定义在类里方法外的变量，也叫全局变量。<br>  成员变量又分为：实例变量和类变量。<br>  类变量也叫静态变量，即在变量前加static 的变量；</p>
-<p>  实例变量也叫对象变量，即没加static 的变量；</p>
-<p>  区别在于：类变量是所有对象共有，其中一个对象将它值改变，其他对象得到的就是改变后的结果；</p>
-<p>  而实例变量则为对象私有，某一个对象将其值改变，不影响其他对象</p>
-<p>  3.构造方法<br>  构造方法是类的一种特殊的方法，它的主要作用是完成对新对象的初始化。它有几个特点： 1、方法名和类名相同<br>  2、没有返回值<br>  3、在创建一个类的新对象时，系统会自动的调用该类的构造方法完成对新对象的初始化。 特别说明： 一个类可以定义多个不同的构造方法。</p>
-<p>  类的构造方法小结：<br>  1、构造方法名和类名相同；<br>  2、构造方法没有返回值；<br>  3、主要作用是完成对新对象的初始化；<br>  4、在创建新对象时，系统自动的调用该类的构造方法；<br>  5、一个类可以有多个构造方法；<br>  6、每个类都有一个默认的构造方法。</p>
-<p>  五、对象的相关<br>  1.如何创建对象<br>  创建一个对象有两种方法<br>  1、先声明再创建<br>  ①对象声明：类名 对象名<br>  ②、对象创建：对象名&#x3D;new 类名()<br>  2、一步到位法<br>  类名 对象名&#x3D;new 类名()</p>
-<p>  2.如何访问对象<br>  对象–如何访问(使用)对象的成员变量：<br>  对象名.变量名;<br>  对象总是存在内存中的。</p>
-<p>  3.this对象<br>  this 是属于一个对象，不属于类的。<br>  java 虚拟机会给每个对象分配this,代表当前对象，在类定义的方法中使用。</p>
-<ul>
+<p>什么是类方法，为什么有类方法？<br>类方法是属于所有对象实例的，其形式如下：<br>访问修饰符 static 数据返回类型 方法名(){}<br>注意：类方法中不能访问非静态变量(类变量)。<br>使用：类名.类方法名 或者 对象名.类方法名 。<br>*****重点:static 静态的方法可以访问 static 静态变量，不能访问非静态变量(类变量) 非静态方法可以访问非静态变量(类变量)同时也可以访问 static 静态变量。</p>
+<p>类变量与实例变量区别：<br>加上 static 称为类变量或静态变量，否则称为实例变量<br>类变量是与类相关的，公共的属性<br>实例变量属于每个对象个体的属性<br>类变量可以通过 [类名.类变量名] 直接访问</p>
+<p>何为局部变量？<br>局部变量就是方法里定义的变量。</p>
+<p>局部变量仅作用在局部区域中，从定义开始到大括号或者return结束，生命周期短。</p>
+<p>局部变量存储：基本数据类型变量放在栈中，引用数据类型放在堆中</p>
+<p>局部变量可以先定义再初始化，也可以定义的同时初始化，局部变量没有默认初始值。</p>
+<p>何为成员变量？<br>成员变量就是定义在类里方法外的变量，也叫全局变量。<br>成员变量又分为：实例变量和类变量。<br>类变量也叫静态变量，即在变量前加static 的变量；</p>
+<p>实例变量也叫对象变量，即没加static 的变量；</p>
+<p>区别在于：类变量是所有对象共有，其中一个对象将它值改变，其他对象得到的就是改变后的结果；</p>
+<p>而实例变量则为对象私有，某一个对象将其值改变，不影响其他对象</p>
+<p>3.构造方法<br>构造方法是类的一种特殊的方法，它的主要作用是完成对新对象的初始化。它有几个特点： 1、方法名和类名相同<br>2、没有返回值<br>3、在创建一个类的新对象时，系统会自动的调用该类的构造方法完成对新对象的初始化。 特别说明： 一个类可以定义多个不同的构造方法。</p>
+<p>类的构造方法小结：<br>1、构造方法名和类名相同；<br>2、构造方法没有返回值；<br>3、主要作用是完成对新对象的初始化；<br>4、在创建新对象时，系统自动的调用该类的构造方法；<br>5、一个类可以有多个构造方法；<br>6、每个类都有一个默认的构造方法。</p>
+<p>五、对象的相关<br>1.如何创建对象<br>创建一个对象有两种方法<br>1、先声明再创建<br>①对象声明：类名 对象名<br>②、对象创建：对象名&#x3D;new 类名()<br>2、一步到位法<br>类名 对象名&#x3D;new 类名()</p>
+<p>2.如何访问对象<br>对象–如何访问(使用)对象的成员变量：<br>对象名.变量名;<br>对象总是存在内存中的。</p>
+<p>3.this对象<br>this 是属于一个对象，不属于类的。<br>java 虚拟机会给每个对象分配this,代表当前对象，在类定义的方法中使用。</p>
+</li>
 <li><p>继承、多态和封装：继承允许一个类继承另一个类的属性和方法；多态允许不同类的对象对同一消息作出不同响应；封装将类的实现细节隐藏起来，只提供公共接口。</p>
 </li>
 <li><p>接口和抽象类：接口定义了一组方法的规范，而抽象类是一个不能实例化的类，通常包含抽象方法和具体方法。</p>
@@ -639,7 +638,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2024/01/20/java基础整理/" target="_blank" title="java基础整理">http://example.com/2024/01/20/java基础整理/</a>
+    <a href="/2024/01/20/java基础知识整理/" target="_blank" title="java基础整理">http://example.com/2024/01/20/java基础知识整理/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -844,7 +843,7 @@ mvc—web开发架构模型，m是数据，v是视图
             
 
             <div class="post-img-box">
-              <a href="/2024/01/20/java%E5%9F%BA%E7%A1%80%E6%95%B4%E7%90%86/" class="post-img " style="background-size: cover; 
+              <a href="/2024/01/20/java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/7.jpg" class="lazyload placeholder" data-srcset="/medias/img/7.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
@@ -855,7 +854,7 @@ mvc—web开发架构模型，m是数据，v是视图
                   <span class="post-date">01-20</span>
                 
               </div>
-              <a class="post-title" href="/2024/01/20/java%E5%9F%BA%E7%A1%80%E6%95%B4%E7%90%86/">java基础整理</a>
+              <a class="post-title" href="/2024/01/20/java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/">java基础整理</a>
             </div>
           </div>
         
