@@ -1,0 +1,2355 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>Servlet+maven+tomcat运用（超详细） | Kirk</title>
+
+  <link rel="icon" type="image/jpeg" href="/medias/Photo1.jpg">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '4';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script async src="https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    <link href="https://unpkg.com/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" rel="stylesheet">
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script defer src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+    
+    <!-- 依赖于jquery和vue -->
+    <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+  
+  <!-- 预加载动画 -->
+  
+  
+  <div class="preloader_6" id="loader">
+  <div class="loader"></div>
+</div>
+  <script>
+    var endLoading = function () {
+      document.body.style.overflow = 'auto';
+      document.getElementById('loader').classList.add("loaded");
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+  </script>
+
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script defer>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/Photo1.jpg" class="lazyload placeholder" data-srcset="/medias/Photo1.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Kirk</h3>
+      <h5 class="drawer-box-head_desc"></h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://gitee.com/peng-junyan">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/Photo1.jpg" class="lazyload placeholder" data-srcset="/medias/Photo1.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Kirk</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://gitee.com/peng-junyan" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+</header>
+        <!-- 内容区域 -->
+        
+<!-- prismjs 代码高亮 -->
+
+
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/img/17.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        Servlet+maven+tomcat运用（超详细）
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2024-08-07 |
+        </span>
+      
+
+      
+
+      
+    
+  </div>
+  
+  
+    <script defer src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h1><p>web服务器：写的网站在web服务器上运行，相当于容器。如tomcat</p>
+<h1 id="二、tomcat"><a href="#二、tomcat" class="headerlink" title="二、tomcat"></a>二、tomcat</h1><h2 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1.基本使用"></a>1.基本使用</h2><ul>
+<li>先看的maven</li>
+</ul>
+<h3 id="1-启动"><a href="#1-启动" class="headerlink" title="1.启动"></a>1.启动</h3><p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903160713332.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903160713332.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230903160713332"></p>
+<p>正常关闭比较好，涉及资源释放</p>
+<h3 id="2-修改配置"><a href="#2-修改配置" class="headerlink" title="2.修改配置"></a>2.修改配置</h3><ul>
+<li><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230903161548750" style="zoom:67%;" /></li>
+<li>如果打不开，原因可能是<strong>没启动tomcat</strong>。而且修改了之后需要重新启动tomcat。</li>
+<li>tomcat是用java写的，所以电脑要配置java_home</li>
+</ul>
+<h3 id="3-部署项目"><a href="#3-部署项目" class="headerlink" title="3.部署项目"></a>3.部署项目</h3><p>把文件夹or war包复制到webapps里</p>
+<p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903182832116.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903182832116.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230903182832116"></p>
+<h3 id="4-IDEA中创建maven-web-项目"><a href="#4-IDEA中创建maven-web-项目" class="headerlink" title="4.IDEA中创建maven web 项目"></a>4.IDEA中创建maven web 项目</h3><p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903183942522.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903183942522.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230903183942522"></p>
+<h4 id="4-1用骨架建"><a href="#4-1用骨架建" class="headerlink" title="4.1用骨架建"></a>4.1用骨架建</h4><p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903184932927.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903184932927.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230903184932927"></p>
+<p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903184955400.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903184955400.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230903184955400"></p>
+<p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903185057859.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903185057859.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230903185057859"></p>
+<p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903185133054.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903185133054.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230903185133054"></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">packageing</span>&gt;</span>war<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line">*war：web项目打包方式</span><br><span class="line">*默认是jar</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-2不用骨架"><a href="#4-2不用骨架" class="headerlink" title="4.2不用骨架"></a>4.2不用骨架<img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903185706806.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903185706806.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230903185706806"></h4><h3 id="5-IDEA中使用tomcat＋部署项目-集成本地"><a href="#5-IDEA中使用tomcat＋部署项目-集成本地" class="headerlink" title="5.IDEA中使用tomcat＋部署项目(集成本地)"></a>5.IDEA中使用tomcat＋部署项目(集成本地)</h3><p>配置tomcat</p>
+<ul>
+<li><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903190207305.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903190207305.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230903190207305"></li>
+<li><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903190230124.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230903190230124.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230903190230124"></li>
+<li>server自己选下载目录</li>
+</ul>
+<p>部署项目到tomcat上</p>
+<ul>
+<li><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230903190336591" style="zoom:67%;" />
+</li>
+<li><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230903190444399" style="zoom: 50%;" /></li>
+<li><p>最后部署失败，，因为名字里有下划线，然后我就把已经部署的项目全去掉了，只加了新创建的项目</p>
+</li>
+</ul>
+<p>启动项目</p>
+<ul>
+<li><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230903192251702" style="zoom:50%;" /></li>
+<li>自动访问到这个地址：<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230903192328484" style="zoom:50%;" /></li>
+<li>在地址栏输入相对路径a.html即可访问a.html：<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230903192426714" style="zoom:50%;" /></li>
+</ul>
+<h3 id="6-IDEA中用tomcat-maven插件部署项目"><a href="#6-IDEA中用tomcat-maven插件部署项目" class="headerlink" title="6.IDEA中用tomcat-maven插件部署项目"></a>6.IDEA中用tomcat-maven插件部署项目</h3><ul>
+<li><pre><code class="html">//pom.xml中
+&lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+        &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.2&lt;/version&gt;
+      &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- &lt;img src=&quot;C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903194033581.png&quot; alt=&quot;image-20230903194033581&quot; style=&quot;zoom:67%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">- 如果右键没有&quot;tomcat7:run&quot;，[Maven Helper插件右键没有tomcat7:run 的解决方法_灵sa的博客-CSDN博客](https://blog.csdn.net/qq_48842471/article/details/128524227)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">## 2.maven</span><br><span class="line"></span><br><span class="line">![image-20230903164445383](C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903164445383.png)</span><br><span class="line"></span><br><span class="line">### 1.maven默认的仓库地址![image-20230903165839085](C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903165839085.png)</span><br><span class="line"></span><br><span class="line">因为在c盘，所以最好自己建一个</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 2.常用命令&quot;mvn xxx&quot;</span><br><span class="line"></span><br><span class="line">- compile：编译</span><br><span class="line">- clean：清理 删除target文件夹</span><br><span class="line">- test：测试</span><br><span class="line">- package：打包 在target文件夹中</span><br><span class="line">- install：安装  下载到本地仓库文件夹</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903171610089.png&quot; alt=&quot;image-20230903171610089&quot; style=&quot;zoom:67%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">在项目目录下用命令</span><br><span class="line"></span><br><span class="line">### 3.maven生命周期</span><br><span class="line"></span><br><span class="line">![image-20230903172000239](C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903172000239.png)</span><br><span class="line"></span><br><span class="line">**同一生命周期内**，才会在执行后便命令时自动把本声明周期内前边的也执行了。E.G.执行install时，会自动执行compile,test,package（体现为多了targe文件夹&amp;jar包等等</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 4.IDEA配置maven</span><br><span class="line"></span><br><span class="line">坐标</span><br><span class="line"></span><br><span class="line">![image-20230903172902923](C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903172902923.png)</span><br><span class="line"></span><br><span class="line">2022版创建maven项目：</span><br><span class="line"></span><br><span class="line">![image-20230903173731442](C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903173731442.png)</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903173757584.png&quot; alt=&quot;image-20230903173757584&quot; style=&quot;zoom:67%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">导入maven文件：</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903174151959.png&quot; alt=&quot;image-20230903174151959&quot; style=&quot;zoom:67%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 5.依赖管理</span><br><span class="line"></span><br><span class="line">导包：</span><br><span class="line"></span><br><span class="line">在pom.xml中写&lt;u&gt;**依赖坐标**&lt;/u&gt;（就不用自己导包了）</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903174930600.png&quot; alt=&quot;image-20230903174930600&quot; style=&quot;zoom:67%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">点刷新开始下载【写完or删完刷新】![image-20230903175008024](C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903175008024.png)</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">依赖范围：</span><br><span class="line"></span><br><span class="line">![image-20230903175830230](C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230903175830230.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 三、servlet</span><br><span class="line"></span><br><span class="line">## 1.概念</span><br><span class="line"></span><br><span class="line">- 运行在服务器端的小程序。servlet是一个&lt;u&gt;接口&lt;/u&gt;，定义了Java类被浏览器访问（tomcat识别）的规则</span><br><span class="line">- 是javaEE规范之一（规范=&gt;接口）</span><br><span class="line">- 定义servlet类实现servlet接口，并由web服务器运行servlet</span><br><span class="line">- 由tomcat创建，调用</span><br><span class="line">- **看javaEE文档**</span><br><span class="line">- 学java看JDK文档</span><br><span class="line"></span><br><span class="line">## 2.快速入门</span><br><span class="line"></span><br><span class="line">1.创建web项目</span><br><span class="line"></span><br><span class="line">- 打开IDEA-&gt;用骨架建【之前学的】</span><br><span class="line"></span><br><span class="line">- 部署，tomcat-maven插件【之前学的】</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+        &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.2&lt;/version&gt;
+      &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 【新内容】**导入servlet依赖**</span><br><span class="line"></span><br><span class="line">  ```html</span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;javax.servlet&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;3.1.0&lt;/version&gt;</span><br><span class="line">        &lt;scope&gt;provided&lt;/scope&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+-  &lt;scope&gt;**provided**&lt;/scope&gt;作用范围仅在编译、测试时。
+</code></pre>
+</li>
+</ul>
+<ol start="2">
+<li>定义一个类，<strong>实现Servlet接口</strong>，并重写方法<ul>
+<li><u>ctrl+o:重写父类方法</u></li>
+</ul>
+</li>
+</ol>
+<p>3.在类上方使用@WebServlet注解，配置该Servlet的访问路径</p>
+<p>4.启动项目 并通过3中的路径访问</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">mport javax.servlet.*;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="comment">/***</span></span><br><span class="line"><span class="comment"> * servlet快速入门</span></span><br><span class="line"><span class="comment"> * ①导坐标：在pom.xml中加依赖，maven替人导包</span></span><br><span class="line"><span class="comment"> * ②重写接口所有方法</span></span><br><span class="line"><span class="comment"> * ③写访问路径</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//注解,写访问路径</span></span><br><span class="line"><span class="meta">@WebServlet(&quot;/servlet01&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">myServlet</span> <span class="keyword">implements</span> <span class="title class_">Servlet</span> &#123;<span class="comment">//ctrl+o重写父类方法</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(ServletConfig servletConfig)</span> <span class="keyword">throws</span> ServletException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> ServletConfig <span class="title function_">getServletConfig</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello&quot;</span>);<span class="comment">//Servlet接口被访问时，service()会自动执行</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getServletInfo</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>p.s若文件夹中无法new JAVA class，可右键</p>
+<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230903231020117" style="zoom:50%;" />
+
+<h2 id="3-执行流程"><a href="#3-执行流程" class="headerlink" title="3.执行流程"></a>3.执行流程</h2><p>servlet对象由web服务器创建，并调用方法。</p>
+<h2 id="4-生命周期"><a href="#4-生命周期" class="headerlink" title="4.生命周期"></a>4.生命周期</h2><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905162543769" style="zoom: 67%;" />
+
+<p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905162631767.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905162631767.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905162631767"></p>
+<ul>
+<li>②相当于提前了servlet对象创建的时间</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.*;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebServlet(name = &quot;ServletDemo01&quot;, value = &quot;/sy&quot;)</span></span><br><span class="line"><span class="comment">//value==urlPatterns访问路径</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">servletDemo01</span> <span class="keyword">implements</span> <span class="title class_">Servlet</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 初始化方法</span></span><br><span class="line"><span class="comment">     * 1.调用时机：默认情况下，servlet第一次被访问的时候，创建对象并初始化</span></span><br><span class="line"><span class="comment">     * 2.一次</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(ServletConfig servletConfig)</span> <span class="keyword">throws</span> ServletException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;--init--&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 提供服务</span></span><br><span class="line"><span class="comment"> * 1.调用时机：每次请求servlet时都会调用</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;***service****&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 提供服务</span></span><br><span class="line"><span class="comment">     * 1.调用时机：内存释放或服务器关闭时，servlet对象会被销毁，调用destroy释放资源</span></span><br><span class="line"><span class="comment">     * 2.一次</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;***service****&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：按照“&#x2F;sy”路径访问时（且刷新只调用了service，<strong>init只调用一次</strong>）</p>
+<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905170458009" style="zoom:67%;" />
+
+<p>销毁：需要正常关闭–&gt;ctrl+c</p>
+<ul>
+<li>利用terminal启动<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905170705103" style="zoom:50%;" /></li>
+<li>ctrl+c结束 –&gt;调用destroy</li>
+</ul>
+<h2 id="5-servlet方法"><a href="#5-servlet方法" class="headerlink" title="5.servlet方法"></a>5.servlet方法</h2><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905171242093" style="zoom:67%;" />
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> ServletConfig <span class="title function_">getServletConfig</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getServletInfo</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>观察可知getServletConfig()返回一个ServletConfig类，且init()形参里有ServletConfig类—-》<strong>想在getServletConfig()里直接用init()类里的局部变量</strong>——–》<strong>扩大其作用域</strong></li>
+<li><ul>
+<li><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905171629861" style="zoom:50%;" /><code>定义私有成员config</code></li>
+<li><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905171652577" style="zoom:50%;" />用形参给私有成员config赋值</li>
+<li><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905171717789" style="zoom:50%;" />返回私有成员</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-servlet体系结构"><a href="#6-servlet体系结构" class="headerlink" title="6.servlet体系结构"></a>6.servlet体系结构</h2><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905172216846" style="zoom: 50%;" />
+
+<ul>
+<li>开发B&#x2F;S架构的web项目，都是针对HTTP协议，所以自定义<strong>继承HttpServlet</strong>的Servlet类</li>
+</ul>
+<p>get：</p>
+<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905173053182" style="zoom:50%;" />
+
+<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905173104761" style="zoom:50%;" />
+
+<p>post：</p>
+<p>①写了个表单利用post方式发送</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://localhost:8080/servlet02/Demo02&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>②<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905173952234" style="zoom:67%;" /></p>
+<p>③随便写点点提交后，以post的方式访问demo02了。控制台：<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905174105047" style="zoom:67%;" /></p>
+<p>urlPatterns匹配方式</p>
+<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905175406502" style="zoom:67%;" />
+
+
+
+<h2 id="7-request"><a href="#7-request" class="headerlink" title="7.request"></a>7.request</h2><p><img src="D:\学习资料\javaweb\image-20230905180113156.png" class="lazyload placeholder" data-srcset="D:\学习资料\javaweb\image-20230905180113156.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905180113156"></p>
+<h3 id="7-1request继承体系"><a href="#7-1request继承体系" class="headerlink" title="7.1request继承体系"></a>7.1request继承体系</h3><p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905180239098.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905180239098.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905180239098"></p>
+<p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905180709056.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905180709056.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905180709056"></p>
+<h3 id="7-2获取请求数据"><a href="#7-2获取请求数据" class="headerlink" title="7.2获取请求数据"></a>7.2获取请求数据</h3><p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905181824430.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905181824430.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905181824430"></p>
+<ul>
+<li><p>get方式获取请求参数：用getQueryString()</p>
+</li>
+<li><p>post方式用输入流</p>
+</li>
+<li><p>request<em><strong>通用的请求参数方法</strong></em>①(在<strong>doPost,doGet都能用</strong>)</p>
+<ul>
+<li><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905184136025.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905184136025.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905184136025"></li>
+<li>参数是形如“username&#x3D;lihua&amp;hobby&#x3D;1&amp;hobby&#x3D;2”的形式。request把各个分离出来，利用map<strong>集合</strong>(key，value)存储，key数据类型为string，value类型为string[]</li>
+<li><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905184414188.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905184414188.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905184414188"></li>
+</ul>
+</li>
+</ul>
+<p>1.getParameterMap()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/****</span></span><br><span class="line"><span class="comment">         * getParameterMap</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        Map&lt;String,String[]&gt; map=request.getParameterMap();</span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="keyword">for</span>(String key:map.keySet())&#123;</span><br><span class="line">            System.out.println(key);</span><br><span class="line"></span><br><span class="line">            String values[]=map.get(key);<span class="comment">//String[]</span></span><br><span class="line">            <span class="keyword">for</span>(String val:values)&#123;</span><br><span class="line">                System.out.print(val+<span class="string">&quot; &quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://localhost:8080/servlet02/Demo03&quot;</span> <span class="attr">method</span>=<span class="string">&quot;get&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span>music</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span>&gt;</span>kpop</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>流程：访问a1.html,提交后<img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905190820649.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905190820649.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905190820649">terminal显示<img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905190754281.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905190754281.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905190754281"></p>
+<p>2.根据key返回<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905190959501" style="zoom:67%;" /></p>
+<ul>
+<li>get、post<strong>通用请求参数方法②</strong><ul>
+<li>在doPost中调用doGet</li>
+<li><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905191357735.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905191357735.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905191357735"></li>
+</ul>
+</li>
+</ul>
+<h3 id="7-3请求转发"><a href="#7-3请求转发" class="headerlink" title="7.3请求转发"></a>7.3请求转发</h3><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905200951517" style="zoom: 50%;" />
+
+<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230905201108474" style="zoom:50%;" />
+
+
+
+<h2 id="8-请求参数中文乱码"><a href="#8-请求参数中文乱码" class="headerlink" title="8.请求参数中文乱码"></a>8.请求参数中文乱码</h2><h3 id="8-1GET"><a href="#8-1GET" class="headerlink" title="8.1GET"></a>8.1GET</h3><p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905200021643.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905200021643.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905200021643"></p>
+<h3 id="8-2POST"><a href="#8-2POST" class="headerlink" title="8.2POST"></a>8.2POST</h3><p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905192253199.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905192253199.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905192253199"></p>
+<p><strong><u>历史遗留问题：</u></strong></p>
+<p>应该第一行乱码，第二行汉字，但terminal两行一样，且都是不认识的字符，也没搜出来是什么编码方式。。。。。</p>
+<p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905200302424.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905200302424.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905200302424"></p>
+<p>a1.html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://localhost:8080/servlet02/Demo04&quot;</span> <span class="attr">method</span>=<span class="string">&quot;get&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span>music</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span>&gt;</span>kpop</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.*;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.*;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.*;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.nio.charset.StandardCharsets;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebServlet(name = &quot;ServletDemo4luanMa&quot;, value = &quot;/Demo04&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServletDemo4luanMa</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        String username=request.getParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">        System.out.println(username);</span><br><span class="line">        <span class="comment">//1.把已知的乱码(iso_xxx编码)转换成二进制</span></span><br><span class="line">        <span class="type">byte</span>[] bs =username.getBytes(StandardCharsets.ISO_8859_1);</span><br><span class="line">        <span class="comment">//2.二进制转字符串，new时用字节数组做参数</span></span><br><span class="line">        String s=<span class="keyword">new</span> <span class="title class_">String</span>(bs,StandardCharsets.UTF_8);</span><br><span class="line">        System.out.println(s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="9-reponse"><a href="#9-reponse" class="headerlink" title="9.reponse"></a>9.reponse</h2><p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905201227868.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905201227868.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905201227868"></p>
+<p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905202109390.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230905202109390.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230905202109390"></p>
+<h1 id="三、myBatis"><a href="#三、myBatis" class="headerlink" title="三、myBatis"></a>三、myBatis</h1><h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h2><ul>
+<li>一款持久层框架，用于简化JDBC开发<ul>
+<li>持久层：连接数据库的那层代码</li>
+<li>javaEE三层架构：表现层、业务层、持久层</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-快速入门案例"><a href="#2-快速入门案例" class="headerlink" title="2.快速入门案例"></a>2.快速入门案例</h2><p><img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230917123414520.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230917123414520.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230917123414520"></p>
+<ul>
+<li><p>1.用的navicat创建了tb_user表，并插入了数据。</p>
+<ul>
+<li><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917185057675" style="zoom:67%;" /></li>
+<li>点上边“DDL”可查看当时创建时的sql（虽然被魔改了</li>
+</ul>
+</li>
+<li><p>2.创建maven项目，pom.xml中各种导依赖</p>
+<ul>
+<li><pre><code class="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;       &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+        &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+        &lt;version&gt;3.5.6&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+        &lt;version&gt;5.1.46&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--junit单元测试--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;junit&lt;/groupId&gt;
+        &lt;artifactId&gt;junit&lt;/artifactId&gt;
+        &lt;version&gt;3.8.2&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 3.&lt;u&gt;**resources目录下建**&lt;/u&gt;mybatis核心配置文件(mybatis-config.xml)【从官网复制的，然后把property改成自己的信息--数据库连接信息】</span><br><span class="line"></span><br><span class="line">  - 一改property</span><br><span class="line"></span><br><span class="line">  - 二改mappers【加载sql映射文件(别的xml)】</span><br><span class="line"></span><br><span class="line">  - ```xml</span><br><span class="line">    &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span><br><span class="line">    &lt;!DOCTYPE configuration</span><br><span class="line">            PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span><br><span class="line">            &quot;https://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;environments default=&quot;development&quot;&gt;</span><br><span class="line">            &lt;environment id=&quot;development&quot;&gt;</span><br><span class="line">                &lt;transactionManager type=&quot;JDBC&quot;/&gt;</span><br><span class="line">                &lt;dataSource type=&quot;POOLED&quot;&gt;</span><br><span class="line">                    &lt;!--数据库连接信息--&gt;</span><br><span class="line">                    &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;</span><br><span class="line">                    &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql:///mybatis?useSSL=false&quot;/&gt;</span><br><span class="line">                    &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;</span><br><span class="line">                    &lt;property name=&quot;password&quot; value=&quot;666&quot;/&gt;</span><br><span class="line">                &lt;/dataSource&gt;</span><br><span class="line">            &lt;/environment&gt;</span><br><span class="line">        &lt;/environments&gt;</span><br><span class="line">        &lt;mappers&gt;</span><br><span class="line">            &lt;!--加载sql映射文件--&gt;</span><br><span class="line">            &lt;!--因为本xml文件和UserMapper.xml文件在一个目录下∴可以直接写路径写成“UserMapper.xml”--&gt;</span><br><span class="line">            &lt;mapper resource=&quot;UserMapper.xml&quot;/&gt;</span><br><span class="line">        &lt;/mappers&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>4.编写sql映射文件【官网copy的，只改了&lt; mapper&gt;里的东西和标签的属性】</p>
+<ul>
+<li><ul>
+<li><!--命名空间，用于标识，相当于包名-->
+</li>
+<li><!--id是该sql语句的唯一标识，可通过其使用对应sql语句-->  E.G.:xxnamespace.xxid就能唯一标识一个</li>
+<li><!--数据封装成resulType的类型--> 即**返回值类型**</li>
+<li><p>同理&lt; insert&gt;tag内可写insert语句</p>
+</li>
+</ul>
+</li>
+<li><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;https://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;!--命名空间，用于标识，相当于包名--&gt;
+&lt;mapper namespace=&quot;test&quot;&gt;
+        &lt;!--id是该sql语句的唯一标识，可通过其使用对应sql语句--&gt;
+        &lt;!--数据封装成resulType的类型--&gt;
+    &lt;select id=&quot;selectAll&quot; resultType=&quot;com.pojo.User&quot;&gt;
+        select * from tb_user ;
+    &lt;/select&gt;
+
+&lt;/mapper&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 5.编码</span><br><span class="line"></span><br><span class="line">  - ①定义pojo类：java目录下new类，写“com.pojp.User”--&gt;IDEA就给**创好了包和类**</span><br><span class="line"></span><br><span class="line">    - 根据数据库表的字段写User类的属性</span><br><span class="line">    - tips：**&lt;u&gt;alt+鼠标下划一个区域就能选中一条线之后的所有内容&lt;/u&gt;**【可方便删</span><br><span class="line">      - &lt;img src=&quot;C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230917190732065.png&quot; alt=&quot;image-20230917190732065&quot; style=&quot;zoom:50%;&quot; /&gt;</span><br><span class="line">      - 也可实现同时写多行&lt;img src=&quot;C:\Users\kirk\Desktop\blog\source\_posts\Servlet+tomcat+maven运用\image-20230917190822768.png&quot; alt=&quot;image-20230917190822768&quot; style=&quot;zoom:50%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">  - 在“com.demo.java”路径new一个测试类，</span><br><span class="line"></span><br><span class="line">  - +②加载核心配置文件，获取SqlSessionFactory对象【官网copy</span><br><span class="line"></span><br><span class="line">    - 因为mybatis-config.xml在resources路径下，所以可以直接写文件名</span><br><span class="line"></span><br><span class="line">    - ```java</span><br><span class="line">      //1.加载mybatis核心配置文件，获取SqlSessionFactory对象（从官网复制的</span><br><span class="line">      String resource = &quot;mybatis-config.xml&quot;;</span><br><span class="line">      InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>③获取sqlSession对象（可用于执行sql语句</p>
+<ul>
+<li><pre><code class="java">SqlSession sqlSession=sqlSessionFactory.openSession();
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- ④执行sql语句</span><br><span class="line"></span><br><span class="line">  - ***alt+enter自动引导，即等号及左边都是自动生成的*** </span><br><span class="line"></span><br><span class="line">  - ```java</span><br><span class="line">    //3.执行sql语句         (alt+enter自动引导，即等号及左边都是自动生成的</span><br><span class="line">    List&lt;User&gt; users = sqlSession.selectList(&quot;test.selectAll&quot;);</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>⑤释放资源</p>
+<ul>
+<li><pre><code>//4.释放资源
+sqlSession.close();
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-------------------------完整的测试类代码↓-----------</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">/***</span><br><span class="line"> * 测试类</span><br><span class="line"> * mybatis快速入门</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">public class MybatisDemo &#123;</span><br><span class="line">    public static void main(String []args)  throws IOException &#123;</span><br><span class="line">        //1.加载mybatis核心配置文件，获取SqlSessionFactory对象（从官网复制的</span><br><span class="line">        String resource = &quot;mybatis-config.xml&quot;;</span><br><span class="line">        InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">        //2.获取SqlSession对象(用它执行sql语句</span><br><span class="line">        SqlSession sqlSession=sqlSessionFactory.openSession();</span><br><span class="line">        //3.执行sql语句         (alt+enter自动引导，即等号及左边都是自动生成的</span><br><span class="line">        List&lt;User&gt; users = sqlSession.selectList(&quot;test.selectAll&quot;);//test.selectAll可唯一标识</span><br><span class="line">        System.out.println(users);</span><br><span class="line">        //4.释放资源</span><br><span class="line">        sqlSession.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>结果：<img src="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230917191728511.png" class="lazyload placeholder" data-srcset="C:\Users\kirk\Desktop\blog\source_posts\Servlet+tomcat+maven运用\image-20230917191728511.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20230917191728511"></p>
+<h2 id="3-Mapper代理开发"><a href="#3-Mapper代理开发" class="headerlink" title="3.Mapper代理开发"></a>3.Mapper代理开发</h2><p>引入：</p>
+<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917200246890" style="zoom:67%;" />
+
+<p>代码中还是有写死的地方(“硬编码”)，且需要切回xml文件看名字。</p>
+<p>优化成method，直接用<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917200502727" style="zoom:50%;" /></p>
+<h3 id="tips1：target目录"><a href="#tips1：target目录" class="headerlink" title="tips1：target目录"></a>tips1：target目录</h3><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917193226300" style="zoom: 50%;" />
+
+<p>**<u>xml文件在resources目录下，</u>**编译(compile)后生成target文件夹，</p>
+<p><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917193400804" style="zoom:50%;" /><img src="/2024/08/07/Servlet+tomcat+maven运用/迅雷下载" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/迅雷下载" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917193459178" style="zoom:33%;" /></p>
+<p>可知，在classes文件夹中，各配置xml和com包在一个目录下</p>
+<h3 id="tips2：resourcs目录下建包"><a href="#tips2：resourcs目录下建包" class="headerlink" title="tips2：resourcs目录下建包"></a>tips2：resourcs目录下建包</h3><ul>
+<li><p>已知在java代码目录下建包belike：<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917193747765" style="zoom: 50%;" /></p>
+</li>
+<li><p>但在resouces目录下建包用“ <code>.</code> ”无法识别，<u>用“<code>/</code>”：</u><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917194038424" style="zoom: 67%;" /></p>
+<ul>
+<li>结果：<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917194218711" style="zoom:50%;" /></li>
+<li>重新编译后(需要对java代码改动才能重新compile)<ul>
+<li><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917194351359" style="zoom:67%;" /></li>
+<li><em><strong><u>通过在resous目录下建类的同名包–&gt;把xml文件和java类放到了同一个目录中</u></strong></em></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917200619400" style="zoom:67%;" />
+
+<ol>
+<li><p>①定义sql映射文件<strong>同名</strong>的Mapper<strong>接口</strong> (接口习惯上放在单独一个包里)</p>
+<p><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917201130322" style="zoom: 50%;" /><img src="/2024/08/07/Servlet+tomcat+maven运用/迅雷下载" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/迅雷下载" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917201204213" style="zoom:50%;" /></p>
+<p>②用tips2的原理建一个包，把UserMapper.xml放进去–&gt;实现了在同一目录下</p>
+<p><img src="/2024/08/07/Servlet+tomcat+maven运用/迅雷下载" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/迅雷下载" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917201551671" style="zoom:50%;" /><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917201604820" style="zoom:50%;" /></p>
+<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917201628696" style="zoom:50%;" />
+
+<p>编译后：<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917201803211" style="zoom:50%;" /></p>
+</li>
+<li><p>把sql映射文件(UserMapper.xml文件)的namespace属性设置为 自己定义的mapper接口的全限定名</p>
+</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;com.mapper.UserMapper&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>在mapper接口中定义方法（方法化），方法名&#x3D;sql语句的id；返回值类型&#x3D;resultType的类型；</p>
+<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917202819462" style="zoom:50%;" /></li>
+</ol>
+<ul>
+<li><p>由UserMapper.xml可知，UserMapper接口应定义selectAll方法，返回值类型为User对象–<code> User selectAll();</code></p>
+</li>
+<li><p>但是由sql语句可知：<strong>查询的是所有用户，即返回多个user一个list</strong>—》List<User></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;User&gt; <span class="title function_">selectAll</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>ps.由于UserMapper.xml路径改到包底下了，mybatis-config.xml中加载它的路径需要修改<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917203653348" style="zoom: 50%;" /></p>
+<p>4.编码（写个测试类</p>
+<p>前几步和入门案例一样，区别只在运行sql那段</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/***</span></span><br><span class="line"><span class="comment"> * 测试类</span></span><br><span class="line"><span class="comment"> * Mapper代理开发入门</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MybatisDemo2</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String []args)</span>  <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">//1.加载mybatis核心配置文件，获取SqlSessionFactory对象（从官网复制的</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">resource</span> <span class="operator">=</span> <span class="string">&quot;mybatis-config.xml&quot;</span>;</span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> Resources.getResourceAsStream(resource);</span><br><span class="line">        <span class="type">SqlSessionFactory</span> <span class="variable">sqlSessionFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SqlSessionFactoryBuilder</span>().build(inputStream);</span><br><span class="line">        <span class="comment">//2.获取SqlSession对象(用它执行sql语句</span></span><br><span class="line">        SqlSession sqlSession=sqlSessionFactory.openSession();</span><br><span class="line">        <span class="comment">//3.执行sql语句         (alt+enter自动引导，即等号及左边都是自动生成的</span></span><br><span class="line">        <span class="comment">//List&lt;User&gt; users = sqlSession.selectList(&quot;test.selectAll&quot;);</span></span><br><span class="line">        <span class="comment">//3.1把UserMapper接口类型传进去，获取一个代理接口</span></span><br><span class="line">        <span class="type">UserMapper</span> <span class="variable">userMapper</span> <span class="operator">=</span> sqlSession.getMapper(UserMapper.class);</span><br><span class="line">        <span class="comment">//3.2通过代理接口调用方法</span></span><br><span class="line">        List&lt;User&gt; users = userMapper.selectAll();</span><br><span class="line">        System.out.println(users);</span><br><span class="line">        <span class="comment">//4.释放资源</span></span><br><span class="line">        sqlSession.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>梳理思路:通过sqlSession对象的getMapper()获取一个UserMapper接口，而UserMapper接口的路径下有同名的sql映射文件(UserMapper.xml),<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917205849960" style="zoom: 50%;" /><ul>
+<li>通过该代理<strong>接口调用方法</strong>，而3.规定“<u><strong>方法名&#x3D;sql语句的id</strong></u>”,即<u>通过方法能对应id同名的sql语句</u>，其实底层原理还是入门案例的那样</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-案例-配置文件实现CRUD"><a href="#4-案例-配置文件实现CRUD" class="headerlink" title="4.案例-配置文件实现CRUD"></a>4.案例-配置文件实现CRUD</h2><h3 id="黑马官方note"><a href="#黑马官方note" class="headerlink" title="黑马官方note"></a>黑马官方note</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/itcast_cn/article/details/123718088">Mybatis：使用映射配置文件实现CRUD操作，能够使用注解实现CRUD操作_数据注解进行映射配置的方式_黑马程序员官方的博客-CSDN博客</a></p>
+<p>功能列表：</p>
+<blockquote>
+<ul>
+<li>查询<ul>
+<li>查询所有数据</li>
+<li>查询详情</li>
+<li>条件查询</li>
+</ul>
+</li>
+<li>添加</li>
+<li>修改<ul>
+<li>修改全部字段</li>
+<li>修改动态字段</li>
+</ul>
+</li>
+<li>删除<ul>
+<li>删除一个</li>
+<li>批量删除</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="4-1准备环境"><a href="#4-1准备环境" class="headerlink" title="4.1准备环境"></a>4.1准备环境</h3><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230918213919973" style="zoom:33%;" />
+
+<h3 id="1-查询所有数据"><a href="#1-查询所有数据" class="headerlink" title="1.查询所有数据"></a>1.查询所有数据</h3><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230918221556486" style="zoom: 33%;" />
+
+<blockquote>
+<p>分析：</p>
+<ul>
+<li>参数：无(查所有)</li>
+<li>返回结果类型：List<Brand>(查所有品牌)</li>
+<li>sql语句的编写：select * from xx</li>
+</ul>
+</blockquote>
+<p>详细过程看官方note</p>
+<ul>
+<li>对照着数据库表写实体类</li>
+<li>mybatisx能自动生成(alt+enter)statement即sql<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919161008680" style="zoom: 50%;" /></li>
+</ul>
+<p>输出belike：</p>
+<blockquote>
+<p>[Brand{id&#x3D;1, brandName&#x3D;’null’, companyName&#x3D;’null’, ordered&#x3D;5, description&#x3D;’好吃不上火’, status&#x3D;0}, Brand{id&#x3D;2, brandName&#x3D;’null’, companyName&#x3D;’null’, ordered&#x3D;100, description&#x3D;’华为致力于把数字世界带入每个人、每个家庭、每个组织，构建万物互联的智能世界’, status&#x3D;1}, Brand{id&#x3D;3, brandName&#x3D;’null’, companyName&#x3D;’null’, ordered&#x3D;50, description&#x3D;’are you ok’, status&#x3D;1}]</p>
+<p>Process finished with exit code 0</p>
+</blockquote>
+<ul>
+<li>brandName&#x3D;’null’, companyName&#x3D;’null’,<strong>没封装上</strong><ul>
+<li><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230918224824744" style="zoom:33%;" /></li>
+<li>因为db中表字段名和实体类中属性名不一样</li>
+</ul>
+</li>
+</ul>
+<p>*<u>solution：</u>*（两种</p>
+<p>法一：</p>
+<ol>
+<li><p>我们可以在写sql语句时给这两个字段<strong>起别名</strong>，将别名定义成和属性名一致即可。</p>
+<select id="selectAll" resultType="brand">
+    select
+    id, brand_name as brandName, company_name as companyName, ordered, description, status
+    from tb_brand;
+</select
+
+
+</li>
+<li><p>因为写一长串字段，且每写一个&lt; select&gt;tag都要复制一次，很麻烦—–》把这段提取出来，用的时候引用</p>
+</li>
+</ol>
+<p>将需要复用的SQL片段抽取到 sql 标签中</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">sql</span> <span class="attr">id</span>=<span class="string">&quot;brand_column&quot;</span>&gt;</span></span><br><span class="line">	id, brand_name as brandName, company_name as companyName, ordered, description, status</span><br><span class="line"><span class="tag">&lt;/<span class="name">sql</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>id属性值是唯一标识，引用时也是通过该值进行引用。</p>
+<p>在原sql语句中进行引用</p>
+<p>使用 include 标签引用上述的 SQL 片段，而 refid 指定上述 SQL 片段的id值。</p>
+<select id="selectAll" resultType="brand">
+    select
+    <include refid="brand_column" />
+    from tb_brand;
+</select>
+
+
+
+<p><strong><u>法二：</u></strong></p>
+<p>使用resultMap来定义字段和属性的映射关系</p>
+<ul>
+<li>id唯一标识，type映射类型</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">&quot;brandResultMap&quot;</span> <span class="attr">type</span>=<span class="string">&quot;brand&quot;</span>&gt;</span></span><br><span class="line">   </span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;brand_name&quot;</span> <span class="attr">property</span>=<span class="string">&quot;brandName&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;company_name&quot;</span> <span class="attr">property</span>=<span class="string">&quot;companyName&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>​		id：完成主键字段的映射<br>​                column：表的列名<br>​                property：实体类的属性名<br>​         result：完成一般字段的映射<br>​                column：表的列名<br>​                property：实体类的属性名</p>
+</blockquote>
+<p>SQL语句正常编写(<strong>替换resultMap</strong>属性成resultMap的id)</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectAll&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;brandResultMap&quot;</span>&gt;</span></span><br><span class="line">    select *</span><br><span class="line">    from tb_brand;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-查看详情（selectById"><a href="#2-查看详情（selectById" class="headerlink" title="2.查看详情（selectById"></a>2.查看详情（selectById</h3><p><u>mybatis提供了两种参数占位符：</u></p>
+<ul>
+<li><p><strong>#{}</strong> ：执行SQL时，会将 #{} 占位符替换为？，将来自动设置参数值。从上述例子可以看出使用#{} 底层使用的是 PreparedStatement<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919162130619" style="zoom: 50%;" /></p>
+</li>
+<li><p><strong>${}</strong> ：拼接SQL。底层使用的是 Statement，会存在<code>SQL注入问题</code>。<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919162149414" style="zoom:50%;" /></p>
+</li>
+<li><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919163049305" style="zoom:50%;" /></li>
+</ul>
+<select id="selectById"  resultMap="brandResultMap">
+    select *
+    from tb_brand where id = #{id};
+</select>
+
+
+<blockquote>
+<p>&#x3D;&#x3D;注意：&#x3D;&#x3D;从上面两个例子可以看出，以后开发我们使用 #{} 参数占位符。</p>
+</blockquote>
+<p><u>SQL语句中特殊字段处理</u></p>
+<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919162635374" style="zoom: 33%;" />
+
+<ul>
+<li>小于号<ul>
+<li>转义字符			<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919162758167" style="zoom:33%;" /></li>
+<li>打CD+alt+enter   <img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919163005672" style="zoom:33%;" /></li>
+</ul>
+</li>
+</ul>
+<h3 id="3-多条件查询"><a href="#3-多条件查询" class="headerlink" title="3.多条件查询"></a>3.多条件查询</h3><img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919174403316" style="zoom:50%;" />
+
+<h3 id="4-多条件，动态查询（多个条件，但是用户用了哪几个条件并不能确定）"><a href="#4-多条件，动态查询（多个条件，但是用户用了哪几个条件并不能确定）" class="headerlink" title="4.多条件，动态查询（多个条件，但是用户用了哪几个条件并不能确定）"></a>4.多条件，动态查询（多个条件，但是用户用了哪几个条件并不能确定）</h3><ul>
+<li><h4 id="if-标签"><a href="#if-标签" class="headerlink" title="&lt; if&gt;标签"></a>&lt; if&gt;标签</h4></li>
+<li><p><code>if test=&quot;status!=null&quot;</code>判断参数是否有值</p>
+</li>
+<li><p>即在原来statement基础上加了if判断，，其他照旧</p>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectByCondition&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;brandResultMap&quot;</span>&gt;</span></span><br><span class="line">       select * from tb_brand</span><br><span class="line">       where status=#&#123;status&#125;</span><br><span class="line">           and company_name like #&#123;companyName&#125;</span><br><span class="line">           and brand_name like #&#123;brandName&#125;</span><br><span class="line">   <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectByDynamiteConditionIf&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;brandResultMap&quot;</span>&gt;</span></span><br><span class="line">       select * from tb_brand</span><br><span class="line">       where</span><br><span class="line">       <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;status!=null&quot;</span>&gt;</span></span><br><span class="line">           status=#&#123;status&#125;</span><br><span class="line">       <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;companyName!=null and companyName!=&#x27;&#x27;&quot;</span>&gt;</span></span><br><span class="line">           and company_name like #&#123;companyName&#125;</span><br><span class="line">       <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;brandName!=null and brandName!=&#x27;&#x27;&quot;</span>&gt;</span></span><br><span class="line">           and brand_name like #&#123;brandName&#125;</span><br><span class="line">       <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>但是<img src="/2024/08/07/Servlet+tomcat+maven运用/迅雷下载" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/迅雷下载" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919181837562" style="zoom:33%;" />当把某条件没写时（即不满足if)，因为设计问题<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919182010765" style="zoom:33%;" /></li>
+<li>结果：<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919182059324" style="zoom:33%;" />where后直接+and+条件2了<ul>
+<li><strong>solution</strong>：<img src="/2024/08/07/Servlet+tomcat+maven运用/undefined" class="lazyload placeholder" data-srcset="/2024/08/07/Servlet+tomcat+maven运用/undefined" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230919182245904" style="zoom: 33%;" /></li>
+<li>利用永真的 <strong><code>1=1</code></strong> 使and即使怎样缺某个条件都合理了</li>
+</ul>
+</li>
+</ul>
+<h4 id="where-标签"><a href="#where-标签" class="headerlink" title="&lt; where&gt;标签"></a>&lt; where&gt;标签</h4><ul>
+<li>解决了if标签中 and 的问题，替换where关键字（非常智能的一款tag</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectByDynamiteConditionIf&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;brandResultMap&quot;</span>&gt;</span></span><br><span class="line">        select * from tb_brand</span><br><span class="line">        <span class="comment">&lt;!--where 1=1--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">where</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;status!=null&quot;</span>&gt;</span></span><br><span class="line">               and status=#&#123;status&#125;</span><br><span class="line">            <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;companyName!=null and companyName!=&#x27;&#x27;&quot;</span>&gt;</span></span><br><span class="line">                and company_name like #&#123;companyName&#125;</span><br><span class="line">            <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;brandName!=null and brandName!=&#x27;&#x27;&quot;</span>&gt;</span></span><br><span class="line">                and brand_name like #&#123;brandName&#125;</span><br><span class="line">            <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-单条件，动态查询"><a href="#5-单条件，动态查询" class="headerlink" title="5.单条件，动态查询"></a>5.单条件，动态查询</h3><p>&lt; choose&gt;相当于switch</p>
+<select id="selectByConditionSingle" resultMap="brandResultMap">
+    select *
+    from tb_brand
+    <where>
+        <choose><!--相当于switch-->
+            <when test="status != null"><!--相当于case-->
+                status = #{status}
+            </when>
+            <when test="companyName != null and companyName != '' "><!--相当于case-->
+                company_name like #{companyName}
+            </when>
+            <when test="brandName != null and brandName != ''"><!--相当于case-->
+                brand_name like #{brandName}
+            </when>
+        </choose>
+    </where>
+</select>
+
+<p>执行</p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/servlet-maven-tomcat/" class="">
+              servlet maven tomcat
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>小炎子</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2024/08/07/Servlet+tomcat+maven运用/" target="_blank" title="Servlet+maven+tomcat运用（超详细）">http://example.com/2024/08/07/Servlet+tomcat+maven运用/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/img/14.jpg" class="lazyload placeholder" data-srcset="/medias/img/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2024/08/21/seata%E5%88%86%E4%BA%AB/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">seata分享</div>
+      </div>
+      
+      <!-- <div class="content">
+        
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/img/14.jpg" class="lazyload placeholder" data-srcset="/medias/img/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2024/01/21/java%E5%9F%BA%E7%A1%80/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">java基础</div>
+      </div>
+      <!-- <div class="content">
+        基础 Java 概念
+类和对象：类是对象的模板，对象是类的实例。类包含属性和方法。
+一、类和对象的定义类：类是一个模板，
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script defer src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+
+<!-- 还需要在后面这个地址里设置script, comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <aside id='l_side'>
+  
+    
+      <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/Photo1.jpg'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>青墨书晚风</h2>
+        
+        
+          <p>小炎子</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Kirk</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:me@xxx.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://gitee.com/peng-junyan"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=你的qq号码"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+    
+  
+  
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%BC%95%E8%A8%80"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81tomcat"><span class="toc-text">二、tomcat</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-text">1.基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%90%AF%E5%8A%A8"><span class="toc-text">1.启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="toc-text">2.修改配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%83%A8%E7%BD%B2%E9%A1%B9%E7%9B%AE"><span class="toc-text">3.部署项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-IDEA%E4%B8%AD%E5%88%9B%E5%BB%BAmaven-web-%E9%A1%B9%E7%9B%AE"><span class="toc-text">4.IDEA中创建maven web 项目</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1%E7%94%A8%E9%AA%A8%E6%9E%B6%E5%BB%BA"><span class="toc-text">4.1用骨架建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2%E4%B8%8D%E7%94%A8%E9%AA%A8%E6%9E%B6"><span class="toc-text">4.2不用骨架</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-IDEA%E4%B8%AD%E4%BD%BF%E7%94%A8tomcat%EF%BC%8B%E9%83%A8%E7%BD%B2%E9%A1%B9%E7%9B%AE-%E9%9B%86%E6%88%90%E6%9C%AC%E5%9C%B0"><span class="toc-text">5.IDEA中使用tomcat＋部署项目(集成本地)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-IDEA%E4%B8%AD%E7%94%A8tomcat-maven%E6%8F%92%E4%BB%B6%E9%83%A8%E7%BD%B2%E9%A1%B9%E7%9B%AE"><span class="toc-text">6.IDEA中用tomcat-maven插件部署项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-text">3.执行流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">4.生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-servlet%E6%96%B9%E6%B3%95"><span class="toc-text">5.servlet方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-servlet%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-text">6.servlet体系结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-request"><span class="toc-text">7.request</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1request%E7%BB%A7%E6%89%BF%E4%BD%93%E7%B3%BB"><span class="toc-text">7.1request继承体系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE"><span class="toc-text">7.2获取请求数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91"><span class="toc-text">7.3请求转发</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81"><span class="toc-text">8.请求参数中文乱码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1GET"><span class="toc-text">8.1GET</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2POST"><span class="toc-text">8.2POST</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-reponse"><span class="toc-text">9.reponse</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81myBatis"><span class="toc-text">三、myBatis</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-text">1.简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B"><span class="toc-text">2.快速入门案例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Mapper%E4%BB%A3%E7%90%86%E5%BC%80%E5%8F%91"><span class="toc-text">3.Mapper代理开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tips1%EF%BC%9Atarget%E7%9B%AE%E5%BD%95"><span class="toc-text">tips1：target目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tips2%EF%BC%9Aresourcs%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%BB%BA%E5%8C%85"><span class="toc-text">tips2：resourcs目录下建包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-text">步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%A1%88%E4%BE%8B-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%AE%9E%E7%8E%B0CRUD"><span class="toc-text">4.案例-配置文件实现CRUD</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%91%E9%A9%AC%E5%AE%98%E6%96%B9note"><span class="toc-text">黑马官方note</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1%E5%87%86%E5%A4%87%E7%8E%AF%E5%A2%83"><span class="toc-text">4.1准备环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE"><span class="toc-text">1.查询所有数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9F%A5%E7%9C%8B%E8%AF%A6%E6%83%85%EF%BC%88selectById"><span class="toc-text">2.查看详情（selectById</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%A4%9A%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-text">3.多条件查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%9A%E6%9D%A1%E4%BB%B6%EF%BC%8C%E5%8A%A8%E6%80%81%E6%9F%A5%E8%AF%A2%EF%BC%88%E5%A4%9A%E4%B8%AA%E6%9D%A1%E4%BB%B6%EF%BC%8C%E4%BD%86%E6%98%AF%E7%94%A8%E6%88%B7%E7%94%A8%E4%BA%86%E5%93%AA%E5%87%A0%E4%B8%AA%E6%9D%A1%E4%BB%B6%E5%B9%B6%E4%B8%8D%E8%83%BD%E7%A1%AE%E5%AE%9A%EF%BC%89"><span class="toc-text">4.多条件，动态查询（多个条件，但是用户用了哪几个条件并不能确定）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#if-%E6%A0%87%E7%AD%BE"><span class="toc-text">&lt; if&gt;标签</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#where-%E6%A0%87%E7%AD%BE"><span class="toc-text">&lt; where&gt;标签</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%8D%95%E6%9D%A1%E4%BB%B6%EF%BC%8C%E5%8A%A8%E6%80%81%E6%9F%A5%E8%AF%A2"><span class="toc-text">5.单条件，动态查询</span></a></li></ol></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/08/21/seata%E5%88%86%E4%BA%AB/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/14.jpg" class="lazyload placeholder" data-srcset="/medias/img/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-21</span>
+                
+              </div>
+              <a class="post-title" href="/2024/08/21/seata%E5%88%86%E4%BA%AB/">seata分享</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/08/07/Servlet+tomcat+maven%E8%BF%90%E7%94%A8/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/17.jpg" class="lazyload placeholder" data-srcset="/medias/img/17.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-07</span>
+                
+              </div>
+              <a class="post-title" href="/2024/08/07/Servlet+tomcat+maven%E8%BF%90%E7%94%A8/">Servlet+maven+tomcat运用（超详细）</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/01/21/java%E5%9F%BA%E7%A1%80/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/14.jpg" class="lazyload placeholder" data-srcset="/medias/img/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-21</span>
+                
+              </div>
+              <a class="post-title" href="/2024/01/21/java%E5%9F%BA%E7%A1%80/">java基础</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/02/10/mybatis/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/3.jpg" class="lazyload placeholder" data-srcset="/medias/img/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">02-10</span>
+                
+              </div>
+              <a class="post-title" href="/2023/02/10/mybatis/">熟悉mybatis</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/01/20/linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/13.jpg" class="lazyload placeholder" data-srcset="/medias/img/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-20</span>
+                
+              </div>
+              <a class="post-title" href="/2023/01/20/linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">linux基本命令</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script defer src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script defer>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(0, 235, 229, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2023 - 2024</p>
+
+          </div>
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark" onclick="toggleDarkMode()">
+  <div class="dark-content">
+    <i class="fas" id="darkIcon" aria-hidden="true"></i>
+  </div>
+</div>
+
+<script defer>
+  $(function() {
+    // 初始化暗黑模式状态
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    updateDarkModeIcon(isDark);
+  });
+
+  function toggleDarkMode() {
+    const isDark = $(document.body).hasClass('darkModel');
+    $(document.body).toggleClass('darkModel');
+    localStorage.setItem('dark', !isDark);
+    updateDarkModeIcon(!isDark);
+  }
+
+  function updateDarkModeIcon(isDark) {
+    const iconElement = document.getElementById('darkIcon');
+    if (isDark) {
+      iconElement.classList.remove('fa-moon');
+      iconElement.classList.add('fa-lightbulb');
+    } else {
+      iconElement.classList.remove('fa-lightbulb');
+      iconElement.classList.add('fa-moon');
+    }
+  }
+</script>
+
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script defer src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="6944126213"
+  fixed='true'
+  autoplay='true'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="https://unpkg.com/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script async>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script async type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+
+    
+<script src="/js/search.js"></script>
+ 
+
+    <script type="text/javascript">
+        var search_path = "search.xml";
+        if (search_path.length == 0) {
+            search_path = "search.xml";
+        }
+        var path = "/" + search_path;
+        searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的图片标签(getPhotoOnline)里的内容 -->
+<script>
+  function loadPhotoOnlineJS() {
+    if ($(".post-detail").find(".getJsonPhoto-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getPhotoOnline/index.js');
+  };
+  $(function () {
+    loadPhotoOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getPhotoJson == "undefined") {
+      loadPhotoOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的talk标签(getTalkOnline)里的内容 -->
+<script>
+  function loadTalkOnlineJS() {
+    if ($(".post-detail").find(".getJsonTalk-api").length == 0) {
+      return;
+    } 
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/waterfall.js/1.0.2/waterfall.min.js'); // 瀑布流插件，https://raphamorim.io/waterfall.js/
+    loadScript('/js/getTalkOnline/index.js');
+  };
+  $(function () {
+    loadTalkOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getTalkJson == "undefined") {
+      loadTalkOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的site-card标签(getSiteOnline)里的内容 -->
+<script>
+  function loadSiteOnlineJS() {
+    if ($(".post-detail").find(".getJsonSite-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getSiteOnline/index.js');
+  };
+  $(function () {
+    loadSiteOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getSiteJson == "undefined") {
+      loadSiteOnlineJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+        <script type="text/javascript">
+  var utteranceComment = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceComment.Theme = 'github-dark';
+    } else {
+      utteranceComment.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceComment.Theme)
+      utterances.setAttribute('repo', '')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceComment.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+      
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+    <script async src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script async src="/js/cursor/explosion.min.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>
