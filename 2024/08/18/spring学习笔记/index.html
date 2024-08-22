@@ -1,0 +1,2421 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>spring学习笔记 | Kirk</title>
+
+  <link rel="icon" type="image/jpeg" href="/medias/Photo1.jpg">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '4';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script async src="https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    <link href="https://unpkg.com/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" rel="stylesheet">
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script defer src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+    
+    <!-- 依赖于jquery和vue -->
+    <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+  
+  <!-- 预加载动画 -->
+  
+  
+  <div class="preloader_6" id="loader">
+  <div class="loader"></div>
+</div>
+  <script>
+    var endLoading = function () {
+      document.body.style.overflow = 'auto';
+      document.getElementById('loader').classList.add("loaded");
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+  </script>
+
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script defer>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/Photo1.jpg" class="lazyload placeholder" data-srcset="/medias/Photo1.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Kirk</h3>
+      <h5 class="drawer-box-head_desc"></h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://gitee.com/peng-junyan">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/Photo1.jpg" class="lazyload placeholder" data-srcset="/medias/Photo1.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Kirk</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://gitee.com/peng-junyan" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+</header>
+        <!-- 内容区域 -->
+        
+<!-- prismjs 代码高亮 -->
+
+
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/img/3.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        spring学习笔记
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2024-08-18 |
+        </span>
+      
+
+      
+
+      
+    
+  </div>
+  
+  
+    <script defer src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="Spring-Framework-Tutorial-Full-Course-YouTube"><a href="#Spring-Framework-Tutorial-Full-Course-YouTube" class="headerlink" title="Spring Framework Tutorial | Full Course - YouTube"></a><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=If1Lw4pLLEo">Spring Framework Tutorial | Full Course - YouTube</a></h1><h2 id="1-报错集："><a href="#1-报错集：" class="headerlink" title="1.报错集："></a>1.报错集：</h2><p>1.<img src="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916174613321.png" class="lazyload placeholder" data-srcset="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916174613321.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="image-20230916174613321"></p>
+<p>一开始class属性爆红，cannot resolve class or package ppr和cannot resolve class Car</p>
+<p>solution:一开始用的ppr.Car当<img src="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916174738428.png" class="lazyload placeholder" data-srcset="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916174738428.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="image-20230916174738428.png">，因为建包的时候右键new没有package</p>
+<ul>
+<li>在蓝色文件夹(Sources Root)右键就可以建包了<img src="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916174913472.png" class="lazyload placeholder" data-srcset="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916174913472.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="image-20230916174913472.png"></li>
+</ul>
+<p>2.<img src="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916180344013.png" class="lazyload placeholder" data-srcset="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916180344013.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="image-20230916180344013"></p>
+<p>solution:</p>
+<p><strong>因为在 Idea 中，编译器只会把 src&#x2F;main&#x2F;java 也就是源代码目录下的 <u>.java</u> 文件编译成 .class 文件然后放到 target 目录中，其他的默认不会。</strong></p>
+<ul>
+<li>把spring.xml复制一份放到target&#x2F;classes目录下</li>
+</ul>
+<p>3.<img src="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916190123485.png" class="lazyload placeholder" data-srcset="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916190123485.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="image-20230916190123485"></p>
+<p>solution:可以看出我写错地方了(classes\spring.xml)，写在”java\spring.xml“就解决了</p>
+<p>4.<img src="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230917101907146.png" class="lazyload placeholder" data-srcset="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230917101907146.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="image-20230917101907146.png"></p>
+<p>solution：漏了对括号</p>
+<img src="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230917101935586.png" class="lazyload placeholder" data-srcset="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230917101935586.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="image-20230917101935586">
+
+
+
+<h2 id="2-codes"><a href="#2-codes" class="headerlink" title="2.codes"></a>2.codes</h2><h3 id="1-Dependency-injection"><a href="#1-Dependency-injection" class="headerlink" title="1.Dependency injection"></a>1.Dependency injection</h3><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230916180653253" style="zoom:33%;" />
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.2.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">---------------pom.xml-------------------</span><br><span class="line">--------------spring.xml--------------------</span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;vehicle&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.ppr.Car&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ppr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">drive</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ppr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">drive</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;car is running&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ppr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">App</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[]args)</span>&#123;</span><br><span class="line">        ApplicationContext context= <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line">       Vehicle vehicle=(Vehicle) context.getBean(<span class="string">&quot;vehicle&quot;</span>);</span><br><span class="line">       vehicle.drive();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<img src="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916180822507.png" class="lazyload placeholder" data-srcset="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230916180822507.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="image-20230916180822507">
+
+<ul>
+<li><p><code>ApplicationContext context= new ClassPathXmlApplicationContext(&quot;spring.xml&quot;);</code><br><code>Vehicle vehicle=(Vehicle) context.getBean(&quot;vehicle&quot;);</code>&#x2F;&#x2F;objext-&gt;Vehicle</p>
+</li>
+<li><p><strong>过去想用别的接口实现类得在main方法里改，耦合高＋得重新编译测试。现在只需在pring.xml文档中<code>class=&quot;com.ppr.Car“</code>,把Car改成其他实现类即可。</strong></p>
+</li>
+</ul>
+<h3 id="2-property-属性-成员（Setter-injection"><a href="#2-property-属性-成员（Setter-injection" class="headerlink" title="2.&lt; property&gt;属性&#x2F;成员（Setter injection"></a>2.&lt; property&gt;属性&#x2F;成员（Setter injection</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Tyre</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String brand;<span class="comment">//成员/属性</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Tyre&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;brand=&#x27;&quot;</span> + brand + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;tyre&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.ppr.Tyre&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;brand&quot;</span> <span class="attr">value</span>=<span class="string">&quot;test&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>相当于setter</strong></li>
+</ul>
+<h3 id="3-constructor-injection"><a href="#3-constructor-injection" class="headerlink" title="3.constructor injection"></a>3.constructor injection</h3><ul>
+<li>&lt; constructor-arg&gt;</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="title function_">Tyre</span><span class="params">()</span> &#123;<span class="comment">//无参构造</span></span><br><span class="line"></span><br><span class="line">    &#125; </span><br><span class="line"><span class="keyword">public</span> <span class="title function_">Tyre</span><span class="params">(String brand)</span> &#123;<span class="comment">//加了构造器</span></span><br><span class="line">        <span class="built_in">this</span>.brand = brand;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;tyre&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.ppr.Tyre&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">value</span>=<span class="string">&quot;aaa&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-Annotation-configuration-Bean"><a href="#4-Annotation-configuration-Bean" class="headerlink" title="4.Annotation|configuration| Bean"></a>4.Annotation|configuration| Bean</h3><p>—————————E.G.1—————————————</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Samsung</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">config</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;samsung--config--method--&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">App</span> <span class="comment">//主方法</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">( String[] args )</span></span><br><span class="line">    &#123;</span><br><span class="line">        ApplicationContext factory= <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br><span class="line">        Samsung s1=factory.getBean(Samsung.class);</span><br><span class="line">        s1.config();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Samsung <span class="title function_">setSamsung</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Samsung</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230917100602103.png" class="lazyload placeholder" data-srcset="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230917100602103.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="image-20230917100602103">
+
+<ul>
+<li><pre><code>ApplicationContext factory= new AnnotationConfigApplicationContext(AppConfig.class);
+ Samsung s1=factory.getBean(Samsung.class);
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  - AppConfig是配置类，**@Configuration**,相当于xml配置文件</span><br><span class="line">  - @Bean，表示一个bean,相当于&lt; bean/&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-------------------------------E.G.2----自动连线/装载（**@Autowired**)------------------------------------------</span><br><span class="line"></span><br><span class="line">```jade</span><br><span class="line">public class Samsung &#123;</span><br><span class="line">   </span><br><span class="line">    private Processor cpu;//属性</span><br><span class="line"></span><br><span class="line">    public Processor getCpu() &#123;</span><br><span class="line">        return cpu;</span><br><span class="line">    &#125;</span><br><span class="line">    public void setCpu(Processor cpu) &#123;</span><br><span class="line">        this.cpu = cpu;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void config()&#123;</span><br><span class="line">        System.out.println(&quot;samsung--config--method--&quot;);</span><br><span class="line">        cpu.run();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Samsung <span class="title function_">setSamsung</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Samsung</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Processor <span class="title function_">getCpu</span> <span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">BestProcessor</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Processor</span> &#123;<span class="comment">//处理器接口</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BestProcessor</span> <span class="keyword">implements</span> <span class="title class_">Processor</span>&#123;</span><br><span class="line"><span class="comment">//接口实现类</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;^^i am best cpu~~&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230917102248712.png" class="lazyload placeholder" data-srcset="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230917102248712.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="image-20230917102248712">
+
+<ul>
+<li><p>由报错可知：AppConfig类的getCpu()并没能把new的对象给传过去。</p>
+<ul>
+<li><u>其实是没给Samsung的依赖对象Processor注入</u></li>
+</ul>
+</li>
+<li><ul>
+<li><u><em><strong>@Autowired</strong></u></em></li>
+</ul>
+</li>
+<li><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230917102552600" style="zoom:67%;" /></li>
+</ul>
+<h3 id="5-Annotation-Component"><a href="#5-Annotation-Component" class="headerlink" title="5. Annotation|Component"></a>5. Annotation|Component</h3><p>可以在config类中不写具体的Bean</p>
+<ul>
+<li><p>config类+注解：</p>
+<ul>
+<li><code>@ComponentScan(basePackages = &quot;org.example&quot;)</code></li>
+<li>通过此注解，Spring容器会自动扫描指定基础包及其子包下的所有类，<strong>并将其注册为Spring的Bean</strong>。所以就不用在config类里写”@Bean“了。</li>
+</ul>
+</li>
+<li><p>bean对应的类上面加注解：<code>@Component</code></p>
+<ul>
+<li>默认bean id为类名+第一个字母小写</li>
+<li>自定义bean id: Component(“xxx”)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan(basePackages = &quot;org.example&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppConfig</span> &#123;</span><br><span class="line">   <span class="comment">/* @Bean</span></span><br><span class="line"><span class="comment">    public Samsung setSamsung()&#123;</span></span><br><span class="line"><span class="comment">        return new Samsung();</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    @Bean</span></span><br><span class="line"><span class="comment">    public Processor getCpu ()&#123;</span></span><br><span class="line"><span class="comment">        return new BestProcessor();</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Samsung</span> &#123;。。。。。。&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BestProcessor</span> <span class="keyword">implements</span> <span class="title class_">Processor</span>&#123;</span><br><span class="line">    。。。&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-Annotation-Primary-Qualifier"><a href="#6-Annotation-Primary-Qualifier" class="headerlink" title="6.Annotation|Primary &amp;Qualifier"></a>6.Annotation|Primary &amp;Qualifier</h3><ul>
+<li><p>如果在5.的code基础上加一个Processor接口实现类SecondProcessor</p>
+</li>
+<li><pre><code class="java">@Component
+public class SecondProcessor implements Processor&#123;
+    @Override
+    public void run() &#123;
+        System.out.println(&quot;&amp;&amp;2nd CPU**&quot;);
+    &#125;
+&#125;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">报错：Caused by: org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type &#x27;org.example.Processor&#x27; available: expected single matching bean but found 2: bestProcessor,secondProcessor</span><br><span class="line"></span><br><span class="line">- &lt;u&gt;**solution1：@Primary**&lt;/u&gt;</span><br><span class="line">- - 指明两个实现类谁的优先级更高，即new该类的bean</span><br><span class="line">  - 使用与 `@Primary` 注释关联的 **bean** 。</span><br><span class="line">  - ![image-20230917105520476](./spring学习笔记/image-20230917105520476.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- **&lt;u&gt;solution2：@Qualifier(&quot;bean的id&quot;)&lt;/u&gt;**</span><br><span class="line"></span><br><span class="line">  - 自动装配(@Autowired)的时候（</span><br><span class="line"></span><br><span class="line">  - &lt;img src=&quot;./spring学习笔记/image-20230917110402193.png&quot; alt=&quot;image-20230917110402193&quot; style=&quot;zoom:67%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">  - ps：一开始写的SecondP...报错，改小写(默认bean的id)就ok了</span><br><span class="line"></span><br><span class="line">  - &lt;img src=&quot;C:\Users\purin\AppData\Roaming\Typora\typora-user-images\image-20230917110529776.png&quot; alt=&quot;image-20230917110529776&quot; style=&quot;zoom:67%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">  - 在接口的实现类上使用`@Qualifier`注解指定一个唯一的标识符，然后在注入时使用`@Qualifier`指定要注入的具体实现类。</span><br><span class="line"></span><br><span class="line">    - 上面写的直接用是因为：没有人为起标识符，则该bean的id就是默认形式，自己起标识符也行</span><br><span class="line"></span><br><span class="line">    - ```java</span><br><span class="line">      public interface MyInterface &#123;</span><br><span class="line">          // ...</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      @Component</span><br><span class="line">      @Qualifier(&quot;implementation1&quot;)</span><br><span class="line">      //自己起了一个标识</span><br><span class="line">      public class MyImplementation1 implements MyInterface &#123;</span><br><span class="line">          // ...</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      @Component</span><br><span class="line">      @Qualifier(&quot;implementation2&quot;)</span><br><span class="line">      //自己起了另一个标识</span><br><span class="line">      public class MyImplementation2 implements MyInterface &#123;</span><br><span class="line">          // ...</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      @Component</span><br><span class="line">      public class MyComponent &#123;</span><br><span class="line">          @Autowired</span><br><span class="line">          @Qualifier(&quot;implementation1&quot;)</span><br><span class="line">          //用标识说明用的哪一个</span><br><span class="line">          private MyInterface myInterface;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+<h1 id="leifengyang-Spring-chatGTP"><a href="#leifengyang-Spring-chatGTP" class="headerlink" title="leifengyang-Spring+chatGTP"></a>leifengyang-Spring+chatGTP</h1><h1 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h1><ul>
+<li><p>ApplicationContext是IOC容器接口</p>
+</li>
+<li><p>容器中的对象在<strong>容器创建好之后</strong>就创建了（比getBean的时候早</p>
+</li>
+<li><p>Bean的属性名由setter决定（去掉set后首字母小写</p>
+</li>
+<li><p>&lt; proverty&gt;–setter;&lt; constructor-arg&gt;–构造器（该构造器有几个写几个&lt; constructor-arg&gt;</p>
+</li>
+</ul>
+<hr>
+<h3 id="Autowired（自动装配）顺序"><a href="#Autowired（自动装配）顺序" class="headerlink" title="@Autowired（自动装配）顺序"></a>@Autowired（自动装配）顺序</h3><ul>
+<li><p>先按<strong>类型</strong>去<strong>容器中找对应类型</strong>的组件</p>
+<ul>
+<li><p>找到–赋值</p>
+</li>
+<li><p>没找到–抛异常</p>
+</li>
+<li><p>找到多个</p>
+<ul>
+<li>按<strong>变量名用作id</strong>再找<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230923194125016" style="zoom: 33%;" /><ul>
+<li>匹配上–装配</li>
+<li>没匹配上–报错</li>
+</ul>
+</li>
+<li>Qualifier(“xx”)<strong>指定一个名当id</strong>去装配，而不是之前的变量名当id<ul>
+<li>找到–装配</li>
+<li>找不到–报错</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Autowired(<strong>required&#x3D;false</strong>)找不到就null，避免报错</p>
+</li>
+</ul>
+<hr>
+<h3 id="Qualifier"><a href="#Qualifier" class="headerlink" title="@Qualifier"></a>@Qualifier</h3><p>​	可以在接口的实现类上使用<code>@Qualifier</code>注解<strong>指定一个唯一的标识符</strong>，然后在注入时使用<code>@Qualifier</code>指定要注入的具体实现类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">MyInterface</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Qualifier(&quot;implementation1&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyImplementation1</span> <span class="keyword">implements</span> <span class="title class_">MyInterface</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Qualifier(&quot;implementation2&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyImplementation2</span> <span class="keyword">implements</span> <span class="title class_">MyInterface</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyComponent</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;implementation1&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> MyInterface myInterface;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h3><p><code>@Autowired</code>注解用于自动装配（自动注入）Spring容器中的Bean。通过使用<code>@Autowired</code>注解，可以方便地将依赖对象注入到需要使用它的地方，无需显式编写setter方法或构造函数。<br><code>@Autowired</code>注解有以下几种使用方式：</p>
+<ol>
+<li>根据类型自动装配：当只有一个与需求类型匹配的Bean存在时，Spring会自动将其注入。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> MyBean myBean;</span><br></pre></td></tr></table></figure>
+
+<p>在上述示例中，<code>MyBean</code>类型的Bean将被自动注入到<code>myBean</code>字段中。</p>
+<ol start="2">
+<li>根据名称自动装配：当存在多个与需求类型匹配的Bean时，可以使用<code>@Qualifier</code>注解配合<code>@Autowired</code>指定要装配的Bean的名称（通过唯一标识符或限定符）。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="meta">@Qualifier(&quot;myBean2&quot;)</span></span><br><span class="line"><span class="keyword">private</span> MyBean myBean;</span><br></pre></td></tr></table></figure>
+
+<p>在上述示例中，根据<code>@Qualifier(&quot;myBean2&quot;)</code>指定要注入的Bean名称为”myBean2”，从而解决了多个同类型Bean的命名歧义问题。</p>
+<ol start="3">
+<li>构造函数自动装配：可以在构造函数上使用<code>@Autowired</code>注解，让Spring自动按照构造函数参数类型进行装配。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">MyClass</span><span class="params">(MyBean myBean)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上述示例中，<code>MyClass</code>类的构造函数使用<code>@Autowired</code>注解，Spring将自动通过构造函数将<code>MyBean</code>类型的Bean注入到构造函数中。<br><code>@Autowired</code>注解可以与<code>@Component</code>、<code>@Service</code>、<code>@Repository</code>和<code>@Controller</code>等注解一起使用，以便在组件扫描时自动装配Bean。当Spring容器实例化一个Bean，并发现有其他Bean依赖</p>
+<h4 id="summary"><a href="#summary" class="headerlink" title="summary:"></a>summary:</h4><p>1.一个类的成员是某个bean，自动注入</p>
+<p>2.有多个满足类型查找的bean成员(如多个实现类)和<code>@Qualifier</code>	搭配使用，点明用哪个bean</p>
+<p>3.构造方法自动装配。在创建实例时就已经完成了依赖注入。</p>
+<ul>
+<li>对比1和3：①先创建myclass实例，检查@Autowired后发现mybean，后注入mybean  ③创建实例时就完成依赖注入</li>
+</ul>
+<hr>
+<p>方法上有@Autowired</p>
+<p>1.这个方法在bean创建得时候自动运行</p>
+<p>2.这个方法上每个参数都自动注入值</p>
+<hr>
+<p>@Autowired，@Resource，@Injection都是自动装配</p>
+<ul>
+<li>@Resource：javaee自带，java标准–》扩展性强：如果换成别的容器框架也能用它</li>
+<li>@Autowired：spring框架的注解</li>
+</ul>
+<hr>
+<h3 id="Spring单元测试"><a href="#Spring单元测试" class="headerlink" title="Spring单元测试"></a>Spring单元测试</h3><p>@ContextConfiguration（locations&#x3D;””)指定spring的配置文件的位置</p>
+<p>@RunWith(SpringJUnitClassRunner.class)指定用spring单元测试驱动来测试，以前默认是junit</p>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230923200833162" style="zoom:50%;" />
+
+<p>不用再麻烦地getBean()来获取对象，可以在测试中使用自动装配</p>
+<hr>
+<h3 id="泛型依赖注入："><a href="#泛型依赖注入：" class="headerlink" title="泛型依赖注入："></a>泛型依赖注入：</h3><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230923202953799" style="zoom: 50%;" />
+
+<ul>
+<li>有Bookservice,Userservice两个bean（因为他俩都继承baseServlet&lt;&gt;相当于把里面代码复制粘贴过去</li>
+<li>–》在baseServlet&lt;&gt;写的@Autowired能正常运作</li>
+<li>@Autowired在上一行，–》自动装载了BaseDao&lt; Book&gt;对象，BaseDao&lt; User&gt;<ul>
+<li>去容器中按<strong>类型</strong>查找，即按BaseDao&lt; Book&gt;和BaseDao&lt; User&gt;分别查找，能匹配上唯一一个对象</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>ioc是个容器，帮忙管理所有组件（@service等</li>
+<li>某个组件要想使用spring提供的更多功能（ioc，aop），则必须加入容器中</li>
+<li>容器底层其实是个map</li>
+<li>源码调试思路：关键步骤<strong>打断点</strong>，进去看每一步具体咋执行</li>
+</ul>
+<hr>
+<h1 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h1><h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3><ul>
+<li>比如一些日志记录，直接写在方法内部—-》不推荐，维护修改麻烦<ul>
+<li>日志记录：系统辅助功能</li>
+<li>业务逻辑：核心功能</li>
+<li><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230923205726100" style="zoom:50%;" />二者耦合</li>
+</ul>
+</li>
+<li>目标：日志模块在核心功能运行时自己<strong>动态</strong>地加上</li>
+</ul>
+<p>—-》拿到代理对象，通过代理对象调用原来的方法。</p>
+<p>缺点：jdk默认的动态代理，若目标对象未实现任何接口，则无法生成代理类</p>
+<ul>
+<li><strong>代理对象和目标对象唯一产生关联的地方：都实现了同样的接口</strong></li>
+</ul>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230926082750879" style="zoom:50%;" />
+
+<hr>
+<p>Spring实现AOP功能，<strong>底层就是动态代理</strong>，比动态代理简化。</p>
+<h3 id="1-AOP术语"><a href="#1-AOP术语" class="headerlink" title="1.AOP术语"></a>1.AOP术语</h3><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230926083752824" style="zoom:50%;" />
+
+<ul>
+<li>通知方法–日志记录的方法</li>
+<li>切面类–通知方法所在的类</li>
+<li>连接点–原来的功能类可以写日志记录的地方</li>
+<li>切入点–连接点中真正用了的地方</li>
+<li>切入点表达式–表明在连接点中用了哪些切入点</li>
+</ul>
+<h3 id="2。写配置"><a href="#2。写配置" class="headerlink" title="2。写配置"></a>2。写配置</h3><p>1）将目标类和切面类加入ioc容器中（如@Service，@Component</p>
+<p>2）告诉spring哪个类是切面类（@Aspect</p>
+<p>3）告诉spring切面类中的通知方法都是什么时候运行</p>
+<ul>
+<li>@Before（切入表达式）                 目标方法之前运行</li>
+<li>@After（切入表达式）                     目标方法结束之后</li>
+<li>@AfterReturning（切入表达式）    目标方法正常返回之后</li>
+<li>@AfterThrowing （切入表达式）    目标方法异常之后</li>
+<li><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230926090022345" style="zoom:50%;" /></li>
+<li>切入表达式<ul>
+<li>“execution(public int 目标方法的全类名)”</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-测试"><a href="#3-测试" class="headerlink" title="3.测试"></a>3.测试</h3><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230926090432539" style="zoom: 33%;" />
+
+<ul>
+<li>从ioc容器中拿对象，如果按类型，<strong>用接口类型</strong>，不能用本类<ul>
+<li>AOP通常基于代理模式实现，使用接口类型可以确保获取到的对象是代理对象</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h3><p>细节一：</p>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230926091231426" style="zoom: 33%;" />
+
+<p>如果把切面类的注解@Aspect(告诉Spring容器这是一个切面类)删掉，即没切入了，则bean还是苯类对象；但实现aop后就是动态代理对象。</p>
+<p>细节七：  抽取可重用的切入点表达式（防止同样的切入点表达式，却不得不修改多处</p>
+<ol>
+<li>写一个无返回值的方法</li>
+<li>把重用的切入点表达式写入@Pointcut注解，原通知的切入点表达式处改为1.中的方法名()</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">logUtis</span> &#123;</span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(public int com.calculator.impl.MyCal.*(int,int))&quot;)</span><span class="comment">///</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">chongyong</span><span class="params">()</span>&#123;&#125;<span class="comment">///</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before(&quot;chongyong()&quot;)</span><span class="comment">///</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">logStart</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;xx方法开始执行&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@After(&quot;chongyong()&quot;)</span><span class="comment">///</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">logEnd</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;xx方法结束&quot;</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>细节八：  环绕通知**@Around**</p>
+<ul>
+<li><p>相当于Before,After,AfterThrowing,,AfterReturning四合一</p>
+</li>
+<li><p><strong>通过反射调用目标方法</strong></p>
+</li>
+<li><blockquote>
+<p>@Around能决定目标方法晕不晕行；但其他四个不能；–》比如做权限验证时，验证不过就不运行–&gt;用@Around</p>
+<p>无需牵扯目标方法的场景-&gt;用其他四个</p>
+</blockquote>
+</li>
+<li><p>有参数ProceedingJoinPiont pjp</p>
+<ul>
+<li>是JoinPoint的子接口之一</li>
+<li>Object[] **getArgs()**：获取连接点的参数数组。</li>
+<li>Object <strong>proceed(Object[] args)<strong>：可以使用proceed()方法来控制目标方法的执行。当我们调用proceed()方法时，它会触发</strong>目标方法的执行</strong>，并返回目标方法的返回值（如果有）</li>
+</ul>
+</li>
+<li><p>相当于如图的动态代理<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230926193524686" style="zoom:33%;" /></p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Pointcut(&quot;execution(public int com.calculator.impl.MyCal.*(int,int))&quot;)</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">chongyong</span><span class="params">()</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Around(&quot;chongyong()&quot;)</span></span><br><span class="line">   <span class="keyword">public</span> Object <span class="title function_">myAround</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">       Object[] args = pjp.getArgs();<span class="comment">//获取目标方法参数</span></span><br><span class="line">       String name=pjp.getSignature().getName();<span class="comment">//获取方法签名对象，通过签名对象获取方法名</span></span><br><span class="line">       <span class="type">Object</span> <span class="variable">proceed</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">       <span class="keyword">try</span>&#123;</span><br><span class="line">           <span class="comment">//@Before</span></span><br><span class="line">           System.out.println(name+<span class="string">&quot;xx方法开始执行&quot;</span>);</span><br><span class="line">           proceed=pjp.proceed(args);<span class="comment">//相当于目标方法的执行语句</span></span><br><span class="line">           <span class="comment">//@AfterReturning</span></span><br><span class="line">           System.out.println(name+<span class="string">&quot;xx方法正常返回&quot;</span>);</span><br><span class="line"></span><br><span class="line">       &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">           <span class="comment">//@AfterThrowing</span></span><br><span class="line">           System.out.println(name+<span class="string">&quot;xx方法异常:&quot;</span>+e);</span><br><span class="line">       &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">           <span class="comment">//@After()</span></span><br><span class="line">           System.out.println(name+<span class="string">&quot;xx方法结束&quot;</span>);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> proceed;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230926193553412" style="zoom:33%;" /></p>
+<p>细节十： 多个切面执行顺序</p>
+<blockquote>
+<p>add方法开始执行<br>[validate]add方法开始执行<br>[validate]add方法正常返回,结果是2<br>[validate]add方法结束<br>add方法正常返回,结果是2<br>add方法结束</p>
+</blockquote>
+<ul>
+<li>依据：切面类首字母大小写</li>
+<li><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230926195936905" style="zoom: 25%;" /></li>
+</ul>
+<h3 id="codes"><a href="#codes" class="headerlink" title="codes"></a>codes</h3><h4 id="案例1：计算器-日志（aop实现）"><a href="#案例1：计算器-日志（aop实现）" class="headerlink" title="案例1：计算器+日志（aop实现）"></a>案例1：计算器+日志（aop实现）</h4><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230926183019184" style="zoom:33%;" />
+
+<p>Calculator接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.calculator.infer;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Calculator</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> i,<span class="type">int</span> j)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minus</span><span class="params">(<span class="type">int</span> i,<span class="type">int</span> j)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">mul</span><span class="params">(<span class="type">int</span> i,<span class="type">int</span> j)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">div</span><span class="params">(<span class="type">int</span> i,<span class="type">int</span> j)</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>MyCal实现类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.calculator.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.calculator.infer.Calculator;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyCal</span> <span class="keyword">implements</span> <span class="title class_">Calculator</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line">        <span class="type">int</span> result=i+j;</span><br><span class="line">        System.out.println(i+<span class="string">&quot;+&quot;</span>+j+<span class="string">&quot;=&quot;</span>+result);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minus</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> i-j;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">mul</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> i*j;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">div</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> i/j;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Config配置类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.calculator;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScans;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan(basePackages =&quot;com.calculator&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Config</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>logUtils切面类–添加日志</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.calculator.utils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.*;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.EnableAspectJAutoProxy;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@EnableAspectJAutoProxy</span> <span class="comment">// 启用Spring的AOP功能*****</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">logUtis</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before(&quot;execution(public int com.calculator.impl.MyCal.*(int,int))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">logStart</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;xx方法开始执行&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@After(&quot;execution(public int com.calculator.impl.MyCal.*(int,int))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">logEnd</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;xx方法结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@AfterReturning(&quot;execution(public int com.calculator.impl.MyCal.*(int,int))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">logReturn</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;xx方法正常返回&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@AfterThrowing(value=&quot;execution(public int com.calculator.impl.MyCal.*(int,int))&quot;,throwing=&quot;exception&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">logException</span><span class="params">(Exception exception)</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;xx方法异常:&quot;</span>+exception);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.3.18<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.11<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.aspectj<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>aspectjweaver<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.9.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-aspects<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.3.19<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.calculator.Config;</span><br><span class="line"><span class="keyword">import</span> com.calculator.infer.Calculator;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.AnnotationConfigApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test1</span> &#123;</span><br><span class="line">    ApplicationContext ioc= <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(Config.class);</span><br><span class="line">    <span class="comment">/*AnnotationConfigApplicationContext构造函数中传入的参数应该是配置类的类对象，</span></span><br><span class="line"><span class="comment">      而不是配置类的名称。所以您需要将&quot;Config.class&quot;修改为Config.class。*/</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span>&#123;</span><br><span class="line">       Calculator bean= ioc.getBean(Calculator.class);<span class="comment">//动态代理与接口实现类的唯一联系就是实现的接口，不能获取本类</span></span><br><span class="line">       bean.add(<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">       bean.div(<span class="number">3</span>,<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230926183632749" style="zoom:33%;" />
+
+<ul>
+<li>之前在test方法写了print语句，结果最后打印，我以为带上add()方法就会被日志方法夹在中间。其实只有在add方法体内写才还会有这种效果。chat道：<code>至于最后一行的&quot;1+1=2&quot;是您自己添加的输出语句，并不是切面逻辑产生的结果。</code></li>
+</ul>
+<hr>
+<p>Aop使用场景</p>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20230926200544896" style="zoom:50%;" />
+
+<ul>
+<li><p>事务belike，异常-回滚，结束-关闭资源，返回 开始-提交</p>
+</li>
+<li><blockquote>
+<p>@Around能决定目标方法晕不晕行；但其他四个不能；–》比如做权限验证时，验证不过就不运行–&gt;用@Around</p>
+<p>无需牵扯目标方法的场景-&gt;用其他四个</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="xml配置版"><a href="#xml配置版" class="headerlink" title="xml配置版"></a>xml配置版</h4><p>配置：</p>
+<ol>
+<li>加入ioc容器（bean tag</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;myCal&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.calculator.impl.MyCal&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;logUtis&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.calculator.utils.logUtis&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;validateAspect&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.calculator.utils.validateAspect&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2.告诉spring有哪些切面</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span>   </span><br><span class="line">     <span class="comment">&lt;!--指定切面-@Aspect--&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;logUtis&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"></span><br><span class="line">     <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;validateAspect&quot;</span>&gt;</span>    </span><br><span class="line">     <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>3.before，after之类的执行位置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">&quot;globalpoint&quot;</span> <span class="attr">expression</span>=<span class="string">&quot;execution(int com.calculator.impl.MyCal.*(int,int))&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--指定切面-@Aspect--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;logUtis&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">&quot;mypointcut&quot;</span> <span class="attr">expression</span>=<span class="string">&quot;execution(int com.calculator.impl.MyCal.*(int,int))&quot;</span>/&gt;</span><span class="comment">&lt;!--切面表达式，免得复制粘贴好几行--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">&quot;logStart&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;mypointcut&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:before</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">method</span>=<span class="string">&quot;logEnd&quot;</span> <span class="attr">pointcut</span>=<span class="string">&quot;execution(int com.calculator.impl.MyCal.*(int,int))&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:after-throwing</span> <span class="attr">method</span>=<span class="string">&quot;logException&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;mypointcut&quot;</span> <span class="attr">throwing</span>=<span class="string">&quot;exception&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after-throwing</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:after-returning</span> <span class="attr">method</span>=<span class="string">&quot;logReturn&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;mypointcut&quot;</span> <span class="attr">returning</span>=<span class="string">&quot;result&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after-returning</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;validateAspect&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">&quot;logStart&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;globalpoint&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:before</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">method</span>=<span class="string">&quot;logEnd&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;globalpoint&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:after-throwing</span> <span class="attr">method</span>=<span class="string">&quot;logException&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;globalpoint&quot;</span> <span class="attr">throwing</span>=<span class="string">&quot;exception&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after-throwing</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:after-returning</span> <span class="attr">method</span>=<span class="string">&quot;logReturn&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;globalpoint&quot;</span> <span class="attr">returning</span>=<span class="string">&quot;result&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after-returning</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="jdbctemplate"><a href="#jdbctemplate" class="headerlink" title="jdbctemplate"></a>jdbctemplate</h1><h1 id="声明式事务"><a href="#声明式事务" class="headerlink" title="声明式事务"></a>声明式事务</h1><ul>
+<li><pre><code class="java">public void checkout(String isbn,String username)&#123;
+       /***
+        * 购买图书操作
+        */
+       int price=bookDao.getBookPrice(isbn);//查价格
+       bookDao.updateBalance(username,price);//-余额
+       bookDao.updateStock(isbn);//-库存
+   &#125;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  上述业务操作，如若-库存的sql语句写错了，则没修改库存，但是账户余额已经改了--》不应该改，回滚之类的--》事务</span><br><span class="line"></span><br><span class="line">- &lt;img src=&quot;./spring学习笔记/image-20231021140136292.png&quot; alt=&quot;image-20231021140136292&quot; style=&quot;zoom:50%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">- &lt;img src=&quot;./spring学习笔记/image-20231021140335030.png&quot; alt=&quot;image-20231021140335030&quot; style=&quot;zoom:33%;&quot; /&gt;利用AOP</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- ### 快速为某个方法添加事务</span><br><span class="line"></span><br><span class="line">  - ①配置事务管理器(切面)让其进行事务控制--加入ioc容器--bean tag</span><br><span class="line"></span><br><span class="line">  - ​    控制住数据源</span><br><span class="line"></span><br><span class="line">    - 控制事务--控制连接--而从数据源获取连接connection--控制住数据源--加入属性</span><br><span class="line"></span><br><span class="line">    - ```java</span><br><span class="line">      &lt;bean name=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;</span><br><span class="line">              &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;</span><br><span class="line">          &lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+
+- ②开启基于注解的事务控制模式 依赖tx名称空间
+
+  - ```xml
+    xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;
+    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- ```xml</span><br><span class="line">  &lt;tx:annotation-driven transaction-manager=&quot;transactionManager&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+- ③给事务方法加注解
+
+  - ```java
+    @Transactional
+        public void checkout(String isbn,String username)&#123;
+        &#125;
+    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    but报错`通配符的匹配很全面, 但无法找到元素 &#x27;tx:annotation-driven&#x27; 的声明`</span><br><span class="line"></span><br><span class="line">    solution：-&gt; `xsi:schemaLocation`后加了一个`http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd`</span><br><span class="line"></span><br><span class="line">## 事务细节</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+<p>isolation-Isolation 事务隔离级别</p>
+<p>propagation-Propagation 事务传播行为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>noRollbackFor-Class[] 哪些异常事务可以不回滚</p>
+<p>boRollbackForClassName-String[]（String全类名）</p>
+<p>rollbackFor-Class[] 哪些异常事务要回滚</p>
+<p>rollbackForClassName-String[]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>readOnly-booolean 设置事务为只读【【可以进行事务优化：加快查询速度∵不执行增删改了】】</p>
+<p>timeout-int （秒）事务超出指定执行时长后自动终止并回归</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 1.timeout</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">@Transactional(timeout = 3)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(timeout = 3)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">checkout</span><span class="params">(String isbn,String username)</span>&#123;</span><br><span class="line">        <span class="comment">/***</span></span><br><span class="line"><span class="comment">         * 购买图书操作</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);<span class="comment">//毫秒</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">        。。。。。&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231021223935798" style="zoom:33%;" />
+
+<h3 id="2-异常分类"><a href="#2-异常分类" class="headerlink" title="2.异常分类"></a>2.异常分类</h3><ul>
+<li>运行时异常：可以不用处理【<strong>默认都回滚</strong>】</li>
+<li>编译时异常：必须trycatch或throws【<strong>默认不回滚</strong>】</li>
+</ul>
+<p><u>noRollbackFor<strong>让原来必须回滚的不回滚</strong></u></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(timeout = 3,noRollbackFor = &#123;ArithmeticException.class&#125;)</span><span class="comment">//让数学异常可以不回滚</span></span><br><span class="line"><span class="comment">//noRollbackFor-Class[]</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">checkout</span><span class="params">(String isbn,String username)</span>&#123;</span><br><span class="line">        <span class="comment">/***</span></span><br><span class="line"><span class="comment">         * 购买图书操作</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> price=bookDao.getBookPrice(isbn);<span class="comment">//查价格</span></span><br><span class="line">        bookDao.updateBalance(username,price);<span class="comment">//-余额</span></span><br><span class="line">        bookDao.updateStock(isbn);<span class="comment">//-库存</span></span><br><span class="line">        <span class="type">int</span> x=<span class="number">10</span>/<span class="number">0</span>;<span class="comment">/////数学异常</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-事务隔离级别"><a href="#3-事务隔离级别" class="headerlink" title="3.事务隔离级别"></a>3.事务隔离级别</h3><h4 id="1-事务并发问题"><a href="#1-事务并发问题" class="headerlink" title="1.事务并发问题"></a>1.事务并发问题</h4><ul>
+<li><strong>脏读不可以出现</strong>，其他的允许存在</li>
+</ul>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022101605592" style="zoom:50%;" />
+
+<h4 id="2-隔离级别"><a href="#2-隔离级别" class="headerlink" title="2.隔离级别"></a>2.隔离级别</h4><ul>
+<li>都是读事务(readonly)与写事务之间</li>
+</ul>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022102001076" style="zoom:50%;" />
+
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022102159704" style="zoom:50%;" />
+
+<h4 id="3-案例–读脏数据"><a href="#3-案例–读脏数据" class="headerlink" title="3.案例–读脏数据"></a>3.案例–读脏数据</h4><p>起始code：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookService</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> BookDao bookDao;</span><br><span class="line">    BookService(BookDao bookDao)&#123;</span><br><span class="line">        <span class="built_in">this</span>.bookDao=bookDao;</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="comment">/**隔离级别：可读未提交**/</span></span><br><span class="line">    <span class="meta">@Transactional(isolation = Isolation.READ_UNCOMMITTED)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getPrice</span><span class="params">(String isbn)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bookDao.getBookPrice(isbn);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test02</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">BookService</span> <span class="variable">bean</span> <span class="operator">=</span> ioc.getBean(BookService.class);</span><br><span class="line">        System.out.println(<span class="string">&quot;ISBN-001单价&quot;</span>+bean.getPrice(<span class="string">&quot;ISBN-001&quot;</span>));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：<code>ISBN-001单价100</code></p>
+<p>开启事务：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> use tx</span><br><span class="line">Database changed</span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">start</span> transaction;</span><br><span class="line">Query OK, <span class="number">0</span> <span class="keyword">rows</span> affected (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">update</span> book <span class="keyword">set</span> price<span class="operator">=</span><span class="number">999</span> <span class="keyword">where</span> isbn<span class="operator">=</span>&quot;ISBN-001&quot;;</span><br><span class="line">Query OK, <span class="number">1</span> <span class="type">row</span> affected (<span class="number">0.00</span> sec)</span><br><span class="line"><span class="keyword">Rows</span> matched: <span class="number">1</span>  Changed: <span class="number">1</span>  Warnings: <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>​     再执行测试test02时：<code>ISBN-001单价999</code></p>
+<p>回滚：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">rollback</span>;</span><br><span class="line">Query OK, <span class="number">0</span> <span class="keyword">rows</span> affected (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<p>​      再执行test：<code>ISBN-001单价100</code></p>
+<p>如果用回滚前的数据 进行一系列操作，显然是脏数据，产生一系列错误。</p>
+<h4 id="4-查看-修改隔离级别"><a href="#4-查看-修改隔离级别" class="headerlink" title="4.查看+修改隔离级别"></a>4.查看+修改隔离级别</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">select</span> @<span class="variable">@transaction_isolation</span>;</span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------+</span></span><br><span class="line"><span class="operator">|</span> @<span class="variable">@transaction_isolation</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------+</span></span><br><span class="line"><span class="operator">|</span> REPEATABLE<span class="operator">-</span>READ         <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------+</span></span><br><span class="line"><span class="number">1</span> <span class="type">row</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">set</span> session transaction isolation level read committ</span><br><span class="line">ed;</span><br><span class="line">Query OK, <span class="number">0</span> <span class="keyword">rows</span> affected (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">select</span> @<span class="variable">@transaction_isolation</span>;</span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------+</span></span><br><span class="line"><span class="operator">|</span> @<span class="variable">@transaction_isolation</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------+</span></span><br><span class="line"><span class="operator">|</span> READ<span class="operator">-</span>COMMITTED          <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------+</span></span><br><span class="line"><span class="number">1</span> <span class="type">row</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<p>5.读已提交</p>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022112140867" style="zoom:50%;" />
+
+<ul>
+<li>第二次查询应该不变（因为另一个事务改了之后并没提交</li>
+<li>问题原因：mysql<strong>自动提交</strong></li>
+</ul>
+<p>solution：<code>SET autocommit=0；关闭自动提交</code></p>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022112533270" style="zoom:50%;" />
+
+
+
+<h4 id="6-可重复读：何时读都一模一样"><a href="#6-可重复读：何时读都一模一样" class="headerlink" title="6.可重复读：何时读都一模一样"></a>6.可重复读：何时读都一模一样</h4><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022112920002" style="zoom:50%;" />
+
+<h4 id="7-有事务的业务逻辑，ioc容器中保存的是这个义务逻辑的动态对象"><a href="#7-有事务的业务逻辑，ioc容器中保存的是这个义务逻辑的动态对象" class="headerlink" title="7.有事务的业务逻辑，ioc容器中保存的是这个义务逻辑的动态对象"></a>7.有事务的业务逻辑，ioc容器中保存的是这个义务逻辑的动态对象</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test02</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">BookService</span> <span class="variable">bean</span> <span class="operator">=</span> ioc.getBean(BookService.class);</span><br><span class="line">        <span class="comment">//System.out.println(&quot;ISBN-001单价&quot;+bean.getPrice(&quot;ISBN-001&quot;));</span></span><br><span class="line">        System.out.println(bean.getClass());<span class="comment">//*</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>①把BookService类中所有<code>@Transactional</code>都注释掉（即没有事务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class com.service.BookService</span><br></pre></td></tr></table></figure>
+
+<p>②取消注释掉的@Transactional</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class com.service.BookService$$EnhancerBySpringCGLIB$$b3a08004</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-事务传播行为propagation（传播-行为）"><a href="#4-事务传播行为propagation（传播-行为）" class="headerlink" title="4.事务传播行为propagation（传播+行为）"></a>4.事务传播行为propagation（传播+行为）</h3><ul>
+<li><p>当事务方法被另一个事务方法调用时，必须指定事务应该如何传播</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>&#123;</span><br><span class="line"></span><br><span class="line">tran()&#123;<span class="comment">//事务tran里嵌有事务b和事务c</span></span><br><span class="line">  b()&#123;&#125;</span><br><span class="line">  c()&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Q:事务c出异常了后事务b要不要回滚</p>
+<p>A：可以靠设置   E.G.假设用的是REQUIRED b,c和tran共享事务(共享一个数据库连接)，就是同一个事务–》完蛋一起完蛋–》∴b需要回滚</p>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022120033491" style="zoom:50%;" /></li>
+</ul>
+<h4 id="1-REQUIRED实例"><a href="#1-REQUIRED实例" class="headerlink" title="1.REQUIRED实例"></a>1.REQUIRED实例</h4><p><strong>图解</strong>***********</p>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022132435667" style="zoom:50%;" />
+
+<ul>
+<li><strong>因为小事务和大事务一起提交(执行完了还没提交)，所以后边出了错能都滚蛋</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MulService</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    BookService bk;</span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">mulTx</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="comment">//@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line">        bk.checkout(<span class="string">&quot;ISBN-002&quot;</span>,<span class="string">&quot;Tom&quot;</span>);</span><br><span class="line">        <span class="comment">//@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line">        bk.updatePrice(<span class="string">&quot;ISBN-003&quot;</span>,<span class="number">99</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookService</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> BookDao bookDao;</span><br><span class="line">    BookService(BookDao bookDao)&#123;</span><br><span class="line">        <span class="built_in">this</span>.bookDao=bookDao;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">checkout</span><span class="params">(String isbn,String username)</span>&#123;</span><br><span class="line">        <span class="type">int</span> price=bookDao.getBookPrice(isbn);<span class="comment">//查价格</span></span><br><span class="line">        bookDao.updateBalance(username,price);<span class="comment">//-余额</span></span><br><span class="line">        bookDao.updateStock(isbn);<span class="comment">//-库存</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">updatePrice</span><span class="params">(String isbn,<span class="type">int</span> price)</span>&#123;</span><br><span class="line">        bookDao.updatePrice(isbn, price);</span><br><span class="line">        <span class="type">int</span> i=<span class="number">10</span>/<span class="number">0</span>;<span class="comment">///异常</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test03</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">MulService</span> <span class="variable">bean</span> <span class="operator">=</span> ioc.getBean(MulService.class);</span><br><span class="line">        bean.mulTx();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：因为updatePrice异常，打包滚蛋都回滚了，数据库数据并没有被修改。</p>
+<ul>
+<li><strong>历史遗留问题</strong>：第一次的时候异常语句写的sout(10&#x2F;0),额，，没有都回滚，数据库还是被修改了，问了chatgpt说的也是前后矛盾，，说什么没被捕获之类的，但好像sout(10&#x2F;0)和int i&#x3D;10&#x2F;0都是runtimeException，，</li>
+</ul>
+<h4 id="2-REQUIRED-NEW实例"><a href="#2-REQUIRED-NEW实例" class="headerlink" title="2.REQUIRED_NEW实例"></a>2.REQUIRED_NEW实例</h4><h5 id="图解"><a href="#图解" class="headerlink" title="图解"></a>图解</h5><ul>
+<li>checkout自己启动了自己的新事务后，<strong>执行完就立马提交了</strong>，所以就算后面大事务所在的事务回滚也不关他的事。</li>
+<li>下图为两个小事务都是_NEW</li>
+</ul>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022132652467" style="zoom:50%;" />
+
+<h5 id="2-1运行时异常的抛出顺序是从当前方法开始顺着调用栈向上传播"><a href="#2-1运行时异常的抛出顺序是从当前方法开始顺着调用栈向上传播" class="headerlink" title="2.1运行时异常的抛出顺序是从当前方法开始顺着调用栈向上传播"></a>2.1运行时异常的抛出顺序是从当前方法开始顺着调用栈向上传播</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        doStuff();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">doStuff</span><span class="params">()</span> &#123;</span><br><span class="line">        doMoreStuff();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">doMoreStuff</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="number">10</span>/<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>方法调用时main-&gt;doStuff-&gt;doMoreStuff</p>
+<p>RuntimeException的抛出顺序是从当前方法开始<strong>顺着调用栈向上传播</strong></p>
+<ol>
+<li><p><code>doMoreStuff()</code> 方法中有一个算术操作 <code>System.out.println(10/0)</code>，它会抛出一个 <code>ArithmeticException</code>。</p>
+<p><strong>但没捕获没处理</strong>，异常开始向上传播，离开 <code>doMoreStuff()</code> 方法，并返回到 <code>doStuff()</code> 方法。</p>
+</li>
+<li><p>由于 <code>doStuff()</code> 方法没<strong>有捕获这个异常，它会继续向上传播</strong>，离开 <code>doStuff()</code> 方法，并返回到 <code>main</code> 方法。</p>
+</li>
+<li><p><code>main</code> 方法也没有捕获异常，所以异常继续向上传播，离开 <code>main</code> 方法。</p>
+</li>
+<li><p>当异常离开 <code>main</code> 方法时，程序终止，并在控制台打印异常信息和堆栈跟踪。</p>
+</li>
+</ol>
+<h5 id="2-2案例"><a href="#2-2案例" class="headerlink" title="2.2案例"></a>2.2案例</h5><p>①</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MulService</span> &#123;</span><br><span class="line">   ........</span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">mulTx</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="comment">//REQUIRED_NEW</span></span><br><span class="line">        bk.checkout(<span class="string">&quot;ISBN-002&quot;</span>,<span class="string">&quot;Tom&quot;</span>);</span><br><span class="line">        <span class="comment">//REQUIRED</span></span><br><span class="line">        bk.updatePrice(<span class="string">&quot;ISBN-003&quot;</span>,<span class="number">99</span>);<span class="comment">//有算数异常</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>checkout把numTx挂起，自己另开了一个事务，<strong>执行完立马给自己提交了</strong>，然后mulTx又开启，mulTx事务的大家<strong>一起提交</strong>。所以在updatePrice和mulTx一起滚蛋(整个事务内的)的时候，不管他事。</li>
+</ul>
+<p>②</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MulService</span> &#123;</span><br><span class="line">   ........</span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">mulTx</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="comment">//REQUIRED</span></span><br><span class="line">        bk.checkout(<span class="string">&quot;ISBN-002&quot;</span>,<span class="string">&quot;Tom&quot;</span>);</span><br><span class="line">        <span class="comment">//REQUIRED_NEW</span></span><br><span class="line">        bk.updatePrice(<span class="string">&quot;ISBN-003&quot;</span>,<span class="number">99</span>);<span class="comment">//有算术异常</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>updatePrice()中的异常未被捕获，继续往上找到mulTx()导致这个事务一起完蛋(<strong>都没提交</strong>,∵大事务还没执行完)，所以在这个事务中(REQUIRED)的checkout()会一起回滚。</li>
+</ul>
+<p>③</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MulService</span> &#123;</span><br><span class="line">   ........</span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">mulTx</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="comment">//REQUIRED_NEW</span></span><br><span class="line">        bk.checkout(<span class="string">&quot;ISBN-002&quot;</span>,<span class="string">&quot;Tom&quot;</span>);</span><br><span class="line">        <span class="comment">//REQUIRED_NEW</span></span><br><span class="line">        bk.updatePrice(<span class="string">&quot;ISBN-003&quot;</span>,<span class="number">99</span>);</span><br><span class="line">       </span><br><span class="line">       <span class="type">int</span> i=<span class="number">10</span>/<span class="number">0</span>;<span class="comment">//数学异常（在mulTx事务内</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>作为  _NEW,两个小事务都把mulTx挂起，自己的事务执行完立马提交了。∴执行到mulTx内的异常时，他俩不会回滚。</li>
+</ul>
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022133430599" style="zoom:33%;" />
+
+<h4 id="3-如果是REQUIRED，那timeout，noRollbackFor等等都要在大事务上写"><a href="#3-如果是REQUIRED，那timeout，noRollbackFor等等都要在大事务上写" class="headerlink" title="3.如果是REQUIRED，那timeout，noRollbackFor等等都要在大事务上写"></a>3.如果是REQUIRED，那timeout，noRollbackFor等等都要在大事务上写</h4><ul>
+<li>小事务相当于继承的大事务的</li>
+</ul>
+<h4 id="4-补充（代理对象）"><a href="#4-补充（代理对象）" class="headerlink" title="4.补充（代理对象）"></a>4.补充（代理对象）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">REQUIRED:将之前事务用的connection传递给这个方法使用</span><br><span class="line">REQUIRED_NEW：这个方法直接使用新的connection</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022140029527" style="zoom:33%;" />
+
+<ul>
+<li><p>上图在BookService中直接写mulTx,无法实现创自挤的事务</p>
+</li>
+<li><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231022140218425" style="zoom:33%;" />
+</li>
+<li><p>因为是调用事务方法实现的，而在本类内直接写没有动态代理对象，实现不了这种效果。</p>
+<p>[^]: 事务细节3.7：bean.getClass()-》class com.service.BookService$$EnhancerBySpringCGLIB$$b3a08004</p>
+</li>
+</ul>
+<h2 id="报错集"><a href="#报错集" class="headerlink" title="报错集"></a>报错集</h2><h3 id="1-No-qualifying-bean-of-type-‘com-service-BookService’-available"><a href="#1-No-qualifying-bean-of-type-‘com-service-BookService’-available" class="headerlink" title="1   No qualifying bean of type ‘com.service.BookService’ available"></a>1   No qualifying bean of type ‘com.service.BookService’ available</h3><img src="/2024/08/18/spring学习笔记/spring学习笔记" class="lazyload placeholder" data-srcset="/2024/08/18/spring学习笔记/spring学习笔记" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"  alt="image-20231021134835095" style="zoom:33%;" />
+
+<p>main包下的xml是我从conf下复制的，而test中<code>ClassPathXmlApplicationContext(&quot;ApplicationContext.xml&quot;);</code>用的是原来conf目录下的xml–》致使后来加上<code>&lt;context:component-scan base-package=&quot;com.*&quot; /&gt;</code>后也找不到bean–》最后靠在原来路径的xml加<code>&lt;context:component-scan base-package=&quot;com.*&quot; /&gt;</code>解决</p>
+<ul>
+<li><pre><code>&lt;context:component-scan base-package=&quot;com.*&quot; /&gt;
+</code></pre>
+<ul>
+<li>告诉Spring在指定的包及其子包中自动扫描并注册带有特定注解的组件。(即告诉他我用了注解没写bean标签，去读取去)</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/spring/" class="">
+              spring
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>小炎子</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2024/08/18/spring学习笔记/" target="_blank" title="spring学习笔记">http://example.com/2024/08/18/spring学习笔记/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/img/17.jpg" class="lazyload placeholder" data-srcset="/medias/img/17.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2024/08/22/Servlet+tomcat+maven%E8%BF%90%E7%94%A8/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">Servlet+maven+tomcat运用（超详细）</div>
+      </div>
+      
+      <!-- <div class="content">
+        一、引言web服务器：写的网站在web服务器上运行，相当于容器。如tomcat
+二、tomcat1.基本使用
+先看的ma
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/img/14.jpg" class="lazyload placeholder" data-srcset="/medias/img/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2024/01/21/java%E5%9F%BA%E7%A1%80/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">java基础</div>
+      </div>
+      <!-- <div class="content">
+        基础 Java 概念
+类和对象：类是对象的模板，对象是类的实例。类包含属性和方法。
+一、类和对象的定义类：类是一个模板，
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script defer src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+
+<!-- 还需要在后面这个地址里设置script, comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <aside id='l_side'>
+  
+    
+      <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/Photo1.jpg'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>青墨书晚风</h2>
+        
+        
+          <p>小炎子</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Kirk</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:me@xxx.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://gitee.com/peng-junyan"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=你的qq号码"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+    
+  
+  
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-Framework-Tutorial-Full-Course-YouTube"><span class="toc-text">Spring Framework Tutorial | Full Course - YouTube</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8A%A5%E9%94%99%E9%9B%86%EF%BC%9A"><span class="toc-text">1.报错集：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-codes"><span class="toc-text">2.codes</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Dependency-injection"><span class="toc-text">1.Dependency injection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-property-%E5%B1%9E%E6%80%A7-%E6%88%90%E5%91%98%EF%BC%88Setter-injection"><span class="toc-text">2.&lt; property&gt;属性&#x2F;成员（Setter injection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-constructor-injection"><span class="toc-text">3.constructor injection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Annotation-configuration-Bean"><span class="toc-text">4.Annotation|configuration| Bean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Annotation-Component"><span class="toc-text">5. Annotation|Component</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Annotation-Primary-Qualifier"><span class="toc-text">6.Annotation|Primary &amp;Qualifier</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#leifengyang-Spring-chatGTP"><span class="toc-text">leifengyang-Spring+chatGTP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IOC"><span class="toc-text">IOC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Autowired%EF%BC%88%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%EF%BC%89%E9%A1%BA%E5%BA%8F"><span class="toc-text">@Autowired（自动装配）顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Qualifier"><span class="toc-text">@Qualifier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Autowired"><span class="toc-text">@Autowired</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#summary"><span class="toc-text">summary:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-text">Spring单元测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%9A"><span class="toc-text">泛型依赖注入：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AOP"><span class="toc-text">AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="toc-text">动态代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-AOP%E6%9C%AF%E8%AF%AD"><span class="toc-text">1.AOP术语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%82%E5%86%99%E9%85%8D%E7%BD%AE"><span class="toc-text">2。写配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%B5%8B%E8%AF%95"><span class="toc-text">3.测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%86%E8%8A%82"><span class="toc-text">细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#codes"><span class="toc-text">codes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B1%EF%BC%9A%E8%AE%A1%E7%AE%97%E5%99%A8-%E6%97%A5%E5%BF%97%EF%BC%88aop%E5%AE%9E%E7%8E%B0%EF%BC%89"><span class="toc-text">案例1：计算器+日志（aop实现）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#xml%E9%85%8D%E7%BD%AE%E7%89%88"><span class="toc-text">xml配置版</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jdbctemplate"><span class="toc-text">jdbctemplate</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-text">声明式事务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BC%82%E5%B8%B8%E5%88%86%E7%B1%BB"><span class="toc-text">2.异常分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-text">3.事务隔离级别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%BA%8B%E5%8A%A1%E5%B9%B6%E5%8F%91%E9%97%AE%E9%A2%98"><span class="toc-text">1.事务并发问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-text">2.隔离级别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%A1%88%E4%BE%8B%E2%80%93%E8%AF%BB%E8%84%8F%E6%95%B0%E6%8D%AE"><span class="toc-text">3.案例–读脏数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E6%9F%A5%E7%9C%8B-%E4%BF%AE%E6%94%B9%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-text">4.查看+修改隔离级别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%EF%BC%9A%E4%BD%95%E6%97%B6%E8%AF%BB%E9%83%BD%E4%B8%80%E6%A8%A1%E4%B8%80%E6%A0%B7"><span class="toc-text">6.可重复读：何时读都一模一样</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E6%9C%89%E4%BA%8B%E5%8A%A1%E7%9A%84%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%EF%BC%8Cioc%E5%AE%B9%E5%99%A8%E4%B8%AD%E4%BF%9D%E5%AD%98%E7%9A%84%E6%98%AF%E8%BF%99%E4%B8%AA%E4%B9%89%E5%8A%A1%E9%80%BB%E8%BE%91%E7%9A%84%E5%8A%A8%E6%80%81%E5%AF%B9%E8%B1%A1"><span class="toc-text">7.有事务的业务逻辑，ioc容器中保存的是这个义务逻辑的动态对象</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E8%A1%8C%E4%B8%BApropagation%EF%BC%88%E4%BC%A0%E6%92%AD-%E8%A1%8C%E4%B8%BA%EF%BC%89"><span class="toc-text">4.事务传播行为propagation（传播+行为）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-REQUIRED%E5%AE%9E%E4%BE%8B"><span class="toc-text">1.REQUIRED实例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-REQUIRED-NEW%E5%AE%9E%E4%BE%8B"><span class="toc-text">2.REQUIRED_NEW实例</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9B%BE%E8%A7%A3"><span class="toc-text">图解</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BC%82%E5%B8%B8%E7%9A%84%E6%8A%9B%E5%87%BA%E9%A1%BA%E5%BA%8F%E6%98%AF%E4%BB%8E%E5%BD%93%E5%89%8D%E6%96%B9%E6%B3%95%E5%BC%80%E5%A7%8B%E9%A1%BA%E7%9D%80%E8%B0%83%E7%94%A8%E6%A0%88%E5%90%91%E4%B8%8A%E4%BC%A0%E6%92%AD"><span class="toc-text">2.1运行时异常的抛出顺序是从当前方法开始顺着调用栈向上传播</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-2%E6%A1%88%E4%BE%8B"><span class="toc-text">2.2案例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%A6%82%E6%9E%9C%E6%98%AFREQUIRED%EF%BC%8C%E9%82%A3timeout%EF%BC%8CnoRollbackFor%E7%AD%89%E7%AD%89%E9%83%BD%E8%A6%81%E5%9C%A8%E5%A4%A7%E4%BA%8B%E5%8A%A1%E4%B8%8A%E5%86%99"><span class="toc-text">3.如果是REQUIRED，那timeout，noRollbackFor等等都要在大事务上写</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E8%A1%A5%E5%85%85%EF%BC%88%E4%BB%A3%E7%90%86%E5%AF%B9%E8%B1%A1%EF%BC%89"><span class="toc-text">4.补充（代理对象）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E9%9B%86"><span class="toc-text">报错集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-No-qualifying-bean-of-type-%E2%80%98com-service-BookService%E2%80%99-available"><span class="toc-text">1   No qualifying bean of type ‘com.service.BookService’ available</span></a></li></ol></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/08/22/Servlet+tomcat+maven%E8%BF%90%E7%94%A8/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/17.jpg" class="lazyload placeholder" data-srcset="/medias/img/17.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-22</span>
+                
+              </div>
+              <a class="post-title" href="/2024/08/22/Servlet+tomcat+maven%E8%BF%90%E7%94%A8/">Servlet+maven+tomcat运用（超详细）</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/3.jpg" class="lazyload placeholder" data-srcset="/medias/img/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-18</span>
+                
+              </div>
+              <a class="post-title" href="/2024/08/18/spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">spring学习笔记</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2024/01/21/java%E5%9F%BA%E7%A1%80/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/14.jpg" class="lazyload placeholder" data-srcset="/medias/img/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-21</span>
+                
+              </div>
+              <a class="post-title" href="/2024/01/21/java%E5%9F%BA%E7%A1%80/">java基础</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/02/10/mybatis/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/3.jpg" class="lazyload placeholder" data-srcset="/medias/img/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">02-10</span>
+                
+              </div>
+              <a class="post-title" href="/2023/02/10/mybatis/">熟悉mybatis</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/01/20/linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/img/13.jpg" class="lazyload placeholder" data-srcset="/medias/img/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-20</span>
+                
+              </div>
+              <a class="post-title" href="/2023/01/20/linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">linux基本命令</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script defer src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script defer>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(0, 235, 229, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2023 - 2024</p>
+
+          </div>
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark" onclick="toggleDarkMode()">
+  <div class="dark-content">
+    <i class="fas" id="darkIcon" aria-hidden="true"></i>
+  </div>
+</div>
+
+<script defer>
+  $(function() {
+    // 初始化暗黑模式状态
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    updateDarkModeIcon(isDark);
+  });
+
+  function toggleDarkMode() {
+    const isDark = $(document.body).hasClass('darkModel');
+    $(document.body).toggleClass('darkModel');
+    localStorage.setItem('dark', !isDark);
+    updateDarkModeIcon(!isDark);
+  }
+
+  function updateDarkModeIcon(isDark) {
+    const iconElement = document.getElementById('darkIcon');
+    if (isDark) {
+      iconElement.classList.remove('fa-moon');
+      iconElement.classList.add('fa-lightbulb');
+    } else {
+      iconElement.classList.remove('fa-lightbulb');
+      iconElement.classList.add('fa-moon');
+    }
+  }
+</script>
+
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script defer src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="6944126213"
+  fixed='true'
+  autoplay='true'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="https://unpkg.com/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script async>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script async type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+
+    
+<script src="/js/search.js"></script>
+ 
+
+    <script type="text/javascript">
+        var search_path = "search.xml";
+        if (search_path.length == 0) {
+            search_path = "search.xml";
+        }
+        var path = "/" + search_path;
+        searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的图片标签(getPhotoOnline)里的内容 -->
+<script>
+  function loadPhotoOnlineJS() {
+    if ($(".post-detail").find(".getJsonPhoto-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getPhotoOnline/index.js');
+  };
+  $(function () {
+    loadPhotoOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getPhotoJson == "undefined") {
+      loadPhotoOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的talk标签(getTalkOnline)里的内容 -->
+<script>
+  function loadTalkOnlineJS() {
+    if ($(".post-detail").find(".getJsonTalk-api").length == 0) {
+      return;
+    } 
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/waterfall.js/1.0.2/waterfall.min.js'); // 瀑布流插件，https://raphamorim.io/waterfall.js/
+    loadScript('/js/getTalkOnline/index.js');
+  };
+  $(function () {
+    loadTalkOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getTalkJson == "undefined") {
+      loadTalkOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的site-card标签(getSiteOnline)里的内容 -->
+<script>
+  function loadSiteOnlineJS() {
+    if ($(".post-detail").find(".getJsonSite-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getSiteOnline/index.js');
+  };
+  $(function () {
+    loadSiteOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getSiteJson == "undefined") {
+      loadSiteOnlineJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+        <script type="text/javascript">
+  var utteranceComment = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceComment.Theme = 'github-dark';
+    } else {
+      utteranceComment.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceComment.Theme)
+      utterances.setAttribute('repo', '')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceComment.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+      
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+    <script async src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script async src="/js/cursor/explosion.min.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>
